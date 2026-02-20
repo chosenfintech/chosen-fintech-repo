@@ -1,3 +1,4 @@
+// prisma/seed.ts
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 import { ENV } from '@/lib/env';
@@ -10,7 +11,7 @@ async function seedAdmin() {
 
   const email = ENV.adminEmail().toLowerCase().trim();
   const password = ENV.adminPassword();
-  const fullName = ENV.adminFullname();
+  const fullname = ENV.adminFullname();
   const phone = ENV.adminPhone();
 
   const existing = await prisma.user.findUnique({
@@ -34,12 +35,12 @@ async function seedAdmin() {
     create: {
       email,
       password: hashedPassword,
-      ...(fullName ? { fullName } : {}),
+      fullname: fullname,
       ...(phone ? { phone } : {}),
     },
     update: {
       password: hashedPassword,
-      ...(fullName ? { fullName } : {}),
+      ...(fullname ? { fullname: fullname } : {}),
       ...(phone ? { phone } : {}),
     },
   });

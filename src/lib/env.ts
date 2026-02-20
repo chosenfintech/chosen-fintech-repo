@@ -22,6 +22,6 @@ export const ENV = {
   adminEmail: () => requiredEnv('ADMIN_EMAIL'),
   adminPassword: () => requiredEnv('ADMIN_PASSWORD'),
 
-  adminFullname: () => optionalEnv('ADMIN_FULLNAME'),
+  adminFullname: () => requiredEnv('ADMIN_FULLNAME'),
   adminPhone: () => optionalEnv('ADMIN_PHONE'),
 };
