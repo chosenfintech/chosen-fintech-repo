@@ -1,82 +1,84 @@
-"use client";
+'use client';
 
-import { PageHero } from "@/components/sections/PageHero";
+import { PageHero } from '@/components/sections/PageHero';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { motion, Variants } from "motion/react";
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { motion, Variants } from 'motion/react';
+import { NavBar } from '@/components/layout/NavBar';
+import { Footer } from '@/components/layout/Footer';
 
 const faqCategories = [
   {
-    category: "About Chosen Fintech",
+    category: 'About Chosen Fintech',
     questions: [
       {
-        q: "What is Chosen Fintech?",
-        a: "Chosen Fintech is a fintech education agency dedicated to cryptocurrency and blockchain education. We specialize in the Cardano ecosystem while also covering broader topics in DeFi, financial literacy, and digital asset management.",
+        q: 'What is Chosen Fintech?',
+        a: 'Chosen Fintech is a fintech education agency dedicated to cryptocurrency and blockchain education. We specialize in the Cardano ecosystem while also covering broader topics in DeFi, financial literacy, and digital asset management.',
       },
       {
-        q: "Why do you focus on Cardano?",
-        a: "We focus on Cardano because of its scientific, peer-reviewed approach to blockchain development, its commitment to sustainability through proof-of-stake, and its mission to provide financial services to the underbanked. Cardano represents the values we believe in: rigorous research, security, and real-world impact.",
+        q: 'Why do you focus on Cardano?',
+        a: 'We focus on Cardano because of its scientific, peer-reviewed approach to blockchain development, its commitment to sustainability through proof-of-stake, and its mission to provide financial services to the underbanked. Cardano represents the values we believe in: rigorous research, security, and real-world impact.',
       },
       {
-        q: "Who are your programs designed for?",
-        a: "Our programs cater to everyone from complete beginners curious about cryptocurrency to developers wanting to build on Cardano. We offer different learning paths based on experience level and goals.",
+        q: 'Who are your programs designed for?',
+        a: 'Our programs cater to everyone from complete beginners curious about cryptocurrency to developers wanting to build on Cardano. We offer different learning paths based on experience level and goals.',
       },
     ],
   },
   {
-    category: "Cryptocurrency & Blockchain",
+    category: 'Cryptocurrency & Blockchain',
     questions: [
       {
-        q: "What is cryptocurrency?",
-        a: "Cryptocurrency is a digital or virtual form of currency that uses cryptography for security. Unlike traditional currencies issued by governments, cryptocurrencies operate on decentralized networks using blockchain technology.",
+        q: 'What is cryptocurrency?',
+        a: 'Cryptocurrency is a digital or virtual form of currency that uses cryptography for security. Unlike traditional currencies issued by governments, cryptocurrencies operate on decentralized networks using blockchain technology.',
       },
       {
-        q: "What is blockchain technology?",
+        q: 'What is blockchain technology?',
         a: "Blockchain is a distributed ledger technology that records transactions across many computers in a way that makes the records difficult to alter. Each 'block' contains transaction data and is linked to the previous block, forming a 'chain' of transparent, immutable records.",
       },
       {
-        q: "Is cryptocurrency safe to invest in?",
-        a: "Cryptocurrency investments carry significant risks including volatility, regulatory uncertainty, and security concerns. We encourage thorough research and education before investing. Our programs focus on education, not investment advice—we help you understand the technology so you can make informed decisions.",
+        q: 'Is cryptocurrency safe to invest in?',
+        a: 'Cryptocurrency investments carry significant risks including volatility, regulatory uncertainty, and security concerns. We encourage thorough research and education before investing. Our programs focus on education, not investment advice—we help you understand the technology so you can make informed decisions.',
       },
     ],
   },
   {
-    category: "Cardano Specific",
+    category: 'Cardano Specific',
     questions: [
       {
-        q: "What is ADA?",
+        q: 'What is ADA?',
         a: "ADA is the native cryptocurrency of the Cardano blockchain. It's named after Ada Lovelace, a 19th-century mathematician considered to be the first computer programmer. ADA is used for transactions, staking, and governance on the Cardano network.",
       },
       {
-        q: "How do I stake my ADA?",
-        a: "Staking ADA involves delegating your tokens to a stake pool, which helps secure the network while earning you rewards. You maintain full control of your ADA—it never leaves your wallet. We offer comprehensive guides on how to stake through our Cardano Hub.",
+        q: 'How do I stake my ADA?',
+        a: 'Staking ADA involves delegating your tokens to a stake pool, which helps secure the network while earning you rewards. You maintain full control of your ADA—it never leaves your wallet. We offer comprehensive guides on how to stake through our Cardano Hub.',
       },
       {
-        q: "What is Project Catalyst?",
+        q: 'What is Project Catalyst?',
         a: "Project Catalyst is Cardano's community-driven innovation fund. ADA holders can submit proposals for projects, vote on proposals, and help guide the development of the Cardano ecosystem. It's one of the largest decentralized innovation funds in the world.",
       },
     ],
   },
   {
-    category: "Getting Started",
+    category: 'Getting Started',
     questions: [
       {
-        q: "How do I start learning about crypto?",
-        a: "Start with our beginner resources in the Cardano Hub or Blog sections. We recommend beginning with foundational concepts before diving into specific technologies. Our learning paths are designed to guide you step-by-step.",
+        q: 'How do I start learning about crypto?',
+        a: 'Start with our beginner resources in the Cardano Hub or Blog sections. We recommend beginning with foundational concepts before diving into specific technologies. Our learning paths are designed to guide you step-by-step.',
       },
       {
-        q: "Do I need any technical background?",
-        a: "Not at all! Our beginner programs are designed for people with no prior technical or financial background. We break down complex concepts into digestible, easy-to-understand content.",
+        q: 'Do I need any technical background?',
+        a: 'Not at all! Our beginner programs are designed for people with no prior technical or financial background. We break down complex concepts into digestible, easy-to-understand content.',
       },
       {
-        q: "How can I get involved with Chosen Fintech?",
-        a: "There are many ways to get involved: follow our blog and social media, attend our workshops, join our community events, or reach out through our contact page. We welcome everyone who shares our passion for financial education.",
+        q: 'How can I get involved with Chosen Fintech?',
+        a: 'There are many ways to get involved: follow our blog and social media, attend our workshops, join our community events, or reach out through our contact page. We welcome everyone who shares our passion for financial education.',
       },
     ],
   },
@@ -102,7 +104,7 @@ const categoryVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 100,
       damping: 15,
     },
@@ -118,7 +120,7 @@ const ctaVariants: Variants = {
     opacity: 1,
     scale: 1,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 100,
       damping: 15,
     },
@@ -128,6 +130,7 @@ const ctaVariants: Variants = {
 const FAQ = () => {
   return (
     <div>
+      <NavBar />
       <PageHero title="FAQ" />
 
       {/* FAQ Content */}
@@ -158,7 +161,7 @@ const FAQ = () => {
                       viewport={{ once: true }}
                       transition={{
                         delay: index * 0.1,
-                        type: "spring",
+                        type: 'spring',
                         stiffness: 100,
                         damping: 15,
                       }}
@@ -215,7 +218,7 @@ const FAQ = () => {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             >
               <Button asChild size="lg">
                 <Link href="/contact">Contact Us</Link>
@@ -224,6 +227,7 @@ const FAQ = () => {
           </motion.div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

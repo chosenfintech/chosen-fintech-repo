@@ -1,26 +1,28 @@
-"use client";
+'use client';
 
-import { PageHero } from "@/components/sections/PageHero";
-import { Mail, MapPin, Phone } from "lucide-react";
-import { motion, Variants } from "motion/react";
+import { PageHero } from '@/components/sections/PageHero';
+import { Mail, MapPin, Phone } from 'lucide-react';
+import { motion, Variants } from 'motion/react';
+import { NavBar } from '@/components/layout/NavBar';
+import { Footer } from '@/components/layout/Footer';
 
 const contactInfo = [
   {
     icon: Mail,
-    label: "Email",
-    value: "info@chosenfintech.org",
-    href: "mailto:info@chosenfintech.org",
+    label: 'Email',
+    value: 'info@chosenfintech.org',
+    href: 'mailto:info@chosenfintech.org',
   },
   {
     icon: Phone,
-    label: "Phone",
-    value: "+(233) 123-4567",
-    href: "tel:+233546488115",
+    label: 'Phone',
+    value: '+(233) 123-4567',
+    href: 'tel:+233546488115',
   },
   {
     icon: MapPin,
-    label: "Address",
-    value: "Tmala, Ghana",
+    label: 'Address',
+    value: 'Tmala, Ghana',
     href: null,
   },
 ];
@@ -47,7 +49,7 @@ const itemVariants: Variants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 100,
       damping: 15,
     },
@@ -70,6 +72,7 @@ const iconVariants: Variants = {
 const Contact = () => {
   return (
     <div>
+      <NavBar />
       <PageHero title="Contact Us" />
 
       {/* Contact Info Section */}
@@ -88,7 +91,7 @@ const Contact = () => {
                 className="flex flex-col items-center text-center p-6 md:p-0 rounded-2xl border border-border bg-card shadow-sm md:border-none md:bg-transparent md:shadow-none"
                 variants={itemVariants}
                 whileHover={{ y: -8 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
                 <motion.div
                   className="group mb-4 md:mb-6"
@@ -136,6 +139,7 @@ const Contact = () => {
           </motion.div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

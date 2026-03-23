@@ -1,13 +1,13 @@
 // app/cardano-hub/page.tsx
-"use client";
-import { useState } from "react";
-import { PageHero } from "@/components/sections/PageHero";
-import { EducationalGuides } from "@/components/cardano/EducationalGuides";
-import { UpdatesList } from "@/components/cardano/UpdatesList";
-import { UpdatesSidebar } from "@/components/cardano/UpdatesSidebar";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { motion, Variants } from "motion/react";
+'use client';
+import { useState } from 'react';
+import { PageHero } from '@/components/sections/PageHero';
+import { EducationalGuides } from '@/components/cardano/EducationalGuides';
+import { UpdatesList } from '@/components/cardano/UpdatesList';
+import { UpdatesSidebar } from '@/components/cardano/UpdatesSidebar';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { motion, Variants } from 'motion/react';
 import {
   Wallet,
   Coins,
@@ -16,128 +16,130 @@ import {
   Shield,
   BookOpen,
   ArrowRight,
-} from "lucide-react";
+} from 'lucide-react';
+import { NavBar } from '@/components/layout/NavBar';
+import { Footer } from '@/components/layout/Footer';
 
 const guides = [
   {
     icon: Wallet,
-    title: "Getting Started with Cardano",
+    title: 'Getting Started with Cardano',
     description:
-      "Learn the basics: what is Cardano, how to set up a wallet, and buy your first ADA.",
-    level: "Beginner" as const,
+      'Learn the basics: what is Cardano, how to set up a wallet, and buy your first ADA.',
+    level: 'Beginner' as const,
     image:
-      "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80",
-    link: "#",
+      'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80',
+    link: '#',
   },
   {
     icon: Coins,
-    title: "Staking & Delegation",
+    title: 'Staking & Delegation',
     description:
-      "Understand how to stake your ADA, choose stake pools, and earn passive rewards.",
-    level: "Beginner" as const,
+      'Understand how to stake your ADA, choose stake pools, and earn passive rewards.',
+    level: 'Beginner' as const,
     image:
-      "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80",
-    link: "#",
+      'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80',
+    link: '#',
   },
   {
     icon: Vote,
-    title: "Project Catalyst & Governance",
+    title: 'Project Catalyst & Governance',
     description:
       "Participate in Cardano's decentralized governance and vote on funding proposals.",
-    level: "Intermediate" as const,
+    level: 'Intermediate' as const,
     image:
-      "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=800&q=80",
-    link: "#",
+      'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=800&q=80',
+    link: '#',
   },
   {
     icon: Code,
-    title: "Smart Contracts on Cardano",
+    title: 'Smart Contracts on Cardano',
     description:
-      "Introduction to Plutus and Marlowe for building decentralized applications.",
-    level: "Advanced" as const,
+      'Introduction to Plutus and Marlowe for building decentralized applications.',
+    level: 'Advanced' as const,
     image:
-      "https://images.unsplash.com/photo-1622630998477-20aa696ecb05?w=800&q=80",
-    link: "#",
+      'https://images.unsplash.com/photo-1622630998477-20aa696ecb05?w=800&q=80',
+    link: '#',
   },
   {
     icon: Shield,
-    title: "NFTs on Cardano",
+    title: 'NFTs on Cardano',
     description:
-      "Explore the native NFT ecosystem, marketplaces, and how to mint your own NFTs.",
-    level: "Intermediate" as const,
+      'Explore the native NFT ecosystem, marketplaces, and how to mint your own NFTs.',
+    level: 'Intermediate' as const,
     image:
-      "https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80",
-    link: "#",
+      'https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80',
+    link: '#',
   },
   {
     icon: BookOpen,
-    title: "DeFi on Cardano",
+    title: 'DeFi on Cardano',
     description:
-      "Navigate DEXs, lending protocols, and yield opportunities in the Cardano ecosystem.",
-    level: "Intermediate" as const,
+      'Navigate DEXs, lending protocols, and yield opportunities in the Cardano ecosystem.',
+    level: 'Intermediate' as const,
     image:
-      "https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&q=80",
-    link: "#",
+      'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&q=80',
+    link: '#',
   },
 ];
 
 const updates = [
   {
     id: 1,
-    title: "Chang Hard Fork Successfully Deployed",
-    date: "Jan 6, 2026",
+    title: 'Chang Hard Fork Successfully Deployed',
+    date: 'Jan 6, 2026',
     excerpt:
       "The Chang hard fork marks a major milestone in Cardano's governance evolution with on-chain voting capabilities now live.",
     image:
-      "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80",
+      'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80',
   },
   {
     id: 2,
-    title: "Midnight Sidechain Testnet Launch",
-    date: "Jan 2, 2026",
+    title: 'Midnight Sidechain Testnet Launch',
+    date: 'Jan 2, 2026',
     excerpt:
       "Input Output Global announces the public testnet for Midnight, Cardano's privacy-focused sidechain with exciting new features.",
     image:
-      "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80",
+      'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80',
   },
   {
     id: 3,
-    title: "ADA Staking Rewards Update",
-    date: "Dec 28, 2025",
+    title: 'ADA Staking Rewards Update',
+    date: 'Dec 28, 2025',
     excerpt:
-      "Current epoch staking parameters and analysis of stake pool performance metrics across the network.",
+      'Current epoch staking parameters and analysis of stake pool performance metrics across the network.',
     image:
-      "https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&q=80",
+      'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&q=80',
   },
   {
     id: 4,
-    title: "New Plutus V3 Features Released",
-    date: "Dec 20, 2025",
+    title: 'New Plutus V3 Features Released',
+    date: 'Dec 20, 2025',
     excerpt:
-      "Enhanced smart contract capabilities with improved performance and new functionality for developers.",
+      'Enhanced smart contract capabilities with improved performance and new functionality for developers.',
     image:
-      "https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80",
+      'https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80',
   },
 ];
 
 const hoverVariants: Variants = {
-  rest: { x: "-100%" },
+  rest: { x: '-100%' },
   hover: {
-    x: "0%",
+    x: '0%',
     transition: {
       duration: 0.4,
-      ease: "easeInOut",
+      ease: 'easeInOut',
     },
   },
 };
 
 const CardanoHub = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredUpdates = updates.filter(
     (update) =>
       update.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      update.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+      update.excerpt.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const recentUpdates = updates.slice(0, 3).map((update) => ({
@@ -149,6 +151,7 @@ const CardanoHub = () => {
 
   return (
     <div className="min-h-screen">
+      <NavBar />
       <PageHero title="Cardano Hub" />
 
       {/* Educational Guides */}
@@ -250,6 +253,7 @@ const CardanoHub = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

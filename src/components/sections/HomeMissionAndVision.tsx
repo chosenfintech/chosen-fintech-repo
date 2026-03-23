@@ -1,41 +1,25 @@
-"use client";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
-import { motion, Variants } from "motion/react";
-import Image from "next/image";
+'use client';
+import { Card, CardContent } from '@/components/ui/card';
+import { ArrowRight } from 'lucide-react';
+import { motion, Variants } from 'motion/react';
+import Image from 'next/image';
 
 const features = [
   {
-    title: "Third-Generation Blockchain",
+    title: 'Mission',
     description:
-      "Cardano is built on peer-reviewed research and evidence-based development, representing the evolution of blockchain technology.",
+      'To make financial technology accessible by educating Africans, supporting entrepreneurs, and providing digital tools for payments, blockchain, and asset management.',
     image:
-      "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80",
-    link: "#",
+      'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80',
+    link: '#',
   },
   {
-    title: "Proof of Stake Security",
+    title: 'Vision',
     description:
-      "Ouroboros, Cardano's proof-of-stake protocol, is mathematically proven secure while being energy-efficient.",
+      'To be a leading catalyst for digital transformation in Africa by empowering individuals, businesses and governments, through inclusive access to blockchain, financial technology, and digital education.',
     image:
-      "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80",
-    link: "#",
-  },
-  {
-    title: "Scalability & Sustainability",
-    description:
-      "Designed for the future with Hydra layer-2 solutions and a governance model that ensures long-term sustainability.",
-    image:
-      "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=800&q=80",
-    link: "#",
-  },
-  {
-    title: "Real-World Impact",
-    description:
-      "From identity solutions in Africa to supply chain tracking, Cardano focuses on solving real problems for real people.",
-    image:
-      "https://images.unsplash.com/photo-1622630998477-20aa696ecb05?w=800&q=80",
-    link: "#",
+      'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80',
+    link: '#',
   },
 ];
 
@@ -84,13 +68,13 @@ export function CardanoSection() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true, margin: '-80px' }}
             variants={container}
             className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
           >
             <motion.div variants={fadeUp}>
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
-                WHY CARDANO?
+                MISSION & VISION
               </h2>
               <motion.div
                 variants={lineReveal}
@@ -108,7 +92,7 @@ export function CardanoSection() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true, margin: '-80px' }}
             variants={container}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
           >

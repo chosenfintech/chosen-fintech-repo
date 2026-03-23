@@ -1,27 +1,29 @@
-function requiredEnv(name: string): string {
+// src/lib/env.ts
+function required(name: string): string {
   const v = process.env[name];
   if (!v) throw new Error(`Missing required env variable: ${name}`);
   return v;
 }
 
-function optionalEnv(name: string): string | undefined {
+function optional(name: string): string | undefined {
   const v = process.env[name];
-  return v && v.length ? v : undefined;
+  return v?.length ? v : undefined;
 }
 
-function boolEnv(name: string, defaultValue = false): boolean {
+function bool(name: string, defaultValue = false): boolean {
   const v = process.env[name];
   if (!v) return defaultValue;
   return ['1', 'true', 'yes', 'on'].includes(v.toLowerCase());
 }
 
 export const ENV = {
-  adminSeedEnabled: boolEnv('ADMIN_SEED_ENABLED', false),
-  adminSeedForceUpdate: boolEnv('ADMIN_SEED_FORCE_UPDATE', false),
+  ADMIN_SEED_ENABLED: bool('ADMIN_SEED_ENABLED', false),
+  ADMIN_SEED_FORCE_UPDATE: bool('ADMIN_SEED_FORCE_UPDATE', false),
 
-  adminEmail: () => requiredEnv('ADMIN_EMAIL'),
-  adminPassword: () => requiredEnv('ADMIN_PASSWORD'),
+  ADMIN_EMAIL: required('ADMIN_EMAIL'),
+  ADMIN_PASSWORD: required('ADMIN_PASSWORD'),
+  ADMIN_FULLNAME: required('ADMIN_FULLNAME'),
+  ADMIN_PHONE: optional('ADMIN_PHONE'),
 
-  adminFullname: () => requiredEnv('ADMIN_FULLNAME'),
-  adminPhone: () => optionalEnv('ADMIN_PHONE'),
-};
+  SESSION_SECRET: required('SESSION_SECRET'),
+} as const;

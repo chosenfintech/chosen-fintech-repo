@@ -4,15 +4,15 @@ import bcrypt from 'bcrypt';
 import { ENV } from '@/lib/env';
 
 async function seedAdmin() {
-  if (!ENV.adminSeedEnabled) {
+  if (!ENV.ADMIN_SEED_ENABLED) {
     console.log('Admin seed skipped (ADMIN_SEED_ENABLED=false).');
     return;
   }
 
-  const email = ENV.adminEmail().toLowerCase().trim();
-  const password = ENV.adminPassword();
-  const fullname = ENV.adminFullname();
-  const phone = ENV.adminPhone();
+  const email = ENV.ADMIN_EMAIL.toLowerCase().trim();
+  const password = ENV.ADMIN_PASSWORD;
+  const fullname = ENV.ADMIN_FULLNAME;
+  const phone = ENV.ADMIN_PHONE;
 
   const existing = await prisma.user.findUnique({
     where: { email },
@@ -20,7 +20,7 @@ async function seedAdmin() {
   });
 
   // Create-only by default (no surprise updates)
-  if (existing && !ENV.adminSeedForceUpdate) {
+  if (existing && !ENV.ADMIN_SEED_FORCE_UPDATE) {
     console.log(
       `Admin seed: user already exists (${email}). No changes (force update disabled).`,
     );
