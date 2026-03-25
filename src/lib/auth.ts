@@ -1,4 +1,3 @@
-// src/lib/auth.ts
 'use server';
 import prisma from './prisma';
 import bcrypt from 'bcrypt';
@@ -14,6 +13,7 @@ type FormErrors = {
 
 export type SigninState = {
   success: boolean;
+  redirectTo?: string;
   errors?: FormErrors;
 };
 
@@ -48,7 +48,7 @@ export async function signin(
   if (!user) {
     return {
       success: false,
-      errors: { email: ['User not found'] },
+      errors: { email: ['Invalid credentials'] },
     };
   }
 
@@ -61,7 +61,7 @@ export async function signin(
   }
 
   await createSession(user.id);
-  redirect('/dashboard');
+  return { success: true, redirectTo: '/dashboard' };
 }
 
 export async function logout(): Promise<void> {

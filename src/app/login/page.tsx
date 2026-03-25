@@ -4,12 +4,10 @@ import { Suspense } from 'react';
 
 export default function LoginPage() {
   return (
-    <main className="relative flex items-center justify-center min-h-screen bg-center py-6">
-      <div className="relative z-10">
-        <Suspense>
-          <LoginForm />
-        </Suspense>
-      </div>
+    <main className="flex items-center justify-center min-h-screen bg-slate-900 py-10">
+      <Suspense>
+        <LoginForm />
+      </Suspense>
     </main>
   );
 }
