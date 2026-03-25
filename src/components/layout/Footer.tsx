@@ -1,22 +1,26 @@
-import Link from "next/link";
-import { Facebook, Twitter, Linkedin, Youtube } from "lucide-react";
-import Image from "next/image";
+import Link from 'next/link';
+import { Facebook, Twitter, Linkedin, Youtube } from 'lucide-react';
+import Image from 'next/image';
 
 const footerLinks = {
   company: [
-    { to: "/about", label: "About Us" },
-    { to: "/contact", label: "Contact" },
+    { to: '/about', label: 'About Us' },
+    { to: '/contact', label: 'Contact' },
   ],
   resources: [
-    { to: "/blog", label: "Blog" },
-    { to: "/cardano-hub", label: "Cardano Hub" },
-    { to: "/faq", label: "FAQ" },
+    { to: '/blog', label: 'Blog' },
+    { to: '/cardano-hub', label: 'Cardano Hub' },
+    { to: '/faq', label: 'FAQ' },
   ],
   social: [
-    { href: "https://facebook.com", icon: Facebook, label: "Facebook" },
-    { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
-    { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
-    { href: "https://youtube.com", icon: Youtube, label: "YouTube" },
+    { href: 'fb.com/chosenfintech', icon: Facebook, label: 'Facebook' },
+    { href: 'x.com/chosenfintech', icon: Twitter, label: 'Twitter' },
+    {
+      href: 'https://www.linkedin.com/company/chosenfintech/',
+      icon: Linkedin,
+      label: 'LinkedIn',
+    },
+    { href: 'youtube.com/@cardanoghana', icon: Youtube, label: 'YouTube' },
   ],
 };
 
@@ -33,7 +37,7 @@ export function Footer() {
               >
                 <div className="w-10 h-10 flex items-center justify-center rounded-lg overflow-hidden">
                   <Image
-                    src={"/logo.jpg"}
+                    src={'/logo.jpg'}
                     width={50}
                     height={50}
                     alt="chosen fintech logo"
@@ -50,9 +54,9 @@ export function Footer() {
                 </div>
               </Link>
               <p className="text-primary-foreground/70 max-w-sm leading-relaxed mb-6 text-sm lg:text-base">
-                Empowering individuals and organizations through cryptocurrency
-                education, with a special focus on the Cardano ecosystem and
-                decentralized finance.
+                Educating, Onboarding and Empowering individuals and
+                organisations to naviage digital technology for effective
+                socio-economic systems.
               </p>
 
               {/* Social Links */}

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import { Facebook, Instagram, X } from "lucide-react";
-import { motion, Variants } from "motion/react";
+import React from 'react';
+import Image from 'next/image';
+import { Facebook, Linkedin, X } from 'lucide-react';
+import { motion, Variants } from 'motion/react';
 
 interface SocialLink {
   icon: React.FC<{ className?: string }>;
@@ -24,9 +24,9 @@ interface OurTeamProps {
 }
 
 const defaultSocials: SocialLink[] = [
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: X, href: "#", label: "X / Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Facebook, href: '#', label: 'Facebook' },
+  { icon: X, href: '#', label: 'X / Twitter' },
+  { icon: Linkedin, href: '#', label: 'Linkedin' },
 ];
 
 const container: Variants = {
@@ -70,16 +70,16 @@ const lineReveal: Variants = {
 };
 
 export const OurTeam: React.FC<OurTeamProps> = ({
-  title = "OUR TEAM",
+  title = 'OUR TEAM',
   teamMembers,
 }) => {
-  const containerClasses = "w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
+  const containerClasses = 'w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8';
 
   return (
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: '-80px' }}
       variants={container}
       className="py-16 bg-background"
     >
@@ -90,10 +90,10 @@ export const OurTeam: React.FC<OurTeamProps> = ({
             className="lg:col-span-1 lg:sticky lg:top-8 lg:self-start"
           >
             <h2 className="font-display text-3xl md:text-4xl font-bold text-primary leading-tight">
-              {title.split(" ").map((word, index) => (
+              {title.split(' ').map((word, index) => (
                 <React.Fragment key={index}>
                   {word}
-                  {index < title.split(" ").length - 1 && <br />}
+                  {index < title.split(' ').length - 1 && <br />}
                 </React.Fragment>
               ))}
             </h2>
@@ -142,7 +142,7 @@ export const OurTeam: React.FC<OurTeamProps> = ({
                               <IconComponent className="w-5 h-5" />
                             </motion.a>
                           );
-                        }
+                        },
                       )}
                     </motion.div>
 

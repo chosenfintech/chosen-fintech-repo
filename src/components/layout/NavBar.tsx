@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'motion/react';
 
 const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/cardano-hub", label: "Cardano Hub" },
-  { to: "/blog", label: "Blog" },
-  { to: "/faq", label: "FAQ" },
+  { to: '/', label: 'Home' },
+  { to: '/about', label: 'About' },
+  { to: '/cardano-hub', label: 'Cardano Ghana' },
+  { to: '/blog', label: 'Blog' },
+  { to: '/faq', label: 'FAQ' },
 ];
 
 export function NavBar() {
@@ -41,8 +41,8 @@ export function NavBar() {
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
   return (
@@ -56,16 +56,16 @@ export function NavBar() {
         ease: [0.16, 1, 0.3, 1],
       }}
       className={cn(
-        "fixed z-50",
+        'fixed z-50',
         isAtTop
-          ? "top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl"
-          : "top-0 left-0 right-0 w-full"
+          ? 'top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl'
+          : 'top-0 left-0 right-0 w-full',
       )}
     >
       <motion.div
         layout
         animate={{
-          borderRadius: isAtTop ? "9999px" : "0px",
+          borderRadius: isAtTop ? '9999px' : '0px',
         }}
         transition={{
           layout: {
@@ -78,18 +78,18 @@ export function NavBar() {
           },
         }}
         className={cn(
-          "transition-colors duration-500",
+          'transition-colors duration-500',
           isAtTop
-            ? "bg-background/95 backdrop-blur-xl border border-border/50 shadow-lg"
-            : "bg-background/80 backdrop-blur-lg border-b border-border/50"
+            ? 'bg-background/95 backdrop-blur-xl border border-border/50 shadow-lg'
+            : 'bg-background/80 backdrop-blur-lg border-b border-border/50',
         )}
       >
         <div
           className={cn(
-            "mx-auto",
+            'mx-auto',
             isAtTop
-              ? "px-6 max-w-7xl"
-              : "container max-w-7xl px-4 sm:px-6 lg:px-8"
+              ? 'px-6 max-w-7xl'
+              : 'container max-w-7xl px-4 sm:px-6 lg:px-8',
           )}
         >
           <div className="flex items-center justify-between h-18 md:h-28">
@@ -102,7 +102,7 @@ export function NavBar() {
                 className="w-10 h-10 flex items-center justify-center"
               >
                 <Image
-                  src={"/logo.jpg"}
+                  src={'/logo.jpg'}
                   width={50}
                   height={50}
                   alt="chosen fintech logo"
@@ -132,10 +132,10 @@ export function NavBar() {
                   >
                     <motion.span
                       className={cn(
-                        "relative z-10",
+                        'relative z-10',
                         isActive
-                          ? "text-primary"
-                          : "text-muted-foreground hover:text-foreground"
+                          ? 'text-primary'
+                          : 'text-muted-foreground hover:text-foreground',
                       )}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -148,7 +148,7 @@ export function NavBar() {
                         layoutId="navbar-indicator"
                         className="absolute inset-0 bg-primary/10 rounded-full"
                         transition={{
-                          type: "spring",
+                          type: 'spring',
                           stiffness: 350,
                           damping: 35,
                         }}
@@ -169,9 +169,9 @@ export function NavBar() {
                 <Button
                   size="lg"
                   className={cn(
-                    "rounded-full font-medium",
-                    "bg-primary hover:bg-primary/90",
-                    "transition-all duration-300"
+                    'rounded-full font-medium',
+                    'bg-primary hover:bg-primary/90',
+                    'transition-all duration-300',
                   )}
                   asChild
                 >
@@ -189,7 +189,7 @@ export function NavBar() {
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
-                  key={mobileMenuOpen ? "close" : "open"}
+                  key={mobileMenuOpen ? 'close' : 'open'}
                   initial={{ rotate: -90, opacity: 0 }}
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: 90, opacity: 0 }}
@@ -236,10 +236,10 @@ export function NavBar() {
                         href={link.to}
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn(
-                          "block px-4 py-3 rounded-full text-sm font-medium transition-all duration-300",
+                          'block px-4 py-3 rounded-full text-sm font-medium transition-all duration-300',
                           isActive
-                            ? "text-primary bg-primary/10"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                            ? 'text-primary bg-primary/10'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-muted',
                         )}
                       >
                         {link.label}
