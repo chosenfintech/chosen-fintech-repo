@@ -152,7 +152,7 @@ const CardanoHub = () => {
   return (
     <div className="min-h-screen">
       <NavBar />
-      <PageHero title="Cardano Hub" />
+      <PageHero title="Cardano Ghana" />
 
       {/* Educational Guides */}
       <EducationalGuides guides={guides} />
