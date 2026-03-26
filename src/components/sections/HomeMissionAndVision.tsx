@@ -11,7 +11,7 @@ const features = [
       'To make financial technology accessible by educating Africans, supporting entrepreneurs, and providing digital tools for payments, blockchain, and asset management.',
     image:
       'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80',
-    link: '#',
+    link: '/about',
   },
   {
     title: 'Vision',
@@ -19,7 +19,7 @@ const features = [
       'To be a leading catalyst for digital transformation in Africa by empowering individuals, businesses and governments, through inclusive access to blockchain, financial technology, and digital education.',
     image:
       'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80',
-    link: '#',
+    link: '/about',
   },
 ];
 
@@ -59,7 +59,7 @@ const lineReveal: Variants = {
   },
 };
 
-export function CardanoSection() {
+export function HomeMissionAndVision() {
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,11 +80,7 @@ export function CardanoSection() {
                 variants={lineReveal}
                 className="w-10 h-0.5 bg-primary mx-auto mb-6 origin-left"
               />
-              <p className="font-light text-base md:text-lg text-muted-foreground leading-relaxed">
-                We chose to focus on Cardano because of its scientific approach
-                to blockchain development, commitment to sustainability, and
-                vision for financial inclusion worldwide.
-              </p>
+             
             </motion.div>
           </motion.div>
 

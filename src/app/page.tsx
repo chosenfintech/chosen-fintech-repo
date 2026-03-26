@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import { HeroSection } from '@/components/sections/HeroSection';
 import { PartnersSection } from '@/components/sections/PartnersSection';
-import { CardanoSection } from '@/components/sections/HomeMissionAndVision';
+import { HomeMissionAndVision } from '@/components/sections/HomeMissionAndVision';
 import { StatsSection } from '@/components/sections/StatsSection';
 import { LatestStoriesSection } from '@/components/sections/LatestStoriesSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
@@ -14,7 +14,7 @@ const Home = () => {
     <>
       <NavBar />
       <HeroSection />
-      <CardanoSection />
+      <HomeMissionAndVision />
       <StatsSection />
       <LatestStoriesSection />
       <ProjectsSection />

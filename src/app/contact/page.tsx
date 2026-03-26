@@ -16,13 +16,13 @@ const contactInfo = [
   {
     icon: Phone,
     label: 'Phone',
-    value: '+233 245 870 928',
-    href: 'tel:+233546488115',
+    value: '+(233) 554424696',
+    href: 'tel:+233554424696',
   },
   {
     icon: MapPin,
     label: 'Address',
-    value: 'Tmala, Ghana',
+    value: 'GPS: NT-0198-9161, Nakoha St. Kakpagyili, Tamale - Ghana',
     href: null,
   },
 ];

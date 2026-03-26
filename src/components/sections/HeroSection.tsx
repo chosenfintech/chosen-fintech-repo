@@ -106,16 +106,14 @@ export function HeroSection() {
           className="font-display text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl 3xl:text-8xl font-bold text-primary-foreground leading-[1.1] sm:leading-tight mb-6 sm:mb-8 2xl:mb-10"
           variants={headlineVariants}
         >
-          EMPOWERING THE FUTURE OF DECENTRALISED FINANCE
+          EMPOWERING THE FUTURE OF FINANCIAL TECHNOLOGY
         </motion.h1>
 
         <motion.p
           className="text-base sm:text-lg md:text-xl 2xl:text-2xl 3xl:text-3xl font-light text-primary-foreground/90 leading-relaxed mb-8 sm:mb-10 md:mb-12 2xl:mb-14 max-w-2xl 2xl:max-w-4xl"
           variants={subtextVariants}
         >
-          Chosen Fintech is your trusted partner in cryptocurrency education,
-          specializing in the Cardano ecosystem, blockchain technology, and
-          financial literacy for the digital age.
+          Chosen Fintech Solutions is your trusted partner in fintech education and decentralised tech governance with a focus on blockchain and digital innovation and adoption.
         </motion.p>
 
         <motion.div
