@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from 'motion/react';
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
-  { to: '/cardano-ghana', label: 'Cardano Ghana' },
+  { to: '/fintech-academy', label: 'Fintech Academy' },
   { to: '/blog', label: 'Blog' },
   { to: '/faq', label: 'FAQ' },
 ];

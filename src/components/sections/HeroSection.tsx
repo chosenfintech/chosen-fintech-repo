@@ -1,9 +1,9 @@
-"use client";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
-import Image from "next/image";
-import { motion, Variants } from "motion/react";
+'use client';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, Play } from 'lucide-react';
+import Image from 'next/image';
+import { motion, Variants } from 'motion/react';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -27,7 +27,7 @@ const headlineVariants: Variants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 80,
       damping: 15,
       duration: 0.8,
@@ -44,7 +44,7 @@ const subtextVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 100,
       damping: 20,
       duration: 0.6,
@@ -63,7 +63,7 @@ const buttonVariants: Variants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 120,
       damping: 18,
       duration: 0.5,
@@ -72,12 +72,12 @@ const buttonVariants: Variants = {
 };
 
 const hoverVariants: Variants = {
-  rest: { x: "-100%" },
+  rest: { x: '-100%' },
   hover: {
-    x: "0%",
+    x: '0%',
     transition: {
       duration: 0.4,
-      ease: "easeInOut",
+      ease: 'easeInOut',
     },
   },
 };
@@ -113,7 +113,9 @@ export function HeroSection() {
           className="text-base sm:text-lg md:text-xl 2xl:text-2xl 3xl:text-3xl font-light text-primary-foreground/90 leading-relaxed mb-8 sm:mb-10 md:mb-12 2xl:mb-14 max-w-2xl 2xl:max-w-4xl"
           variants={subtextVariants}
         >
-          Chosen Fintech Solutions is your trusted partner in fintech education and decentralised tech governance with a focus on blockchain and digital innovation and adoption.
+          Chosen Fintech Solutions is your trusted partner in fintech education
+          and decentralised tech governance with a focus on blockchain and
+          digital innovation and adoption.
         </motion.p>
 
         <motion.div
@@ -123,7 +125,7 @@ export function HeroSection() {
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             <Button
               size="lg"
@@ -131,10 +133,10 @@ export function HeroSection() {
               asChild
             >
               <Link
-                href="/cardano-hub"
+                href="/fintech-academy"
                 className="flex items-center justify-center"
               >
-                Learn Cardano
+                Learn Fintech
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 2xl:w-6 2xl:h-6" />
               </Link>
             </Button>

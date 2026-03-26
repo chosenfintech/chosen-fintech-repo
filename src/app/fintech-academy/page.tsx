@@ -133,7 +133,7 @@ const hoverVariants: Variants = {
   },
 };
 
-const CardanoHub = () => {
+const FintechAcademy = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredUpdates = updates.filter(
@@ -152,7 +152,7 @@ const CardanoHub = () => {
   return (
     <div className="min-h-screen">
       <NavBar />
-      <PageHero title="Cardano Ghana" />
+      <PageHero title="Fintech Academy" />
 
       {/* Educational Guides */}
       <EducationalGuides guides={guides} />
@@ -169,7 +169,7 @@ const CardanoHub = () => {
           >
             <div>
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary">
-                ECOSYSTEM UPDATES
+                FINTECH ECOSYSTEM UPDATES
               </h2>
             </div>
             <motion.div initial="rest" whileHover="hover">
@@ -258,4 +258,4 @@ const CardanoHub = () => {
   );
 };
 
-export default CardanoHub;
+export default FintechAcademy;

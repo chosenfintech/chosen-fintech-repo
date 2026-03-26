@@ -1,17 +1,18 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView, Variants } from "motion/react";
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useInView, Variants } from 'motion/react';
 
 const stats = [
-  { value: "250+", label: "HAPPY CLIENTS" },
-  { value: "37k", label: "BRANCHES" },
-  { value: "400+", label: "PROJECTS" },
+  { value: '7+', label: 'CITIES VISITED' },
+  { value: '100+', label: 'COMMUNITY MEETUPS' },
+  { value: '50+', label: 'CAMPUS MEETUPS' },
+  { value: '5000+', label: 'PARTICIPANTS' },
 ];
 
 // Extract numeric value from string (e.g., "250+" -> 250, "37k" -> 37000)
 const parseStatValue = (value: string): number => {
-  const num = parseFloat(value.replace(/[^0-9.]/g, ""));
-  if (value.toLowerCase().includes("k")) {
+  const num = parseFloat(value.replace(/[^0-9.]/g, ''));
+  if (value.toLowerCase().includes('k')) {
     return num * 1000;
   }
   return num;
@@ -19,10 +20,10 @@ const parseStatValue = (value: string): number => {
 
 // Format the number back to original style
 const formatStatValue = (current: number, original: string): string => {
-  if (original.toLowerCase().includes("k")) {
+  if (original.toLowerCase().includes('k')) {
     return `${Math.floor(current / 1000)}k`;
   }
-  if (original.includes("+")) {
+  if (original.includes('+')) {
     return `${Math.floor(current)}+`;
   }
   return Math.floor(current).toString();
@@ -65,7 +66,7 @@ interface AnimatedStatProps {
 const AnimatedStat: React.FC<AnimatedStatProps> = ({ value, label, index }) => {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
   const targetValue = parseStatValue(value);
 
   useEffect(() => {
@@ -105,7 +106,7 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({ value, label, index }) => {
             delay: index * 0.1,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="font-display text-5xl sm:text-6xl md:text-7xl font-light mb-4 text-accent-foreground"
+          className="font-display text-3xl sm:text-4xl md:text-5xl font-light mb-4 text-accent-foreground"
         >
           {formatStatValue(count, value)}
         </motion.div>
@@ -141,7 +142,7 @@ export function StatsSection() {
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: '-80px' }}
       variants={container}
       className="bg-primary py-16 md:py-20 lg:py-24 relative overflow-hidden"
     >
@@ -163,7 +164,7 @@ export function StatsSection() {
           </motion.div>
 
           <motion.div variants={container} className="w-full lg:w-3/4">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-6 md:gap-8 lg:gap-12 justify-items-center lg:justify-items-start">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-6 md:gap-8 lg:gap-12 justify-items-center lg:justify-items-start">
               {stats.map((stat, index) => (
                 <AnimatedStat
                   key={stat.label}
