@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import Image from "next/image";
-import { motion, Variants } from "motion/react";
+import Link from 'next/link';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { motion, Variants } from 'motion/react';
 
 const projects = [
   {
-    imageUrl: "/cardano-ghana-community.png",
-    title: "Cardano Ghana",
-    link: "/projects/cardano-ghana",
+    imageUrl: '/cardano-ghana-community.png',
+    title: 'Cardano Ghana',
+    link: '/projects/cardano-ghana',
   },
   {
-    imageUrl: "/scale-up-icp-logo.png",
-    title: "Scale-UP ICP Ghana",
-    link: "/projects/scale-up-icp-ghana",
+    imageUrl: '/scale-up-icp-logo.png',
+    title: 'Scale-UP ICP Ghana',
+    link: '/projects/scale-up-icp-ghana',
   },
   {
-    imageUrl: "/bch-house-africa.png",
-    title: "BCH House, Africa",
-    link: "/projects/bch-house-africa",
+    imageUrl: '/bch-house-logo.jpeg',
+    title: 'BCH House, Ghana',
+    link: '/projects/bch-house-ghana',
   },
 ];
 
@@ -62,12 +62,12 @@ const lineReveal: Variants = {
 };
 
 const hoverVariants: Variants = {
-  rest: { x: "-100%" },
+  rest: { x: '-100%' },
   hover: {
-    x: "0%",
+    x: '0%',
     transition: {
       duration: 0.4,
-      ease: "easeInOut",
+      ease: 'easeInOut',
     },
   },
 };
@@ -88,7 +88,7 @@ export function ProjectsSection() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true, margin: '-80px' }}
             variants={container}
             className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16"
           >
@@ -132,7 +132,7 @@ export function ProjectsSection() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true, margin: '-80px' }}
             variants={container}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           >

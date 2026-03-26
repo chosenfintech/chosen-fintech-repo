@@ -8,17 +8,15 @@ const features = [
   {
     title: 'Mission',
     description:
-      'To make financial technology accessible by educating Africans, supporting entrepreneurs, and providing digital tools for payments, blockchain, and asset management.',
-    image:
-      'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80',
+      'To educate, onboard and empower individuals and organisations to naviage digital technology for effective socio-economic systems.',
+    image: '/mission-image.webp',
     link: '/about',
   },
   {
     title: 'Vision',
     description:
-      'To be a leading catalyst for digital transformation in Africa by empowering individuals, businesses and governments, through inclusive access to blockchain, financial technology, and digital education.',
-    image:
-      'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80',
+      'To be a global catalyst for fintech innovation, mass adoption and ethical governance.',
+    image: '/vision-image.png',
     link: '/about',
   },
 ];
@@ -80,7 +78,6 @@ export function HomeMissionAndVision() {
                 variants={lineReveal}
                 className="w-10 h-0.5 bg-primary mx-auto mb-6 origin-left"
               />
-             
             </motion.div>
           </motion.div>
 
