@@ -14,6 +14,7 @@ const navLinks = [
   { to: '/about', label: 'About' },
   { to: '/fintech-academy', label: 'Fintech Academy' },
   { to: '/blog', label: 'Blog' },
+  { to: '/gallery', label: 'Gallery' },
   { to: '/faq', label: 'FAQ' },
 ];
 

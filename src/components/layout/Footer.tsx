@@ -9,7 +9,7 @@ const footerLinks = {
   ],
   resources: [
     { to: '/blog', label: 'Blog' },
-    { to: '/cardano-hub', label: 'Cardano Hub' },
+    { to: '/fintech-academy', label: 'Fintech Academy' },
     { to: '/faq', label: 'FAQ' },
   ],
   social: [
