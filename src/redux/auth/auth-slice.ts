@@ -1,6 +1,6 @@
 // src/redux/auth/auth-slice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser } from "@/types/user.types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IUser } from '@/types/user.types';
 
 interface AuthState {
   user: IUser | null;
@@ -8,13 +8,13 @@ interface AuthState {
 
 // Load user from localStorage if available
 const storedUser =
-  typeof window !== "undefined" ? localStorage.getItem("user") : null;
+  typeof window !== 'undefined' ? localStorage.getItem('user') : null;
 
 const initialState: AuthState = {
   user: storedUser
     ? (() => {
         try {
-          return JSON.parse(storedUser);
+          return JSON.parse(storedUser) as IUser;
         } catch {
           return null;
         }
@@ -23,32 +23,32 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     userRegistration: (
       state,
       action: PayloadAction<{
         user: IUser;
-      }>
+      }>,
     ) => {
       state.user = action.payload.user;
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
 
     userLoggedIn: (
       state,
       action: PayloadAction<{
         user: IUser;
-      }>
+      }>,
     ) => {
       state.user = action.payload.user;
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
 
     userLoggedOut: (state) => {
       state.user = null;
-      localStorage.removeItem("user");
+      localStorage.removeItem('user');
     },
   },
 });

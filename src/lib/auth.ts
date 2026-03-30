@@ -3,6 +3,7 @@ import prisma from './prisma';
 import bcrypt from 'bcrypt';
 import { createSession, deleteSession } from './session';
 import { SigninSchema } from '@/validations/signin-validation';
+import { IUser } from '@/types/user.types';
 
 type FormErrors = {
   email?: string[];
@@ -10,17 +11,10 @@ type FormErrors = {
   _form?: string[];
 };
 
-export type User = {
-  id: string;
-  email: string;
-  fullname: string;
-  phone: string | null;
-};
-
 export type SigninState = {
   success: boolean;
   redirectTo?: string;
-  user?: User;
+  user?: IUser;
   errors?: FormErrors;
 };
 

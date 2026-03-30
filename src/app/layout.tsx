@@ -59,7 +59,21 @@ export default function RootLayout({
         className={`${poppins.variable} antialiased flex flex-col min-h-screen`}
       >
         <StoreProvider>
-          <Toaster />
+          <Toaster
+            position="top-right"
+            reverseOrder={false}
+            toastOptions={{
+              duration: 2000,
+              loading: {
+                duration: Infinity,
+              },
+              style: {
+                background: 'transparent',
+                padding: 0,
+                boxShadow: 'none',
+              },
+            }}
+          />
           <main className="flex-1">{children}</main>
 
           {/* JSON-LD */}

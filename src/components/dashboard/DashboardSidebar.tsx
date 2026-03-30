@@ -11,6 +11,7 @@ import {
   ChevronDown,
   ChevronRight,
   LucideIcon,
+  Users,
 } from 'lucide-react';
 import { useState } from 'react';
 import {
@@ -47,6 +48,11 @@ const navigationItems: NavigationItem[] = [
     icon: LayoutDashboard,
   },
   {
+    name: 'Admins',
+    path: '/dashboard/users',
+    icon: Users,
+  },
+  {
     name: 'Posts',
     path: '/dashboard/posts',
     icon: FileText,
@@ -69,7 +75,7 @@ const navigationItems: NavigationItem[] = [
     hasSubmenu: true,
     submenuItems: [
       {
-        name: 'Gallery',
+        name: 'All Photos',
         path: '/dashboard/gallery',
       },
       {
@@ -126,7 +132,7 @@ export default function DashboardSidebar() {
                 className="text-sidebar-primary shrink-0"
               />
               <span className="text-lg md:text-xl font-bold truncate text-sidebar-foreground">
-                Chosen Fintech
+                CHOSEN FINTECH
               </span>
             </>
           )}

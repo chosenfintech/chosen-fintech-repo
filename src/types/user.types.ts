@@ -4,7 +4,6 @@ export interface IUser {
   email: string;
   fullname: string;
   phone?: string | null;
-  password: string;
 }
 
 export interface IUserResponse {
