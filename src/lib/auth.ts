@@ -2,7 +2,6 @@
 import prisma from './prisma';
 import bcrypt from 'bcrypt';
 import { createSession, deleteSession } from './session';
-import { redirect } from 'next/navigation';
 import { SigninSchema } from '@/validations/signin-validation';
 
 type FormErrors = {
@@ -11,15 +10,32 @@ type FormErrors = {
   _form?: string[];
 };
 
+export type User = {
+  id: string;
+  email: string;
+  fullname: string;
+  phone: string | null;
+};
+
 export type SigninState = {
   success: boolean;
   redirectTo?: string;
+  user?: User;
   errors?: FormErrors;
 };
 
 async function getUser(email: string) {
   try {
-    return await prisma.user.findUnique({ where: { email } });
+    return await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        fullname: true,
+        phone: true,
+        password: true,
+      },
+    });
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
@@ -45,6 +61,7 @@ export async function signin(
   const { email, password } = parsedCredentials.data;
 
   const user = await getUser(email);
+
   if (!user) {
     return {
       success: false,
@@ -53,6 +70,7 @@ export async function signin(
   }
 
   const passwordsMatch = await bcrypt.compare(password, user.password);
+
   if (!passwordsMatch) {
     return {
       success: false,
@@ -61,10 +79,17 @@ export async function signin(
   }
 
   await createSession(user.id);
-  return { success: true, redirectTo: '/dashboard' };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password: _, ...safeUser } = user;
+
+  return {
+    success: true,
+    redirectTo: '/dashboard',
+    user: safeUser,
+  };
 }
 
 export async function logout(): Promise<void> {
   await deleteSession();
-  redirect('/login');
 }

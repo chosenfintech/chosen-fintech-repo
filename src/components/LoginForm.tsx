@@ -4,11 +4,15 @@ import { AtSign, KeyRound, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Button } from './ui/button';
 import { useActionState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { userLoggedIn } from '@/redux/auth/auth-slice';
 import { signin, type SigninState } from '../lib/auth';
+import type { IUser } from '@/types/user.types';
 import toast from 'react-hot-toast';
 
 export default function LoginForm() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
@@ -18,7 +22,8 @@ export default function LoginForm() {
   );
 
   useEffect(() => {
-    if (state.success && state.redirectTo) {
+    if (state.success && state.redirectTo && state.user) {
+      dispatch(userLoggedIn({ user: state.user as IUser }));
       toast.success('Signed in successfully');
       router.push(state.redirectTo);
     } else if (!state.success && state.errors) {
@@ -28,7 +33,7 @@ export default function LoginForm() {
         state.errors.password?.[0];
       if (firstError) toast.error(firstError);
     }
-  }, [state, router]);
+  }, [state, router, dispatch]);
 
   return (
     <div className="w-full max-w-md mx-auto px-4">
@@ -125,7 +130,6 @@ export default function LoginForm() {
                 />
                 <span className="text-sm text-gray-600">Remember me</span>
               </label>
-
               <a
                 href="#"
                 className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"

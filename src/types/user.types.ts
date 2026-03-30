@@ -1,14 +1,10 @@
 // src/types/user.types.ts
 export interface IUser {
   id: string;
-  firstName: string;
-  lastName: string;
   email: string;
-  phone?: string;
-  profilePicture?: string;
-  isAdmin?: boolean;
-  createdAt: string;
-  updatedAt: string;
+  fullname: string;
+  phone?: string | null;
+  password: string;
 }
 
 export interface IUserResponse {
@@ -44,11 +40,11 @@ export interface IUsersDataTableProps {
   totalCount?: number;
   page?: number;
   pageSize?: number;
-  filters: Omit<IUsersQueryParams, "page" | "limit">;
+  filters: Omit<IUsersQueryParams, 'page' | 'limit'>;
   onPageChange?: (page: number) => void;
   onPageSizeChange?: (pageSize: number) => void;
   onFiltersChange: (
-    filters: Partial<Omit<IUsersQueryParams, "page" | "limit">>,
+    filters: Partial<Omit<IUsersQueryParams, 'page' | 'limit'>>,
   ) => void;
   onRefresh?: () => void;
 }
