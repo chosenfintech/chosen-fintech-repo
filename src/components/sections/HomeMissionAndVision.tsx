@@ -8,7 +8,7 @@ const features = [
   {
     title: 'Mission',
     description:
-      'To educate, onboard and empower individuals and organisations to naviage digital technology for effective socio-economic systems.',
+      'To educate, onboard and empower individuals and organisations to navigate digital technology for effective socio-economic systems.',
     image: '/mission-image.webp',
     link: '/about',
   },
