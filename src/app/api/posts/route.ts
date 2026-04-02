@@ -5,56 +5,18 @@ import { verifySession } from '@/lib/data-access-layer';
 import { cloudinaryService } from '@/config/claudinary';
 import { generateSlug } from '@/utils/generate-slug';
 import { calculateReadTime } from '@/utils/read-time-calculator';
-import { parseBoolean } from '@/utils/parse-booleans';
 import {
   buildPostWhereClause,
   fetchPostsWithPagination,
   mapPostsToResponse,
 } from '@/utils/post-utils';
-import { z } from 'zod';
 import type {
   IPostsPaginatedResponse,
   PostQueryParams,
 } from '@/types/posts/post.types';
+import { createPostSchema } from '@/validations/posts/post-validation';
 
 const POSTS_UPLOAD_FOLDER = 'mhp-website/posts-images';
-
-const uuidRegex =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-const createPostSchema = z.object({
-  title: z
-    .string()
-    .min(1, 'Title is required')
-    .max(255, 'Title must be less than 255 characters'),
-  excerpt: z
-    .string()
-    .min(1, 'Excerpt is required')
-    .max(500, 'Excerpt must be less than 500 characters'),
-  content: z.string().min(1, 'Content is required'),
-  isPublished: z
-    .union([z.boolean(), z.string()])
-    .optional()
-    .transform((v) => (v !== undefined ? parseBoolean(v) : false)),
-  isFeatured: z
-    .union([z.boolean(), z.string()])
-    .optional()
-    .transform((v) => (v !== undefined ? parseBoolean(v) : false)),
-  publishDate: z
-    .string()
-    .datetime({ offset: true })
-    .optional()
-    .or(z.literal('')),
-  categoryId: z
-    .string()
-    .regex(uuidRegex, 'Category ID must be a valid UUID')
-    .optional(),
-  tagIds: z
-    .array(z.string().regex(uuidRegex, 'Each tag ID must be a valid UUID'))
-    .optional(),
-  createdAt: z.string().datetime({ offset: true }).optional(),
-  updatedAt: z.string().datetime({ offset: true }).optional(),
-});
 
 /**
  * GET /api/posts
