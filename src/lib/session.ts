@@ -1,6 +1,6 @@
 // src/lib/session.ts
 import 'server-only';
-import { ENV } from './env';
+import { ENV } from '../config/env';
 import { SignJWT, jwtVerify, JWTPayload } from 'jose';
 import { cookies } from 'next/headers';
 

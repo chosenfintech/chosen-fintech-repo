@@ -1,7 +1,7 @@
 // prisma/seed.ts
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcrypt';
-import { ENV } from '@/lib/env';
+import { ENV } from '@/config/env';
 
 async function seedAdmin() {
   if (!ENV.ADMIN_SEED_ENABLED) {
