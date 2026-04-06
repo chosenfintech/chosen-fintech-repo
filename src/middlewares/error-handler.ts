@@ -1,4 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+// src/middlewares/error-handler.ts
+import { NextApiRequest } from 'next';
+import { NextResponse } from 'next/server';
 import logger from '@/utils/logger';
 import { handlePrismaError, isPrismaError } from './prisma-error-handler';
 
@@ -55,7 +57,7 @@ const generateErrorId = (): string =>
 /**
  * Type-safe sanitize function
  */
-const sanitize = (data: unknown): unknown => {
+export const sanitize = (data: unknown): unknown => {
   if (data === null || typeof data !== 'object') {
     return data;
   }
@@ -129,13 +131,10 @@ const normalizeError = (err: unknown): Error => {
 };
 
 /**
- * Main handler
+ * App Router equivalent of handleError.
+ * Use in the catch block of every API route handler.
  */
-export const handleError = (
-  err: unknown,
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => {
+export const handleApiError = (err: unknown): NextResponse => {
   const isProduction = process.env.NODE_ENV === 'production';
   const errorId = generateErrorId();
 
@@ -159,32 +158,168 @@ export const handleError = (
     layer = error.layer;
   }
 
-  const logPayload: LogPayload = {
+  // Reduced log payload — no req context available in App Router
+  logBySeverity(severity, {
     errorId,
     message: error.message,
-    method: req.method,
-    url: req.url,
-    query: req.query,
-    body: sanitize(req.body),
+    method: undefined,
+    url: undefined,
+    query: {},
+    body: undefined,
     severity,
     layer,
     code,
     context,
     stack: !isProduction ? error.stack : undefined,
     timestamp: new Date().toISOString(),
-  };
-
-  // 🔥 Log using severity
-  logBySeverity(severity, logPayload);
-
-  return res.status(status).json({
-    status: 'error',
-    message:
-      isProduction && status === 500 ? 'Internal Server Error' : error.message,
-    ...(!isProduction && {
-      errorId,
-      code,
-      details: context,
-    }),
   });
+
+  return NextResponse.json(
+    {
+      status: 'error',
+      message:
+        isProduction && status === 500
+          ? 'Internal Server Error'
+          : error.message,
+      ...(!isProduction && {
+        errorId,
+        ...(code && { code }),
+        ...(context && { details: context }),
+      }),
+    },
+    { status },
+  );
 };
+
+/**
+ * Common custom error subclasses
+ */
+export class NotFoundError extends CustomError {
+  constructor(
+    message = 'Resource not found',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(404, message, { ...options, severity: ErrorSeverity.LOW });
+  }
+}
+
+export class UnauthorizedError extends CustomError {
+  constructor(
+    message = 'Unauthorized access',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(401, message, { ...options, severity: ErrorSeverity.MEDIUM });
+  }
+}
+
+export class ForbiddenError extends CustomError {
+  constructor(
+    message = 'Access forbidden, you are not allowed to access this resource',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(403, message, { ...options, severity: ErrorSeverity.MEDIUM });
+  }
+}
+
+export class ValidationError extends CustomError {
+  constructor(
+    message = 'Validation failed',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(400, message, { ...options, severity: ErrorSeverity.LOW });
+  }
+}
+
+export class InternalServerError extends CustomError {
+  constructor(
+    message = 'Internal server error',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(500, message, { ...options, severity: ErrorSeverity.HIGH });
+  }
+}
+
+export class ConflictError extends CustomError {
+  constructor(
+    message = 'Conflict detected',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(409, message, { ...options, severity: ErrorSeverity.MEDIUM });
+  }
+}
+
+export class BadRequestError extends CustomError {
+  constructor(
+    message = 'Bad request',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(400, message, { ...options, severity: ErrorSeverity.LOW });
+  }
+}
+
+export class MethodNotAllowedError extends CustomError {
+  constructor(
+    message = 'Method not allowed',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(405, message, { ...options, severity: ErrorSeverity.MEDIUM });
+  }
+}
+
+export class TooManyRequestsError extends CustomError {
+  constructor(
+    message = 'Too many requests',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(429, message, { ...options, severity: ErrorSeverity.MEDIUM });
+  }
+}
+
+export class TokenExpiredError extends CustomError {
+  constructor(
+    message = 'Authentication token expired',
+    options?: {
+      layer?: string;
+      code?: string;
+      context?: Record<string, unknown>;
+    },
+  ) {
+    super(401, message, { ...options, severity: ErrorSeverity.MEDIUM });
+  }
+}

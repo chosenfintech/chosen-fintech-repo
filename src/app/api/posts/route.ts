@@ -15,8 +15,13 @@ import type {
   PostQueryParams,
 } from '@/types/posts/post.types';
 import { createPostSchema } from '@/validations/posts/post-validation';
+import {
+  handleApiError,
+  ValidationError,
+  NotFoundError,
+} from '@/middlewares/error-handler';
 
-const POSTS_UPLOAD_FOLDER = 'mhp-website/posts-images';
+const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
 /**
  * GET /api/posts
@@ -56,12 +61,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     };
 
     return NextResponse.json(paginatedResponse);
-  } catch (error) {
-    console.error('GET /api/posts error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 },
-    );
+  } catch (err) {
+    return handleApiError(err);
   }
 }
 
@@ -78,31 +79,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const formData = await req.formData();
 
-    // Extract fields from FormData into a plain object for Zod
     const rawBody: Record<string, unknown> = {};
-
-    for (const [key] of formData.entries()) {
-      if (key === 'coverImage') continue; // handled separately below
+    for (const [key, value] of formData.entries()) {
+      if (key === 'coverImage') continue;
+      rawBody[key] = value;
     }
 
     const validation = createPostSchema.safeParse(rawBody);
-
     if (!validation.success) {
-      return NextResponse.json(
-        { error: 'Validation failed', details: validation.error.flatten() },
-        { status: 400 },
-      );
+      throw new ValidationError('Validation failed', {
+        code: 'VALIDATION_ERROR',
+        context: validation.error.flatten() as unknown as Record<
+          string,
+          unknown
+        >,
+      });
     }
 
     const postDetails = validation.data;
 
-    // Handle coverImage file upload
     const coverImageFile = formData.get('coverImage');
-    if (
-      coverImageFile &&
-      coverImageFile instanceof File &&
-      coverImageFile.size > 0
-    ) {
+    if (coverImageFile instanceof File && coverImageFile.size > 0) {
       const buffer = Buffer.from(await coverImageFile.arrayBuffer());
       const result = await cloudinaryService.uploadImage(
         {
@@ -118,15 +115,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const calculatedReadTime = calculateReadTime(postDetails.content);
 
     const result = await prisma.$transaction(async (tx) => {
-      // Validate category exists
       if (postDetails.categoryId) {
         const category = await tx.category.findUnique({
           where: { id: postDetails.categoryId },
         });
         if (!category) {
-          throw Object.assign(new Error('Category not found'), {
-            statusCode: 404,
-          });
+          throw new NotFoundError(
+            `Category with ID ${postDetails.categoryId} not found`,
+          );
         }
       }
 
@@ -138,7 +134,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             ? new Date()
             : null;
 
-      const post = await tx.post.create({
+      return tx.post.create({
         data: {
           title: postDetails.title,
           slug: generateSlug(postDetails.title),
@@ -159,14 +155,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           }),
         },
         include: {
-          author: {
-            select: { id: true, fullname: true, email: true },
-          },
+          author: { select: { id: true, fullname: true, email: true } },
           category: { select: { id: true, name: true } },
         },
       });
-
-      return post;
     });
 
     return NextResponse.json(
@@ -191,26 +183,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
       { status: 201 },
     );
-  } catch (error) {
-    // Clean up uploaded image if transaction failed
+  } catch (err) {
     if (uploadedImageUrl) {
       await cloudinaryService
         .deleteImage(uploadedImageUrl)
         .catch((e) => console.error('Cloudinary cleanup failed:', e));
     }
-
-    const statusCode = (error as { statusCode?: number }).statusCode;
-    if (statusCode === 404) {
-      return NextResponse.json(
-        { error: (error as Error).message },
-        { status: 404 },
-      );
-    }
-
-    console.error('POST /api/posts error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 },
-    );
+    return handleApiError(err);
   }
 }
