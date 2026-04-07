@@ -1,7 +1,7 @@
 // src/app/api/posts/categories/[categoryId]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { verifySession } from '@/lib/data-access-layer';
+import { verifySession } from '@/lib/session';
 import {
   handleApiError,
   ValidationError,

@@ -1,8 +1,10 @@
 // src/lib/session.ts
 import 'server-only';
-import { ENV } from '../config/env';
 import { SignJWT, jwtVerify, JWTPayload } from 'jose';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { cache } from 'react';
+import { ENV } from '../config/env';
 
 const secretKey = ENV.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -76,3 +78,14 @@ export async function deleteSession(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete('session');
 }
+
+export const verifySession = cache(async () => {
+  const cookie = (await cookies()).get('session')?.value;
+  const session = await decrypt(cookie);
+
+  if (!session || !session.userId) {
+    redirect('/login');
+  }
+
+  return { isAuth: true, userId: session.userId };
+});

@@ -65,11 +65,6 @@ export interface IPostResponse {
   data: IPost;
 }
 
-export interface IDeletePostsResponse {
-  message: string;
-  deletedCount: number;
-}
-
 export interface ITogglePostResponse {
   message: string;
   data: {
@@ -81,18 +76,17 @@ export interface ITogglePostResponse {
   };
 }
 
-
 export interface IPostsDataTableProps {
   data: IPost[];
   loading?: boolean;
   totalCount?: number;
   page?: number;
   pageSize?: number;
-  filters: Omit<IPostsQueryParams, "page" | "limit">;
+  filters: Omit<IPostsQueryParams, 'page' | 'limit'>;
   onPageChange?: (page: number) => void;
   onPageSizeChange?: (pageSize: number) => void;
   onFiltersChange: (
-    filters: Partial<Omit<IPostsQueryParams, "page" | "limit">>,
+    filters: Partial<Omit<IPostsQueryParams, 'page' | 'limit'>>,
   ) => void;
   onRefresh?: () => void;
 }

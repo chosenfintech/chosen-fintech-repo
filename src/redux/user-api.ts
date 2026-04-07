@@ -1,21 +1,21 @@
 // src/redux/user-api.ts
-import { apiSlice } from "./api-slice";
+import { apiSlice } from './api-slice';
 import {
   IDeleteUsersResponse,
   IUserResponse,
   IUsersPaginatedResponse,
   IUsersQueryParams,
-} from "@/types/user.types";
+} from '@/types/user.types';
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createUser: builder.mutation<IUserResponse, FormData>({
       query: (formData) => ({
-        url: "/users",
-        method: "POST",
+        url: '/users',
+        method: 'POST',
         body: formData,
       }),
-      invalidatesTags: [{ type: "Users", id: "LIST" }, "DashboardStats"],
+      invalidatesTags: [{ type: 'Users', id: 'LIST' }, 'DashboardStats'],
     }),
 
     updateUser: builder.mutation<
@@ -24,22 +24,22 @@ export const userApi = apiSlice.injectEndpoints({
     >({
       query: ({ userId, formData }) => ({
         url: `/users/${userId}`,
-        method: "PUT",
+        method: 'PUT',
         body: formData,
       }),
       invalidatesTags: (result, error, { userId }) => [
-        { type: "User", id: userId },
-        { type: "Users", id: "LIST" },
-        "DashboardStats",
+        { type: 'User', id: userId },
+        { type: 'Users', id: 'LIST' },
+        'DashboardStats',
       ],
     }),
 
     getUser: builder.query<IUserResponse, string>({
       query: (userId) => ({
         url: `/users/${userId}`,
-        method: "GET",
+        method: 'GET',
       }),
-      providesTags: (result, error, userId) => [{ type: "User", id: userId }],
+      providesTags: (result, error, userId) => [{ type: 'User', id: userId }],
     }),
 
     getAllUsers: builder.query<IUsersPaginatedResponse, IUsersQueryParams>({
@@ -47,36 +47,36 @@ export const userApi = apiSlice.injectEndpoints({
         const searchParams = new URLSearchParams();
 
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null && value !== '') {
             searchParams.append(key, String(value));
           }
         });
 
         return {
           url: `/users${
-            searchParams.toString() ? `?${searchParams.toString()}` : ""
+            searchParams.toString() ? `?${searchParams.toString()}` : ''
           }`,
-          method: "GET",
+          method: 'GET',
         };
       },
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: "User" as const, id })),
-              { type: "Users" as const, id: "LIST" },
+              ...result.data.map(({ id }) => ({ type: 'User' as const, id })),
+              { type: 'Users' as const, id: 'LIST' },
             ]
-          : [{ type: "Users" as const, id: "LIST" }],
+          : [{ type: 'Users' as const, id: 'LIST' }],
     }),
 
     deleteUser: builder.mutation<{ message: string }, string>({
       query: (userId) => ({
         url: `/users/${userId}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
       invalidatesTags: (result, error, userId) => [
-        { type: "User", id: userId },
-        { type: "Users", id: "LIST" },
-        "DashboardStats",
+        { type: 'User', id: userId },
+        { type: 'Users', id: 'LIST' },
+        'DashboardStats',
       ],
     }),
 
@@ -85,16 +85,16 @@ export const userApi = apiSlice.injectEndpoints({
       { confirmDelete: string }
     >({
       query: (body) => ({
-        url: "/users",
-        method: "DELETE",
+        url: '/users',
+        method: 'DELETE',
         body,
       }),
-      invalidatesTags: [{ type: "Users", id: "LIST" }, "DashboardStats"],
+      invalidatesTags: [{ type: 'Users', id: 'LIST' }, 'DashboardStats'],
     }),
 
     searchUsers: builder.query<
       IUsersPaginatedResponse,
-      { search: string } & Omit<IUsersQueryParams, "search">
+      { search: string } & Omit<IUsersQueryParams, 'search'>
     >({
       query: ({ search, ...params }) => {
         const searchParams = new URLSearchParams({ search });
@@ -107,16 +107,16 @@ export const userApi = apiSlice.injectEndpoints({
 
         return {
           url: `/users?${searchParams.toString()}`,
-          method: "GET",
+          method: 'GET',
         };
       },
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: "User" as const, id })),
-              { type: "Users" as const, id: "LIST" },
+              ...result.data.map(({ id }) => ({ type: 'User' as const, id })),
+              { type: 'Users' as const, id: 'LIST' },
             ]
-          : [{ type: "Users" as const, id: "LIST" }],
+          : [{ type: 'Users' as const, id: 'LIST' }],
     }),
 
     changePassword: builder.mutation<
@@ -124,8 +124,8 @@ export const userApi = apiSlice.injectEndpoints({
       { currentPassword: string; newPassword: string }
     >({
       query: (data) => ({
-        url: "/users/change-password",
-        method: "PATCH",
+        url: '/users/change-password',
+        method: 'PATCH',
         body: data,
       }),
     }),

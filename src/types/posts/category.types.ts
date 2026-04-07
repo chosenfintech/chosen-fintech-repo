@@ -39,11 +39,6 @@ export interface ICategoriesQueryParams {
   sortOrder?: 'asc' | 'desc';
 }
 
-export interface IDeleteCategoryResponse {
-  message: string;
-  deletedCount: number;
-}
-
 export interface ICategoriesStatsResponse {
   message: string;
   data: {

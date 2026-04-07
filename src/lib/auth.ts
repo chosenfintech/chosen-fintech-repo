@@ -1,3 +1,4 @@
+// src/lib/auth.ts
 'use server';
 import prisma from './prisma';
 import bcrypt from 'bcrypt';

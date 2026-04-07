@@ -1,32 +1,28 @@
 // src/redux/posts/post-api.ts
-import { apiSlice } from "../api-slice";
+import { apiSlice } from '../api-slice';
 import {
   IPostResponse,
   IPostsPaginatedResponse,
   IPostsQueryParams,
   IPost,
-  IDeletePostsResponse,
   ITogglePostResponse,
-} from "@/types/posts/post.types";
+} from '@/types/posts/post.types';
 
 export const postApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Create a new post
     createPost: builder.mutation<IPostResponse, FormData>({
       query: (formData) => ({
-        url: "/posts",
-        method: "POST",
+        url: '/posts',
+        method: 'POST',
         body: formData,
       }),
       invalidatesTags: [
-        "Posts",
-        "Post",
-        "Categories",
-        "CategoryStats",
-        "Category",
-        "TagStats",
-        "Tags",
-        "Tag",
+        'Posts',
+        'Post',
+        'Categories',
+        'CategoryStats',
+        'Category',
       ],
     }),
 
@@ -36,29 +32,26 @@ export const postApi = apiSlice.injectEndpoints({
     >({
       query: ({ postId, formData }) => ({
         url: `/posts/${postId}`,
-        method: "PUT",
+        method: 'PUT',
         body: formData,
       }),
       invalidatesTags: (result, error, { postId }) => [
-        { type: "Post", id: postId },
-        "Posts",
-        "Post",
-        "Categories",
-        "CategoryStats",
-        "Category",
-        "TagStats",
-        "Tags",
-        "Tag",
+        { type: 'Post', id: postId },
+        'Posts',
+        'Post',
+        'Categories',
+        'CategoryStats',
+        'Category',
       ],
     }),
 
     getPostByIdOrSlug: builder.query<IPostResponse & { data: IPost }, string>({
       query: (identifier) => ({
         url: `/posts/${identifier}`,
-        method: "GET",
+        method: 'GET',
       }),
       providesTags: (result, error, identifier) => [
-        { type: "Post", id: identifier },
+        { type: 'Post', id: identifier },
       ],
     }),
 
@@ -67,202 +60,175 @@ export const postApi = apiSlice.injectEndpoints({
         const searchParams = new URLSearchParams();
 
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null && value !== '') {
             searchParams.append(key, String(value));
           }
         });
 
         const queryString = searchParams.toString();
         return {
-          url: `/posts${queryString ? `?${queryString}` : ""}`,
-          method: "GET",
+          url: `/posts${queryString ? `?${queryString}` : ''}`,
+          method: 'GET',
         };
       },
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: "Post" as const, id })),
-              "Posts",
+              ...result.data.map(({ id }) => ({ type: 'Post' as const, id })),
+              'Posts',
             ]
-          : ["Posts"],
+          : ['Posts'],
     }),
 
     deletePost: builder.mutation<{ message: string }, string>({
       query: (postId) => ({
         url: `/posts/${postId}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
       invalidatesTags: (result, error, postId) => [
-        { type: "Post", id: postId },
-        "Posts",
-        "Post",
-        "Categories",
-        "CategoryStats",
-        "Category",
-        "TagStats",
-        "Tags",
-        "Tag",
-      ],
-    }),
-
-    deleteAllPosts: builder.mutation<
-      IDeletePostsResponse,
-      { confirmDelete: string }
-    >({
-      query: (body) => ({
-        url: "/posts",
-        method: "DELETE",
-        body,
-      }),
-      invalidatesTags: [
-        "Posts",
-        "Post",
-        "Categories",
-        "CategoryStats",
-        "Category",
-        "TagStats",
-        "Tags",
-        "Tag",
+        { type: 'Post', id: postId },
+        'Posts',
+        'Post',
+        'Categories',
+        'CategoryStats',
+        'Category',
+        'TagStats',
+        'Tags',
+        'Tag',
       ],
     }),
 
     togglePostPublish: builder.mutation<ITogglePostResponse, string>({
       query: (postId) => ({
         url: `/posts/${postId}/publish`,
-        method: "PATCH",
+        method: 'PATCH',
       }),
       invalidatesTags: [
-        "Post",
-        "Posts",
-        "Categories",
-        "CategoryStats",
-        "Category",
-        "TagStats",
-        "Tags",
-        "Tag",
+        'Post',
+        'Posts',
+        'Categories',
+        'CategoryStats',
+        'Category',
       ],
     }),
 
     togglePostFeatured: builder.mutation<ITogglePostResponse, string>({
       query: (postId) => ({
         url: `/posts/${postId}/feature`,
-        method: "PATCH",
+        method: 'PATCH',
       }),
       invalidatesTags: [
-        "Posts",
-        "Post",
-        "Categories",
-        "CategoryStats",
-        "Category",
-        "TagStats",
-        "Tags",
-        "Tag",
+        'Posts',
+        'Post',
+        'Categories',
+        'CategoryStats',
+        'Category',
       ],
     }),
 
     getPostsByCategory: builder.query<
       IPostsPaginatedResponse,
-      { categoryId: string } & Omit<IPostsQueryParams, "categoryId">
+      { categoryId: string } & Omit<IPostsQueryParams, 'categoryId'>
     >({
       query: ({ categoryId, ...params }) => {
         const searchParams = new URLSearchParams({ categoryId });
 
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null && value !== '') {
             searchParams.append(key, String(value));
           }
         });
 
         return {
           url: `/posts?${searchParams.toString()}`,
-          method: "GET",
+          method: 'GET',
         };
       },
-      providesTags: ["Posts"],
+      providesTags: ['Posts'],
     }),
 
     getPostsByAuthor: builder.query<
       IPostsPaginatedResponse,
-      { authorId: string } & Omit<IPostsQueryParams, "authorId">
+      { authorId: string } & Omit<IPostsQueryParams, 'authorId'>
     >({
       query: ({ authorId, ...params }) => {
         const searchParams = new URLSearchParams({ authorId });
 
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null && value !== '') {
             searchParams.append(key, String(value));
           }
         });
 
         return {
           url: `/posts?${searchParams.toString()}`,
-          method: "GET",
+          method: 'GET',
         };
       },
-      providesTags: ["Posts"],
+      providesTags: ['Posts'],
     }),
 
     getFeaturedPosts: builder.query<
       IPostsPaginatedResponse,
-      Omit<IPostsQueryParams, "isFeatured">
+      Omit<IPostsQueryParams, 'isFeatured'>
     >({
       query: (params = {}) => {
-        const searchParams = new URLSearchParams({ isFeatured: "true" });
+        const searchParams = new URLSearchParams({ isFeatured: 'true' });
 
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null && value !== '') {
             searchParams.append(key, String(value));
           }
         });
 
         return {
           url: `/posts?${searchParams.toString()}`,
-          method: "GET",
+          method: 'GET',
         };
       },
-      providesTags: ["Posts"],
+      providesTags: ['Posts'],
     }),
 
     getPublishedPosts: builder.query<
       IPostsPaginatedResponse,
-      Omit<IPostsQueryParams, "isPublished">
+      Omit<IPostsQueryParams, 'isPublished'>
     >({
       query: (params = {}) => {
-        const searchParams = new URLSearchParams({ isPublished: "true" });
+        const searchParams = new URLSearchParams({ isPublished: 'true' });
 
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null && value !== '') {
             searchParams.append(key, String(value));
           }
         });
 
         return {
           url: `/posts?${searchParams.toString()}`,
-          method: "GET",
+          method: 'GET',
         };
       },
-      providesTags: ["Posts"],
+      providesTags: ['Posts'],
     }),
 
     searchPosts: builder.query<
       IPostsPaginatedResponse,
-      { search: string } & Omit<IPostsQueryParams, "search">
+      { search: string } & Omit<IPostsQueryParams, 'search'>
     >({
       query: ({ search, ...params }) => {
         const searchParams = new URLSearchParams({ search });
 
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null && value !== '') {
             searchParams.append(key, String(value));
           }
         });
 
         return {
           url: `/posts?${searchParams.toString()}`,
-          method: "GET",
+          method: 'GET',
         };
       },
-      providesTags: ["Posts"],
+      providesTags: ['Posts'],
     }),
   }),
 });
@@ -273,7 +239,6 @@ export const {
   useGetPostByIdOrSlugQuery,
   useGetAllPostsQuery,
   useDeletePostMutation,
-  useDeleteAllPostsMutation,
   useTogglePostPublishMutation,
   useTogglePostFeaturedMutation,
   useGetPostsByCategoryQuery,

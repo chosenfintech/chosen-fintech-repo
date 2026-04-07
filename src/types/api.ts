@@ -1,2 +1,2 @@
 // src/types/api.ts
-export const apiSliceTags: string[] = [];
+export const apiSliceTags: string[] = ['DashboardStats', 'Users', 'User'];

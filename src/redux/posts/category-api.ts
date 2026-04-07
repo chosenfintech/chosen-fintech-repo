@@ -6,7 +6,6 @@ import {
   ICategoryResponse,
   ICategoryCreateInput,
   ICategoryUpdateInput,
-  IDeleteCategoryResponse,
   ICategoriesStatsResponse,
 } from '@/types/posts/category.types';
 
@@ -91,18 +90,6 @@ export const categoryApi = apiSlice.injectEndpoints({
       ],
     }),
 
-    deleteAllCategories: builder.mutation<
-      IDeleteCategoryResponse,
-      { confirmDelete: string }
-    >({
-      query: (body) => ({
-        url: '/posts/categories',
-        method: 'DELETE',
-        body,
-      }),
-      invalidatesTags: ['Categories', 'CategoryStats', 'Posts'],
-    }),
-
     getCategoryStats: builder.query<ICategoriesStatsResponse, void>({
       query: () => ({
         url: '/posts/categories/stats',
@@ -158,7 +145,6 @@ export const {
   useGetCategoryByIdOrNameQuery,
   useGetAllCategoriesQuery,
   useDeleteCategoryMutation,
-  useDeleteAllCategoriesMutation,
   useGetCategoryStatsQuery,
   useGetCategoriesForSelectQuery,
   useGetTopCategoriesQuery,
