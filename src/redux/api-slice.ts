@@ -1,16 +1,16 @@
 // src/redux/api-slice.ts
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {  userLoggedOut } from "./auth/auth-slice";
-import { apiSliceTags } from "../types/api";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { userLoggedOut } from './auth-slice';
+import { apiSliceTags } from '../types/api';
 import {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
-} from "@reduxjs/toolkit/query";
+} from '@reduxjs/toolkit/query';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${process.env.NEXT_PUBLIC_SERVER_URI}/api/v1`,
-  credentials: "include" as const,
+  credentials: 'include' as const,
 });
 
 const baseQueryWithReauth: BaseQueryFn<
@@ -28,7 +28,7 @@ const baseQueryWithReauth: BaseQueryFn<
 };
 
 export const apiSlice = createApi({
-  reducerPath: "api",
+  reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
   tagTypes: apiSliceTags,
   endpoints: () => ({}),

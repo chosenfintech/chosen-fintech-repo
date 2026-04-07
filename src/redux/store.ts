@@ -1,9 +1,9 @@
 // src/redux/store.ts
-import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import type { EnhancedStore } from "@reduxjs/toolkit";
-import { apiSlice } from "./api-slice";
-import authReducer from "./auth/auth-slice";
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import type { EnhancedStore } from '@reduxjs/toolkit';
+import { apiSlice } from './api-slice';
+import authReducer from './auth-slice';
 
 export const store: EnhancedStore = configureStore({
   reducer: {

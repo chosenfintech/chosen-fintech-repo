@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { User, Power } from 'lucide-react';
 import { RootState } from '@/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { userLoggedOut } from '@/redux/auth/auth-slice';
+import { userLoggedOut } from '@/redux/auth-slice';
 import { logout } from '@/lib/auth';
 import toast from 'react-hot-toast';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';

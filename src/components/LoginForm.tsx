@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 import { useActionState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { userLoggedIn } from '@/redux/auth/auth-slice';
+import { userLoggedIn } from '@/redux/auth-slice';
 import { signin, type SigninState } from '../lib/auth';
 import type { IUser } from '@/types/user.types';
 import toast from 'react-hot-toast';
