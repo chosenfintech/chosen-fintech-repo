@@ -37,46 +37,50 @@ export default function PostPreviewHeader({
 
   return (
     <>
-      <div className="bg-gradient-hero rounded-2xl p-4 sm:p-6 lg:p-8 text-white shadow-lg mb-8">
+      <div className="bg-primary/10 backdrop-blur-xl border border-border rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg mb-8">
         <div className="flex flex-col gap-4 sm:gap-6">
           {/* Main content */}
           <div className="flex-1">
             <div className="flex flex-col gap-3">
+              {/* Status Badges */}
               <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 {post.isPublished ? (
-                  <Badge className="bg-green-500/20 text-green-100 border-green-400/30 backdrop-blur-sm px-3 py-1">
+                  <Badge className="bg-primary/15 text-primary border border-primary/30 px-3 py-1">
                     <Eye className="w-3 h-3 mr-1" /> Published
                   </Badge>
                 ) : (
-                  <Badge className="bg-yellow-500/20 text-yellow-100 border-yellow-400/30 backdrop-blur-sm px-3 py-1">
+                  <Badge className="bg-muted text-muted-foreground border border-border px-3 py-1">
                     <EyeOff className="w-3 h-3 mr-1" /> Draft
                   </Badge>
                 )}
 
                 {post.isFeatured && (
-                  <Badge className="bg-amber-500/20 text-amber-100 border-amber-400/30 backdrop-blur-sm px-3 py-1">
+                  <Badge className="bg-accent text-accent-foreground border border-border px-3 py-1">
                     <Star className="w-3 h-3 mr-1" /> Featured
                   </Badge>
                 )}
 
                 {post.category && (
-                  <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm px-3 py-1">
+                  <Badge className="bg-secondary text-secondary-foreground border border-border px-3 py-1">
                     {post.category.name}
                   </Badge>
                 )}
               </div>
 
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
+              {/* Title */}
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
                 {post.title}
               </h1>
 
+              {/* Excerpt */}
               {post.excerpt && (
-                <p className="text-white/90 text-sm sm:text-base lg:text-lg">
+                <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
                   {post.excerpt}
                 </p>
               )}
 
-              <p className="text-white/80 text-xs sm:text-sm flex items-center gap-2">
+              {/* Date */}
+              <p className="text-muted-foreground text-xs sm:text-sm flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 <span>
                   Published{' '}
@@ -90,13 +94,14 @@ export default function PostPreviewHeader({
             </div>
           </div>
 
+          {/* Actions */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             {onEdit && (
               <Button
                 onClick={onEdit}
                 disabled={isLoading}
                 variant="secondary"
-                className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
+                className="w-full sm:w-auto"
               >
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Post
@@ -107,8 +112,8 @@ export default function PostPreviewHeader({
               <Button
                 onClick={() => setShowPublishDialog(true)}
                 disabled={isLoading}
-                variant="secondary"
-                className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
+                variant="outline"
+                className="w-full sm:w-auto"
               >
                 {post.isPublished ? (
                   <>
@@ -128,8 +133,8 @@ export default function PostPreviewHeader({
               <Button
                 onClick={() => setShowFeatureDialog(true)}
                 disabled={isLoading}
-                variant="secondary"
-                className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
+                variant="outline"
+                className="w-full sm:w-auto"
               >
                 {post.isFeatured ? (
                   <>
@@ -148,6 +153,7 @@ export default function PostPreviewHeader({
         </div>
       </div>
 
+      {/* Publish Dialog */}
       <ConfirmationDialog
         open={showPublishDialog}
         onOpenChange={setShowPublishDialog}
@@ -162,6 +168,7 @@ export default function PostPreviewHeader({
         isDestructive={post.isPublished}
       />
 
+      {/* Feature Dialog */}
       <ConfirmationDialog
         open={showFeatureDialog}
         onOpenChange={setShowFeatureDialog}

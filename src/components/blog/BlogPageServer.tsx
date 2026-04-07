@@ -1,21 +1,19 @@
-// src/components/posts/BlogPageServer.tsx
+// components/blog/BlogPageServer.tsx
 import BlogPageClient from './BlogPageClient';
-import { IPost } from '@/types/posts/post.types';
+import { IPost, IPostsPaginatedResponse } from '@/types/posts/post.types';
 import { ICategoriesPaginatedResponse } from '@/types/posts/category.types';
 
-/**
- * Fetch paginated published posts
- */
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
 async function fetchPosts(params: {
   page: number;
   limit: number;
   categoryId?: string;
   search?: string;
-}) {
-  const url = new URL(`/api/v1/posts/published`);
+}): Promise<IPostsPaginatedResponse> {
+  const url = new URL(`/api/posts`, baseUrl);
   url.searchParams.set('page', params.page.toString());
   url.searchParams.set('limit', params.limit.toString());
-
   if (params.categoryId) url.searchParams.set('categoryId', params.categoryId);
   if (params.search) url.searchParams.set('search', params.search);
 
@@ -27,6 +25,7 @@ async function fetchPosts(params: {
   if (!response.ok) {
     console.error('Failed to fetch posts');
     return {
+      message: 'Error',
       data: [],
       meta: { total: 0, page: 1, limit: params.limit, totalPages: 1 },
     };
@@ -35,32 +34,24 @@ async function fetchPosts(params: {
   return response.json();
 }
 
-/**
- * Fetch latest featured + published post (always 1)
- */
-async function fetchLatestFeaturedPost(): Promise<IPost | null> {
-  const url = new URL(`/api/v1/posts/published`);
+async function fetchRecentPosts(): Promise<IPost[]> {
+  const url = new URL(`/api/posts`, baseUrl);
   url.searchParams.set('page', '1');
-  url.searchParams.set('limit', '1');
-  url.searchParams.set('isFeatured', 'true');
+  url.searchParams.set('limit', '3');
 
   const response = await fetch(url.toString(), {
     headers: { 'Content-Type': 'application/json' },
     cache: 'no-store',
   });
 
-  if (!response.ok) {
-    console.error('Failed to fetch featured post');
-    return null;
-  }
-
-  const result = await response.json();
-  return result?.data?.[0] || null;
+  if (!response.ok) return [];
+  const result: IPostsPaginatedResponse = await response.json();
+  return result.data ?? [];
 }
 
 async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
   try {
-    const url = new URL(`/api/v1/posts/categories`);
+    const url = new URL(`/api/posts/categories`, baseUrl);
     url.searchParams.set('limit', '1000');
     url.searchParams.set('sortBy', 'name');
     url.searchParams.set('sortOrder', 'asc');
@@ -77,10 +68,8 @@ async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
         meta: { total: 0, page: 1, limit: 10, totalPages: 0 },
       };
     }
-
     return response.json();
-  } catch (error) {
-    console.error('Failed to fetch categories:', error);
+  } catch {
     return {
       message: 'Error',
       data: [],
@@ -102,55 +91,52 @@ export default async function BlogPageServer({
   searchParams,
 }: BlogPageServerProps) {
   const page = parseInt(searchParams.page || '1');
-  const limit = parseInt(searchParams.limit || '6');
+  const limit = parseInt(searchParams.limit || '5');
   const categoryId = searchParams.categoryId;
   const search = searchParams.search;
 
+  let postsResponse: IPostsPaginatedResponse = {
+    message: 'Error',
+    data: [],
+    meta: { total: 0, page: 1, limit, totalPages: 1 },
+  };
+  let recentPosts: IPost[] = [];
+  let categories: ICategoriesPaginatedResponse['data'] = [];
+
   try {
-    const [postsResponse, featuredPost, categoriesResponse] = await Promise.all(
-      [
-        fetchPosts({ page, limit, categoryId, search }),
-        fetchLatestFeaturedPost(),
-        fetchCategories(),
-      ],
-    );
+    const [posts, recent, categoriesResp] = await Promise.all([
+      fetchPosts({ page, limit, categoryId, search }),
+      fetchRecentPosts(),
+      fetchCategories(),
+    ]);
 
-    const latestFeaturedPostId = featuredPost?.id;
-
-    const filteredPosts: IPost[] = latestFeaturedPostId
-      ? postsResponse.data.filter(
-          (post: IPost) => post.id !== latestFeaturedPostId,
-        )
-      : postsResponse.data;
-
-    return (
-      <BlogPageClient
-        posts={filteredPosts}
-        featuredPost={featuredPost}
-        categories={categoriesResponse.data || []}
-        totalPages={postsResponse.meta.totalPages || 1}
-        currentPage={page}
-        pageSize={limit}
-        totalCount={postsResponse.meta.total || 0}
-        selectedCategory={categoryId}
-        searchQuery={search}
-      />
-    );
+    postsResponse = posts;
+    recentPosts = recent;
+    categories = categoriesResp.data ?? [];
   } catch (error) {
     console.error('Error fetching blog data:', error);
-
-    return (
-      <BlogPageClient
-        posts={[]}
-        featuredPost={null}
-        categories={[]}
-        totalPages={1}
-        currentPage={1}
-        pageSize={limit}
-        totalCount={0}
-        selectedCategory={categoryId}
-        searchQuery={search}
-      />
-    );
   }
+
+  const hasActiveFilters = !!(categoryId || search);
+  const featuredPost =
+    !hasActiveFilters && page === 1 && postsResponse.data.length > 0
+      ? postsResponse.data[0]
+      : null;
+
+  const posts = featuredPost ? postsResponse.data.slice(1) : postsResponse.data;
+
+  return (
+    <BlogPageClient
+      posts={posts}
+      featuredPost={featuredPost}
+      recentPosts={recentPosts}
+      categories={categories}
+      totalPages={postsResponse.meta.totalPages ?? 1}
+      currentPage={page}
+      pageSize={limit}
+      totalCount={postsResponse.meta.total ?? 0}
+      selectedCategory={categoryId}
+      searchQuery={search}
+    />
+  );
 }
