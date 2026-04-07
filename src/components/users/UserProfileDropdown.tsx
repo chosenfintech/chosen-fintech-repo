@@ -27,8 +27,8 @@ const UserProfileDropdown: React.FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const { theme, setTheme, resolvedTheme } = useTheme();
-  
+  const { theme, setTheme } = useTheme();
+
   if (!user) return null;
 
   const fullName = user.fullname;

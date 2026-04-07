@@ -15,7 +15,7 @@ const stats = [
   { value: '5000+', label: 'PARTICIPANTS' },
 ];
 
-// Extract numeric value from string (e.g., "250+" -> 250, "37k" -> 37000)
+// Extract numeric value
 const parseStatValue = (value: string): number => {
   const num = parseFloat(value.replace(/[^0-9.]/g, ''));
   if (value.toLowerCase().includes('k')) {
@@ -24,7 +24,7 @@ const parseStatValue = (value: string): number => {
   return num;
 };
 
-// Format the number back to original style
+// Format number back
 const formatStatValue = (current: number, original: string): string => {
   if (original.toLowerCase().includes('k')) {
     return `${Math.floor(current / 1000)}k`;
@@ -50,7 +50,7 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({ value, label, index }) => {
   useEffect(() => {
     if (!isInView) return;
 
-    const duration = 2000; // 2 seconds
+    const duration = 2000;
     const steps = 60;
     const increment = targetValue / steps;
     const stepDuration = duration / steps;
@@ -84,10 +84,11 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({ value, label, index }) => {
             delay: index * 0.1,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="font-display text-3xl sm:text-4xl md:text-5xl font-light mb-4 text-accent-foreground"
+          className="font-display text-3xl sm:text-4xl md:text-5xl font-light mb-4 text-white"
         >
           {formatStatValue(count, value)}
         </motion.div>
+
         <motion.div
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
@@ -96,9 +97,10 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({ value, label, index }) => {
             delay: index * 0.1 + 0.3,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="h-0.5 w-full bg-accent-foreground opacity-30 mb-3 rounded-full origin-left"
+          className="h-0.5 w-full bg-white/30 mb-3 rounded-full origin-left"
         />
       </div>
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={isInView ? { opacity: 0.9, y: 0 } : {}}
@@ -107,7 +109,7 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({ value, label, index }) => {
           delay: index * 0.1 + 0.5,
           ease: [0.16, 1, 0.3, 1],
         }}
-        className="font-light text-sm tracking-widest uppercase text-primary-foreground"
+        className="font-light text-sm tracking-widest uppercase text-white/80"
       >
         {label}
       </motion.div>
@@ -122,8 +124,12 @@ export function Stats() {
       whileInView="visible"
       viewport={{ once: true, margin: '-80px' }}
       variants={containerVariants}
-      className="bg-primary py-16 md:py-20 lg:py-24 relative overflow-hidden"
+      style={{ backgroundColor: 'oklch(0.396 0.195 264)' }}
+      className="text-white py-16 md:py-20 lg:py-24 relative overflow-hidden"
     >
+      {/* Optional subtle glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_70%)]" />
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12">
           <motion.div
@@ -136,9 +142,9 @@ export function Stats() {
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="h-0.5 w-12 bg-accent rounded-full origin-left"
+                className="h-0.5 w-12 bg-white/60 rounded-full origin-left"
               />
-              <h2 className="text-4xl font-semibold tracking-widest uppercase text-primary-foreground">
+              <h2 className="text-4xl font-semibold tracking-widest uppercase text-white">
                 OUR STATS
               </h2>
             </div>

@@ -1,7 +1,11 @@
 // src/components/Footer.tsx
+'use client';
+
 import Link from 'next/link';
-import { Facebook, Twitter, Linkedin, Youtube } from 'lucide-react';
+import { Facebook, Twitter, Linkedin, Youtube, Sun, Moon } from 'lucide-react';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
+import { motion } from 'motion/react';
 
 const footerLinks = {
   company: [
@@ -14,16 +18,8 @@ const footerLinks = {
     { to: '/faq', label: 'FAQ' },
   ],
   social: [
-    {
-      href: 'https://fb.com/chosenfintech',
-      icon: Facebook,
-      label: 'Facebook',
-    },
-    {
-      href: 'https://x.com/chosenfintech',
-      icon: Twitter,
-      label: 'Twitter',
-    },
+    { href: 'https://fb.com/chosenfintech', icon: Facebook, label: 'Facebook' },
+    { href: 'https://x.com/chosenfintech', icon: Twitter, label: 'Twitter' },
     {
       href: 'https://www.linkedin.com/company/chosenfintech/',
       icon: Linkedin,
@@ -38,6 +34,14 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === 'dark';
+  const themeReady = theme !== undefined;
+
+  const toggleTheme = () => {
+    setTheme(isDark ? 'light' : 'dark');
+  };
+
   return (
     <footer
       className="font-light text-white"
@@ -92,7 +96,7 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Spacer for better layout on large screens */}
+            {/* Spacer */}
             <div className="hidden lg:block lg:col-span-1"></div>
 
             {/* Company Links */}
@@ -138,9 +142,27 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/20">
           <div className="py-6 lg:py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-white/60 text-xs lg:text-sm text-center sm:text-left">
-              © {new Date().getFullYear()} Chosen Fintech. All rights reserved.
-            </p>
+            <div className="flex items-center gap-3">
+              <p className="text-white/60 text-xs lg:text-sm text-center sm:text-left">
+                © {new Date().getFullYear()} Chosen Fintech. All rights
+                reserved.
+              </p>
+              {/* Theme Toggle */}
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.05 }}
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="flex items-center cursor-pointer justify-center w-7 h-7 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 transition-colors duration-300"
+              >
+                {themeReady &&
+                  (isDark ? (
+                    <Sun className="h-3 w-3 text-white/60" />
+                  ) : (
+                    <Moon className="h-3 w-3 text-white/60" />
+                  ))}
+              </motion.button>
+            </div>
             <div className="flex items-center gap-2 text-white/60 text-xs lg:text-sm">
               <a
                 href="mailto:info@chosenfintech.org"

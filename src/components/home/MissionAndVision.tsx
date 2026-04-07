@@ -42,12 +42,13 @@ export function MissionAndVision() {
             className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
           >
             <motion.div variants={fadeUpVariants}>
-              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary dark:text-foreground mb-6">
                 MISSION & VISION
               </h2>
               <motion.div
                 variants={lineRevealVariants}
-                className="w-10 h-0.5 bg-primary mx-auto mb-6 origin-left"
+                className="w-10 h-0.5 mx-auto mb-6 origin-left"
+                style={{ backgroundColor: 'oklch(0.396 0.195 264)' }}
               />
             </motion.div>
           </motion.div>
@@ -62,7 +63,20 @@ export function MissionAndVision() {
           >
             {features.map((feature) => (
               <motion.div key={feature.title} variants={cardVariants}>
-                <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full group p-0 border-black">
+                <Card
+                  className="overflow-hidden transition-shadow duration-300 h-full group p-0 border-none"
+                  style={{
+                    boxShadow: '0 4px 24px 0 oklch(0.396 0.195 264 / 0.25)',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.boxShadow =
+                      '0 8px 36px 0 oklch(0.396 0.195 264 / 0.45)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.boxShadow =
+                      '0 4px 24px 0 oklch(0.396 0.195 264 / 0.25)';
+                  }}
+                >
                   <CardContent className="p-0 relative h-full min-h-100">
                     {/* Background Image */}
                     <div className="absolute inset-0">
@@ -73,22 +87,39 @@ export function MissionAndVision() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
-                      {/* Overlay - Using primary color with opacity */}
-                      <div className="absolute inset-0 bg-primary/80 transition-opacity duration-300 group-hover:bg-primary/75" />
+                      {/* Fixed Cardano blue overlay */}
+                      <div
+                        className="absolute inset-0 transition-opacity duration-300"
+                        style={{
+                          backgroundColor: 'oklch(0.396 0.195 264 / 0.80)',
+                        }}
+                        onMouseEnter={(e) => {
+                          (
+                            e.currentTarget as HTMLDivElement
+                          ).style.backgroundColor =
+                            'oklch(0.396 0.195 264 / 0.75)';
+                        }}
+                        onMouseLeave={(e) => {
+                          (
+                            e.currentTarget as HTMLDivElement
+                          ).style.backgroundColor =
+                            'oklch(0.396 0.195 264 / 0.80)';
+                        }}
+                      />
                     </div>
 
                     {/* Content */}
                     <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8">
                       <div>
-                        <h3 className="font-display text-xl md:text-2xl font-semibold text-primary-foreground mb-3">
+                        <h3 className="font-display text-xl md:text-2xl font-semibold text-white mb-3">
                           {feature.title}
                         </h3>
-                        <p className="text-primary-foreground/90 leading-relaxed mb-6">
+                        <p className="text-white/90 leading-relaxed mb-6">
                           {feature.description}
                         </p>
                         <a
                           href={feature.link}
-                          className="inline-flex items-center gap-2 text-primary-foreground font-medium hover:gap-3 transition-all duration-300 group/link"
+                          className="inline-flex items-center gap-2 text-white font-medium hover:gap-3 transition-all duration-300 group/link"
                         >
                           Learn More
                           <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />

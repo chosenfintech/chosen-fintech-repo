@@ -1,14 +1,14 @@
-// src/components/NavBar.tsx
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTheme } from 'next-themes';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -26,14 +26,22 @@ export function NavBar() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
+  // Theme
+  const { theme, setTheme } = useTheme();
+
+  const isDark = theme === 'dark';
+  const themeReady = theme !== undefined;
+
+  const toggleTheme = () => {
+    setTheme(isDark ? 'light' : 'dark');
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Check if at the very top
       setIsAtTop(currentScrollY < 20);
 
-      // Show navbar when scrolling up, hide when scrolling down
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
       } else {
@@ -50,13 +58,8 @@ export function NavBar() {
   return (
     <motion.header
       initial={{ y: 0 }}
-      animate={{
-        y: isVisible ? 0 : -100,
-      }}
-      transition={{
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1],
-      }}
+      animate={{ y: isVisible ? 0 : -100 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
         'fixed z-50',
         isAtTop
@@ -66,18 +69,10 @@ export function NavBar() {
     >
       <motion.div
         layout
-        animate={{
-          borderRadius: isAtTop ? '9999px' : '0px',
-        }}
+        animate={{ borderRadius: isAtTop ? '9999px' : '0px' }}
         transition={{
-          layout: {
-            duration: 0.6,
-            ease: [0.16, 1, 0.3, 1],
-          },
-          borderRadius: {
-            duration: 0.6,
-            ease: [0.16, 1, 0.3, 1],
-          },
+          layout: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+          borderRadius: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
         }}
         className={cn(
           'transition-colors duration-500',
@@ -141,7 +136,6 @@ export function NavBar() {
                       )}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
                     >
                       {link.label}
                     </motion.span>
@@ -161,20 +155,29 @@ export function NavBar() {
               })}
             </nav>
 
-            {/* CTA */}
-            <div className="hidden lg:block">
-              <motion.div
+            {/* Desktop Right Section */}
+            <div className="hidden lg:flex items-center gap-3">
+              {/* Theme Toggle */}
+              <motion.button
+                whileTap={{ scale: 0.9 }}
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="flex items-center cursor-pointer justify-center w-10 h-10 rounded-full border border-border bg-background hover:bg-muted transition-colors duration-300"
               >
+                {themeReady &&
+                  (isDark ? (
+                    <Sun className="h-4 w-4 text-foreground" />
+                  ) : (
+                    <Moon className="h-4 w-4 text-foreground" />
+                  ))}
+              </motion.button>
+
+              {/* CTA */}
+              <motion.div whileHover={{ scale: 1.05 }}>
                 <Button
                   size="lg"
-                  className={cn(
-                    'rounded-full font-medium',
-                    'bg-primary hover:bg-primary/90',
-                    'transition-all duration-300',
-                  )}
+                  className="rounded-full font-medium bg-primary hover:bg-primary/90 transition-all duration-300"
                   asChild
                 >
                   <Link href="/contact">Contact Us</Link>
@@ -185,8 +188,7 @@ export function NavBar() {
             {/* Mobile Toggle */}
             <motion.button
               whileTap={{ scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-              className="lg:hidden p-2 rounded-full hover:bg-muted transition-colors duration-200"
+              className="lg:hidden p-2 rounded-full hover:bg-muted"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -195,7 +197,6 @@ export function NavBar() {
                   initial={{ rotate: -90, opacity: 0 }}
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </motion.div>
@@ -212,10 +213,6 @@ export function NavBar() {
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{
-              duration: 0.4,
-              ease: [0.16, 1, 0.3, 1],
-            }}
             className="lg:hidden absolute top-full left-0 right-0 mt-2 mx-4 max-w-7xl"
           >
             <div className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-lg overflow-hidden">
@@ -228,17 +225,13 @@ export function NavBar() {
                       key={link.to}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{
-                        delay: index * 0.08,
-                        duration: 0.4,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
+                      transition={{ delay: index * 0.08 }}
                     >
                       <Link
                         href={link.to}
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn(
-                          'block px-4 py-3 rounded-full text-sm font-medium transition-all duration-300',
+                          'block px-4 py-3 rounded-full text-sm font-medium',
                           isActive
                             ? 'text-primary bg-primary/10'
                             : 'text-muted-foreground hover:text-foreground hover:bg-muted',
@@ -250,16 +243,21 @@ export function NavBar() {
                   );
                 })}
 
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: navLinks.length * 0.08,
-                    duration: 0.4,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="pt-2 mt-2 border-t border-border"
+                {/* Theme Toggle (Mobile) */}
+                <motion.button
+                  onClick={toggleTheme}
+                  className="flex items-center justify-between px-4 py-3 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted"
                 >
+                  <span>Toggle Theme</span>
+                  {themeReady &&
+                    (isDark ? (
+                      <Sun className="h-4 w-4" />
+                    ) : (
+                      <Moon className="h-4 w-4" />
+                    ))}
+                </motion.button>
+
+                <div className="pt-2 mt-2 border-t border-border">
                   <Button size="lg" className="w-full rounded-full" asChild>
                     <Link
                       href="/contact"
@@ -268,7 +266,7 @@ export function NavBar() {
                       Contact Us
                     </Link>
                   </Button>
-                </motion.div>
+                </div>
               </nav>
             </div>
           </motion.div>
