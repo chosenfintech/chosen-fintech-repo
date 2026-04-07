@@ -1,10 +1,10 @@
 'use client';
 
-import { PageHero } from '@/components/sections/PageHero';
+import { PageHero } from '@/components/PageHero';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { motion, Variants } from 'motion/react';
-import { NavBar } from '@/components/layout/NavBar';
-import { Footer } from '@/components/layout/Footer';
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
 
 const contactInfo = [
   {

@@ -1,6 +1,6 @@
 'use client';
 
-import { PageHero } from '@/components/sections/PageHero';
+import { PageHero } from '@/components/PageHero';
 import {
   Accordion,
   AccordionContent,
@@ -10,8 +10,8 @@ import {
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { motion, Variants } from 'motion/react';
-import { NavBar } from '@/components/layout/NavBar';
-import { Footer } from '@/components/layout/Footer';
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
 
 const faqCategories = [
   {

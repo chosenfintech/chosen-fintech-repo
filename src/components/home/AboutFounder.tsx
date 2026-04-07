@@ -1,59 +1,20 @@
-"use client";
+// src/components/home/AboutFounder.tsx
+'use client';
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { motion, Variants } from "motion/react";
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import {
+  containerVariants,
+  imageVariants,
+  contentVariants,
+  textVariants,
+  hoverVariants,
+} from '@/static-data/motion-variants';
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.3, delayChildren: 0.2 },
-  },
-};
-
-const imageVariants: Variants = {
-  hidden: { opacity: 0, x: -50, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    scale: 1,
-    transition: { type: "spring", stiffness: 80, damping: 15 },
-  },
-};
-
-const contentVariants: Variants = {
-  hidden: { opacity: 0, x: 50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { type: "spring", stiffness: 100, damping: 20 },
-  },
-};
-
-const textVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 20 },
-  },
-};
-
-const hoverVariants: Variants = {
-  rest: { x: "-100%" },
-  hover: {
-    x: "0%",
-    transition: {
-      duration: 0.4,
-      ease: "easeInOut",
-    },
-  },
-};
-
-export function FounderSection() {
+export function AboutFounder() {
   return (
     <section className="relative bg-muted/30 overflow-hidden">
       <div className="mx-auto max-w-7xl">

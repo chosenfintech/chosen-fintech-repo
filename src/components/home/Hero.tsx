@@ -1,88 +1,19 @@
+// src/components/home/Hero.tsx
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Play } from 'lucide-react';
 import Image from 'next/image';
-import { motion, Variants } from 'motion/react';
+import { motion } from 'motion/react';
+import {
+  containerVariants,
+  headlineVariants,
+  hoverVariants,
+  subtextVariants,
+  buttonVariants,
+} from '@/static-data/motion-variants';
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const headlineVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-    scale: 0.95,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 80,
-      damping: 15,
-      duration: 0.8,
-    },
-  },
-};
-
-const subtextVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      damping: 20,
-      duration: 0.6,
-    },
-  },
-};
-
-const buttonVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-    scale: 0.9,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 120,
-      damping: 18,
-      duration: 0.5,
-    },
-  },
-};
-
-const hoverVariants: Variants = {
-  rest: { x: '-100%' },
-  hover: {
-    x: '0%',
-    transition: {
-      duration: 0.4,
-      ease: 'easeInOut',
-    },
-  },
-};
-
-export function HeroSection() {
+export function Hero() {
   return (
     <section className="relative min-h-screen pt-28 flex items-center justify-center overflow-hidden text-center">
       <div className="absolute inset-0">

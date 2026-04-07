@@ -1,7 +1,7 @@
 // app/cardano-hub/page.tsx
 'use client';
 import { useState } from 'react';
-import { PageHero } from '@/components/sections/PageHero';
+import { PageHero } from '@/components/PageHero';
 import { EducationalGuides } from '@/components/cardano/EducationalGuides';
 import { UpdatesList } from '@/components/cardano/UpdatesList';
 import { UpdatesSidebar } from '@/components/cardano/UpdatesSidebar';
@@ -17,8 +17,8 @@ import {
   BookOpen,
   ArrowRight,
 } from 'lucide-react';
-import { NavBar } from '@/components/layout/NavBar';
-import { Footer } from '@/components/layout/Footer';
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
 
 const guides = [
   {

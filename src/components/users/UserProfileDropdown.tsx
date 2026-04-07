@@ -1,4 +1,4 @@
-// src/components/user-profile/UserProfileDropdown.tsx
+// src/components/users/UserProfileDropdown.tsx
 'use client';
 
 import React, { useState } from 'react';

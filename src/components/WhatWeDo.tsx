@@ -1,9 +1,16 @@
-"use client";
+// src/components/WhatWeDo.tsx
+'use client';
 
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { LucideIcon } from "lucide-react";
-import { motion, Variants } from "motion/react";
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { LucideIcon } from 'lucide-react';
+import { motion } from 'motion/react';
+import {
+  cardVariants,
+  containerVariants,
+  fadeUpVariants,
+  lineRevealVariants,
+} from '@/static-data/motion-variants';
 
 export interface FocusArea {
   icon: LucideIcon;
@@ -16,42 +23,6 @@ interface WhatWeDoProps {
   focusAreas: FocusArea[];
 }
 
-const container: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const lineReveal: Variants = {
-  hidden: { scaleX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
 export const WhatWeDo: React.FC<WhatWeDoProps> = ({
   description,
   focusAreas,
@@ -60,15 +31,15 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      variants={container}
+      viewport={{ once: true, margin: '-80px' }}
+      variants={containerVariants}
       className="bg-foreground py-16 md:py-24"
     >
       <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Left Column - Sticky Header */}
           <motion.div
-            variants={fadeUp}
+            variants={fadeUpVariants}
             className="lg:col-span-3 lg:sticky lg:top-8 lg:self-start"
           >
             <h2 className="font-display text-3xl md:text-4xl font-bold text-background leading-tight">
@@ -80,7 +51,7 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
             </h2>
 
             <motion.div
-              variants={lineReveal}
+              variants={lineRevealVariants}
               className="w-10 h-0.5 bg-background mt-4 origin-left"
             />
 
@@ -89,13 +60,13 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
 
           {/* Right Column - Cards */}
           <motion.div
-            variants={container}
+            variants={containerVariants}
             className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 gap-6"
           >
             {focusAreas.map((area) => (
               <motion.div
                 key={area.title}
-                variants={cardVariant}
+                variants={cardVariants}
                 whileHover="hover"
                 className="relative group"
               >

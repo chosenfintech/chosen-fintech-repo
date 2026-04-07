@@ -1,3 +1,4 @@
+// src/components/home/Partners.tsx
 'use client';
 
 import Image from 'next/image';
@@ -11,7 +12,7 @@ const partners = [
   },
 ];
 
-export function PartnersSection() {
+export function Partners() {
   const partnersBoxColor = '#2c2c36';
 
   return (

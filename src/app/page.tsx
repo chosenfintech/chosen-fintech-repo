@@ -1,25 +1,25 @@
 // src/app/page.tsx
-import { HeroSection } from '@/components/sections/HeroSection';
-import { PartnersSection } from '@/components/sections/PartnersSection';
-import { HomeMissionAndVision } from '@/components/sections/HomeMissionAndVision';
-import { StatsSection } from '@/components/sections/StatsSection';
-import { LatestStoriesSection } from '@/components/sections/LatestStoriesSection';
-import { ProjectsSection } from '@/components/sections/ProjectsSection';
-import { FounderSection } from '@/components/sections/FounderSection';
-import { NavBar } from '@/components/layout/NavBar';
-import { Footer } from '@/components/layout/Footer';
+import { Hero } from '@/components/home/Hero';
+import { Partners } from '@/components/home/Partners';
+import { MissionAndVision } from '@/components/home/MissionAndVision';
+import { Stats } from '@/components/home/Stats';
+import { LatestStories } from '@/components/home/LatestStories';
+import { LatestProjects } from '@/components/home/LatestProjects';
+import { AboutFounder } from '@/components/home/AboutFounder';
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
 
 const Home = () => {
   return (
     <>
       <NavBar />
-      <HeroSection />
-      <HomeMissionAndVision />
-      <StatsSection />
-      <LatestStoriesSection />
-      <ProjectsSection />
-      <FounderSection />
-      <PartnersSection />
+      <Hero />
+      <MissionAndVision />
+      <Stats />
+      <LatestStories />
+      <LatestProjects />
+      <AboutFounder />
+      <Partners />
       <Footer />
     </>
   );

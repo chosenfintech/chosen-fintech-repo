@@ -1,11 +1,19 @@
-"use client";
+// src/components/home/LatestStories.tsx
+'use client';
 
-import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Calendar } from "lucide-react";
-import Image from "next/image";
-import { motion, Variants } from "motion/react";
+import Link from 'next/link';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, Calendar } from 'lucide-react';
+import Image from 'next/image';
+import { motion } from 'motion/react';
+import {
+  cardVariants,
+  containerVariants,
+  fadeUpVariants,
+  hoverVariants,
+  lineRevealVariants,
+} from '@/static-data/motion-variants';
 
 const blogPosts = [
   {
@@ -13,81 +21,34 @@ const blogPosts = [
     title: "Understanding Cardano's Proof of Stake: A Beginner's Guide",
     excerpt:
       "Learn how Cardano's Ouroboros protocol works and why it's more sustainable than traditional proof of work systems.",
-    category: "Cardano",
-    date: "Jan 5, 2026",
+    category: 'Cardano',
+    date: 'Jan 5, 2026',
     image:
-      "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&auto=format&fit=crop&q=60",
+      'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&auto=format&fit=crop&q=60',
   },
   {
     id: 2,
-    title: "DeFi Fundamentals: Navigating Decentralized Finance",
+    title: 'DeFi Fundamentals: Navigating Decentralized Finance',
     excerpt:
-      "A comprehensive introduction to DeFi concepts, protocols, and how to safely participate in the ecosystem.",
-    category: "DeFi",
-    date: "Jan 3, 2026",
+      'A comprehensive introduction to DeFi concepts, protocols, and how to safely participate in the ecosystem.',
+    category: 'DeFi',
+    date: 'Jan 3, 2026',
     image:
-      "https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&auto=format&fit=crop&q=60",
+      'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&auto=format&fit=crop&q=60',
   },
   {
     id: 3,
-    title: "Crypto Security Best Practices for 2026",
+    title: 'Crypto Security Best Practices for 2026',
     excerpt:
-      "Essential security tips to protect your digital assets and navigate the crypto space safely.",
-    category: "Security",
-    date: "Dec 28, 2025",
+      'Essential security tips to protect your digital assets and navigate the crypto space safely.',
+    category: 'Security',
+    date: 'Dec 28, 2025',
     image:
-      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop&q=60",
+      'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop&q=60',
   },
 ];
 
-const container: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const lineReveal: Variants = {
-  hidden: { scaleX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const hoverVariants: Variants = {
-  rest: { x: "-100%" },
-  hover: {
-    x: "0%",
-    transition: {
-      duration: 0.4,
-      ease: "easeInOut",
-    },
-  },
-};
-
-export function LatestStoriesSection() {
+export function LatestStories() {
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,16 +57,16 @@ export function LatestStoriesSection() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={container}
+            viewport={{ once: true, margin: '-80px' }}
+            variants={containerVariants}
             className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16"
           >
-            <motion.div variants={fadeUp} className="max-w-2xl">
+            <motion.div variants={fadeUpVariants} className="max-w-2xl">
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary">
                 LATEST STORIES
               </h2>
               <motion.div
-                variants={lineReveal}
+                variants={lineRevealVariants}
                 className="w-10 h-0.5 bg-primary mt-4 origin-left"
               />
               <p className="text-muted-foreground mt-3 md:block">
@@ -113,7 +74,11 @@ export function LatestStoriesSection() {
                 crypto world.
               </p>
             </motion.div>
-            <motion.div variants={fadeUp} initial="rest" whileHover="hover">
+            <motion.div
+              variants={fadeUpVariants}
+              initial="rest"
+              whileHover="hover"
+            >
               <Button
                 variant="outline"
                 className="relative z-10 w-fit border-2 border-primary/30 text-foreground  backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
@@ -137,12 +102,12 @@ export function LatestStoriesSection() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={container}
+            viewport={{ once: true, margin: '-80px' }}
+            variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           >
             {blogPosts.map((post, index) => (
-              <motion.div key={post.id} variants={cardVariant}>
+              <motion.div key={post.id} variants={cardVariants}>
                 <Link href={`/blog/${post.id}`} className="group block h-full">
                   <Card className="overflow-hidden border-border hover:shadow-xl hover:border-primary/20 transition-all duration-300 h-full flex flex-col p-0">
                     {/* Image Container */}

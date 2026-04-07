@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Chosen Fintech',
+  title: 'Chosen Fintech Solutions',
   description:
     'Empowering individuals and organizations with practical cryptocurrency education, specializing in the Cardano ecosystem and the future of decentralized finance (DeFi).',
 };

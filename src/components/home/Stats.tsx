@@ -1,6 +1,12 @@
+// src/components/home/Stats.tsx
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useInView, Variants } from 'motion/react';
+import { motion, useInView } from 'motion/react';
+import {
+  statVariants,
+  fadeUpVariants,
+  containerVariants,
+} from '@/static-data/motion-variants';
 
 const stats = [
   { value: '7+', label: 'CITIES VISITED' },
@@ -27,34 +33,6 @@ const formatStatValue = (current: number, original: string): string => {
     return `${Math.floor(current)}+`;
   }
   return Math.floor(current).toString();
-};
-
-const container: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const statVariant: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
 };
 
 interface AnimatedStatProps {
@@ -94,7 +72,7 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({ value, label, index }) => {
   return (
     <motion.div
       ref={ref}
-      variants={statVariant}
+      variants={statVariants}
       className="text-center lg:text-left"
     >
       <div className="inline-block">
@@ -137,18 +115,21 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({ value, label, index }) => {
   );
 };
 
-export function StatsSection() {
+export function Stats() {
   return (
     <motion.section
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-80px' }}
-      variants={container}
+      variants={containerVariants}
       className="bg-primary py-16 md:py-20 lg:py-24 relative overflow-hidden"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12">
-          <motion.div variants={fadeUp} className="w-full lg:w-1/4 lg:pt-8">
+          <motion.div
+            variants={fadeUpVariants}
+            className="w-full lg:w-1/4 lg:pt-8"
+          >
             <div className="flex items-center gap-4">
               <motion.span
                 initial={{ scaleX: 0 }}
@@ -163,7 +144,7 @@ export function StatsSection() {
             </div>
           </motion.div>
 
-          <motion.div variants={container} className="w-full lg:w-3/4">
+          <motion.div variants={containerVariants} className="w-full lg:w-3/4">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-6 md:gap-8 lg:gap-12 justify-items-center lg:justify-items-start">
               {stats.map((stat, index) => (
                 <AnimatedStat

@@ -1,9 +1,16 @@
+// src/components/OurTeam.tsx
 'use client';
 
 import React from 'react';
 import Image from 'next/image';
 import { Facebook, Linkedin, X } from 'lucide-react';
-import { motion, Variants } from 'motion/react';
+import { motion } from 'motion/react';
+import {
+  containerVariants,
+  lineRevealVariants,
+  fadeUpVariants,
+  cardVariants,
+} from '@/static-data/motion-variants';
 
 interface SocialLink {
   icon: React.FC<{ className?: string }>;
@@ -29,46 +36,6 @@ const defaultSocials: SocialLink[] = [
   { icon: Linkedin, href: '#', label: 'Linkedin' },
 ];
 
-const container: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-  hover: {
-    y: -6,
-    transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const lineReveal: Variants = {
-  hidden: { scaleX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
 export const OurTeam: React.FC<OurTeamProps> = ({
   title = 'OUR TEAM',
   teamMembers,
@@ -80,13 +47,13 @@ export const OurTeam: React.FC<OurTeamProps> = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-80px' }}
-      variants={container}
+      variants={containerVariants}
       className="py-16 bg-background"
     >
       <div className={containerClasses}>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
           <motion.div
-            variants={fadeUp}
+            variants={fadeUpVariants}
             className="lg:col-span-1 lg:sticky lg:top-8 lg:self-start"
           >
             <h2 className="font-display text-3xl md:text-4xl font-bold text-primary leading-tight">
@@ -99,7 +66,7 @@ export const OurTeam: React.FC<OurTeamProps> = ({
             </h2>
 
             <motion.div
-              variants={lineReveal}
+              variants={lineRevealVariants}
               className="w-10 h-0.5 bg-primary mt-4 origin-left"
             />
 
@@ -109,13 +76,13 @@ export const OurTeam: React.FC<OurTeamProps> = ({
           </motion.div>
 
           <motion.div
-            variants={container}
+            variants={containerVariants}
             className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {teamMembers.map((member, index) => (
               <motion.div
                 key={index}
-                variants={cardVariant}
+                variants={cardVariants}
                 whileHover="hover"
                 className="group bg-card border border-border overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
               >
@@ -155,7 +122,7 @@ export const OurTeam: React.FC<OurTeamProps> = ({
                     />
                   </div>
 
-                  <motion.div variants={fadeUp} className="p-4 bg-card">
+                  <motion.div variants={fadeUpVariants} className="p-4 bg-card">
                     <h3 className="text-lg font-semibold text-card-foreground">
                       {member.name}
                     </h3>

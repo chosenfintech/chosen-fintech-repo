@@ -1,12 +1,12 @@
 // app/blog/page.tsx
 'use client';
 import { useState } from 'react';
-import { PageHero } from '@/components/sections/PageHero';
+import { PageHero } from '@/components/PageHero';
 import { BlogList } from '@/components/blog/BlogList';
 import { BlogSidebar } from '@/components/blog/BlogSidebar';
 import { motion } from 'motion/react';
-import { NavBar } from '@/components/layout/NavBar';
-import { Footer } from '@/components/layout/Footer';
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
 
 const categories = ['All', 'Cardano', 'DeFi', 'Security', 'Guides', 'News'];
 

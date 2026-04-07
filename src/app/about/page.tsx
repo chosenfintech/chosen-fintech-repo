@@ -1,9 +1,9 @@
 'use client';
 // pages/About.tsx
-import { PageHero } from '@/components/sections/PageHero';
-import { WhoWeAre } from '@/components/sections/WhoWeAre';
-import { WhatWeDo, FocusArea } from '@/components/sections/WhatWeDo';
-import { OurTeam, TeamMember } from '@/components/sections/OurTeam';
+import { PageHero } from '@/components/PageHero';
+import { WhoWeAre } from '@/components/WhoWeAre';
+import { WhatWeDo, FocusArea } from '@/components/WhatWeDo';
+import { OurTeam, TeamMember } from '@/components/OurTeam';
 import {
   GraduationCap,
   Rocket,
@@ -13,8 +13,8 @@ import {
   Linkedin,
   X,
 } from 'lucide-react';
-import { NavBar } from '@/components/layout/NavBar';
-import { Footer } from '@/components/layout/Footer';
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
 
 const focusAreas: FocusArea[] = [
   {

@@ -1,7 +1,14 @@
+// src/components/home/MissionAndVision.tsx
 'use client';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  containerVariants,
+  cardVariants,
+  fadeUpVariants,
+  lineRevealVariants,
+} from '@/static-data/motion-variants';
 import { ArrowRight } from 'lucide-react';
-import { motion, Variants } from 'motion/react';
+import { motion } from 'motion/react';
 import Image from 'next/image';
 
 const features = [
@@ -21,43 +28,7 @@ const features = [
   },
 ];
 
-const container: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const lineReveal: Variants = {
-  hidden: { scaleX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-export function HomeMissionAndVision() {
+export function MissionAndVision() {
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,15 +38,15 @@ export function HomeMissionAndVision() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
-            variants={container}
+            variants={containerVariants}
             className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
           >
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUpVariants}>
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
                 MISSION & VISION
               </h2>
               <motion.div
-                variants={lineReveal}
+                variants={lineRevealVariants}
                 className="w-10 h-0.5 bg-primary mx-auto mb-6 origin-left"
               />
             </motion.div>
@@ -86,11 +57,11 @@ export function HomeMissionAndVision() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
-            variants={container}
+            variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
           >
             {features.map((feature) => (
-              <motion.div key={feature.title} variants={cardVariant}>
+              <motion.div key={feature.title} variants={cardVariants}>
                 <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full group p-0 border-black">
                   <CardContent className="p-0 relative h-full min-h-100">
                     {/* Background Image */}

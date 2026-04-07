@@ -1,8 +1,9 @@
-"use client";
+// src/components/PageHero.tsx
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { Home, MoveRight } from "lucide-react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Home, MoveRight } from 'lucide-react';
 
 interface PageHeroProps {
   title: string;
@@ -13,7 +14,7 @@ export function PageHero({ title }: PageHeroProps) {
     <section className="relative pb-6 pt-24 sm:pb-16 sm:pt-32 md:pb-16 md:pt-48 lg:pb-16 lg:pt-48 overflow-hidden">
       <div className="absolute inset-0">
         <Image
-          src={"/hero-bg.jpg"}
+          src={'/hero-bg.jpg'}
           alt="background image for heros"
           className="w-full h-full object-cover"
           fill
@@ -29,7 +30,7 @@ export function PageHero({ title }: PageHeroProps) {
 
           <div
             className="flex items-center justify-center gap-2 sm:gap-3 text-primary-foreground/80 animate-fade-in"
-            style={{ animationDelay: "0.1s" }}
+            style={{ animationDelay: '0.1s' }}
           >
             <Link
               href="/"

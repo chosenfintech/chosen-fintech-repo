@@ -1,9 +1,9 @@
 // src/app/gallery/page.tsx
 'use client';
 
-import { PageHero } from '@/components/sections/PageHero';
-import { NavBar } from '@/components/layout/NavBar';
-import { Footer } from '@/components/layout/Footer';
+import { PageHero } from '@/components/PageHero';
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
 
 const Gallery = () => {
   return (
