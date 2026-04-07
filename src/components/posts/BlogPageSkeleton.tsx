@@ -1,7 +1,7 @@
 // src/components/posts/BlogPageSkeleton.tsx
 import { NavBar } from '../NavBar';
 import { Footer } from '../Footer';
-import { PageHero } from '../PageHero';
+import { PageHero } from '../ui/PageHero';
 
 export default function BlogPageSkeleton() {
   return (

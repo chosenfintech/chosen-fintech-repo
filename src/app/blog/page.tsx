@@ -1,7 +1,7 @@
 // app/blog/page.tsx
 'use client';
 import { useState } from 'react';
-import { PageHero } from '@/components/PageHero';
+import { PageHero } from '@/components/ui/PageHero';
 import { BlogList } from '@/components/blog/BlogList';
 import { BlogSidebar } from '@/components/blog/BlogSidebar';
 import { motion } from 'motion/react';

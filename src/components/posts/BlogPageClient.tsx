@@ -16,7 +16,7 @@ import {
   containerVariants,
   contentVariants,
 } from '@/static-data/motion-variants';
-import { PageHero } from '../PageHero';
+import { PageHero } from '../ui/PageHero';
 
 export interface IBlogPageClientProps {
   posts: IPost[];

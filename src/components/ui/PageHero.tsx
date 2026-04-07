@@ -1,4 +1,4 @@
-// src/components/PageHero.tsx
+// src/components/ui/PageHero.tsx
 'use client';
 
 import Image from 'next/image';

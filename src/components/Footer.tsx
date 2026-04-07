@@ -39,7 +39,10 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-primary-foreground font-light">
+    <footer
+      className="font-light text-white"
+      style={{ backgroundColor: 'oklch(0.396 0.195 264)' }}
+    >
       <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="py-12 lg:py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -58,17 +61,17 @@ export function Footer() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-display font-bold text-xl leading-tight">
+                  <span className="font-display font-bold text-xl leading-tight text-white">
                     Chosen Fintech
                   </span>
-                  <span className="text-xs text-primary-foreground/60 uppercase tracking-wide">
+                  <span className="text-xs text-white/60 uppercase tracking-wide">
                     SOLUTIONS
                   </span>
                 </div>
               </Link>
-              <p className="text-primary-foreground/70 max-w-sm leading-relaxed mb-6 text-sm lg:text-base">
+              <p className="text-white/80 max-w-sm leading-relaxed mb-6 text-sm lg:text-base">
                 Educating, Onboarding and Empowering individuals and
-                organisations to naviage digital technology for effective
+                organisations to navigate digital technology for effective
                 socio-economic systems.
               </p>
 
@@ -80,7 +83,7 @@ export function Footer() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center transition-all duration-300 hover:scale-110"
+                    className="flex items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:scale-110"
                     aria-label={item.label}
                   >
                     <item.icon size={26} strokeWidth={0.5} />
@@ -94,7 +97,7 @@ export function Footer() {
 
             {/* Company Links */}
             <div className="lg:col-span-3">
-              <h4 className="font-display font-semibold text-base lg:text-lg mb-4 lg:mb-6">
+              <h4 className="font-display font-semibold text-base lg:text-lg mb-4 lg:mb-6 text-white">
                 Company
               </h4>
               <ul className="space-y-3">
@@ -102,7 +105,7 @@ export function Footer() {
                   <li key={link.to}>
                     <Link
                       href={link.to}
-                      className="text-primary-foreground/70 hover:text-primary-foreground transition-colors duration-200 text-sm lg:text-base inline-block hover:translate-x-1"
+                      className="text-white/70 hover:text-white transition-colors duration-200 text-sm lg:text-base inline-block hover:translate-x-1"
                     >
                       {link.label}
                     </Link>
@@ -113,7 +116,7 @@ export function Footer() {
 
             {/* Resources Links */}
             <div className="lg:col-span-3">
-              <h4 className="font-display font-semibold text-base lg:text-lg mb-4 lg:mb-6">
+              <h4 className="font-display font-semibold text-base lg:text-lg mb-4 lg:mb-6 text-white">
                 Resources
               </h4>
               <ul className="space-y-3">
@@ -121,7 +124,7 @@ export function Footer() {
                   <li key={link.to}>
                     <Link
                       href={link.to}
-                      className="text-primary-foreground/70 hover:text-primary-foreground transition-colors duration-200 text-sm lg:text-base inline-block hover:translate-x-1"
+                      className="text-white/70 hover:text-white transition-colors duration-200 text-sm lg:text-base inline-block hover:translate-x-1"
                     >
                       {link.label}
                     </Link>
@@ -133,15 +136,15 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-primary-foreground/10">
+        <div className="border-t border-white/20">
           <div className="py-6 lg:py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-primary-foreground/50 text-xs lg:text-sm text-center sm:text-left">
+            <p className="text-white/60 text-xs lg:text-sm text-center sm:text-left">
               © {new Date().getFullYear()} Chosen Fintech. All rights reserved.
             </p>
-            <div className="flex items-center gap-2 text-primary-foreground/50 text-xs lg:text-sm">
+            <div className="flex items-center gap-2 text-white/60 text-xs lg:text-sm">
               <a
                 href="mailto:info@chosenfintech.org"
-                className="hover:text-primary-foreground transition-colors duration-200 hover:underline"
+                className="hover:text-white transition-colors duration-200 hover:underline"
               >
                 info@chosenfintech.org
               </a>

@@ -1,6 +1,6 @@
 'use client';
 // pages/About.tsx
-import { PageHero } from '@/components/PageHero';
+import { PageHero } from '@/components/ui/PageHero';
 import { WhoWeAre } from '@/components/WhoWeAre';
 import { WhatWeDo, FocusArea } from '@/components/WhatWeDo';
 import { OurTeam, TeamMember } from '@/components/OurTeam';

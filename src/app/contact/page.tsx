@@ -1,6 +1,6 @@
 'use client';
 
-import { PageHero } from '@/components/PageHero';
+import { PageHero } from '@/components/ui/PageHero';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { motion, Variants } from 'motion/react';
 import { NavBar } from '@/components/NavBar';

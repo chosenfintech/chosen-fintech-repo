@@ -1,7 +1,7 @@
 // app/cardano-hub/page.tsx
 'use client';
 import { useState } from 'react';
-import { PageHero } from '@/components/PageHero';
+import { PageHero } from '@/components/ui/PageHero';
 import { EducationalGuides } from '@/components/cardano/EducationalGuides';
 import { UpdatesList } from '@/components/cardano/UpdatesList';
 import { UpdatesSidebar } from '@/components/cardano/UpdatesSidebar';

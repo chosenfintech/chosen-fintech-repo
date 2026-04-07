@@ -1,6 +1,6 @@
 'use client';
 
-import { PageHero } from '@/components/PageHero';
+import { PageHero } from '@/components/ui/PageHero';
 import {
   Accordion,
   AccordionContent,
