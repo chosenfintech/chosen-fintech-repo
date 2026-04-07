@@ -1,6 +1,6 @@
 // src/utils/post-utils.ts
 import prisma, { Prisma } from '../lib/prisma';
-import { IPostResponseData, PostQueryParams } from '../types/posts/post.types';
+import { IPost, IPostsQueryParams } from '../types/posts/post.types';
 
 export interface GetPostsOptions {
   forcePublished?: boolean;
@@ -28,7 +28,7 @@ type PostWithRelations = Prisma.PostGetPayload<{
 }>;
 
 export const buildPostWhereClause = (
-  params: PostQueryParams,
+  params: IPostsQueryParams,
   options: GetPostsOptions = {},
 ): Prisma.PostWhereInput => {
   const { categoryId, authorId, isPublished, isFeatured, search } = params;
@@ -85,9 +85,7 @@ export const fetchPostsWithPagination = async (
   return { posts, total };
 };
 
-export const mapPostsToResponse = (
-  posts: PostWithRelations[],
-): IPostResponseData[] => {
+export const mapPostsToResponse = (posts: PostWithRelations[]): IPost[] => {
   return posts.map((post) => ({
     id: post.id,
     slug: post.slug,

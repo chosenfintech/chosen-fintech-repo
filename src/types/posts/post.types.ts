@@ -15,7 +15,7 @@ export interface IPostUpdateInput extends Partial<IPostCreateInput> {
   coverImage?: string;
 }
 
-export interface IPostResponseData {
+export interface IPost {
   id: string;
   slug: string;
   title: string;
@@ -39,7 +39,7 @@ export interface IPostResponseData {
   } | null;
 }
 
-export interface PostQueryParams {
+export interface IPostsQueryParams {
   page?: string;
   limit?: string;
   categoryId?: string;
@@ -51,11 +51,48 @@ export interface PostQueryParams {
 
 export interface IPostsPaginatedResponse {
   message: string;
-  data: IPostResponseData[];
+  data: IPost[];
   meta: {
     total: number;
     page: number;
     limit: number;
     totalPages: number;
   };
+}
+
+export interface IPostResponse {
+  message: string;
+  data: IPost;
+}
+
+export interface IDeletePostsResponse {
+  message: string;
+  deletedCount: number;
+}
+
+export interface ITogglePostResponse {
+  message: string;
+  data: {
+    id: string;
+    title: string;
+    isPublished?: boolean;
+    isFeatured?: boolean;
+    publishDate?: Date;
+  };
+}
+
+
+export interface IPostsDataTableProps {
+  data: IPost[];
+  loading?: boolean;
+  totalCount?: number;
+  page?: number;
+  pageSize?: number;
+  filters: Omit<IPostsQueryParams, "page" | "limit">;
+  onPageChange?: (page: number) => void;
+  onPageSizeChange?: (pageSize: number) => void;
+  onFiltersChange: (
+    filters: Partial<Omit<IPostsQueryParams, "page" | "limit">>,
+  ) => void;
+  onRefresh?: () => void;
 }

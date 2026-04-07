@@ -1,5 +1,5 @@
 // src/types/posts/category.types.ts
-export interface ICategoryResponseData {
+export interface ICategory {
   id: string;
   name: string;
   createdAt: Date;
@@ -17,11 +17,54 @@ export type ICategoryUpdateInput = Partial<ICategoryCreateInput>;
 
 export interface ICategoriesPaginatedResponse {
   message: string;
-  data: ICategoryResponseData[];
+  data: ICategory[];
   meta: {
     total: number;
     page: number;
     limit: number;
     totalPages: number;
   };
+}
+
+export interface ICategoryResponse {
+  message: string;
+  data: ICategory;
+}
+
+export interface ICategoriesQueryParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface IDeleteCategoryResponse {
+  message: string;
+  deletedCount: number;
+}
+
+export interface ICategoriesStatsResponse {
+  message: string;
+  data: {
+    totalCategories: number;
+    totalPosts: number;
+    avgPostsPerCategory: number;
+    categories: ICategory[];
+  };
+}
+
+export interface ICategoriesDataTableProps {
+  data: ICategory[];
+  loading?: boolean;
+  totalCount?: number;
+  page?: number;
+  pageSize?: number;
+  filters: Omit<ICategoriesQueryParams, 'page' | 'limit'>;
+  onPageChange?: (page: number) => void;
+  onPageSizeChange?: (pageSize: number) => void;
+  onFiltersChange: (
+    filters: Partial<Omit<ICategoriesQueryParams, 'page' | 'limit'>>,
+  ) => void;
+  onRefresh?: () => void;
 }

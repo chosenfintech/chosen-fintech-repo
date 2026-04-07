@@ -10,7 +10,7 @@ import {
 import { z } from 'zod';
 import type { Prisma } from '@/lib/prisma';
 import type {
-  ICategoryResponseData,
+  ICategory,
   ICategoriesPaginatedResponse,
 } from '@/types/posts/category.types';
 
@@ -87,7 +87,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       unpublishedGroups.map((g) => [g.categoryId, g._count.id]),
     );
 
-    const response: ICategoryResponseData[] = categories.map((category) => {
+    const response: ICategory[] = categories.map((category) => {
       const unpublished = unpublishedCountMap.get(category.id) ?? 0;
       return {
         id: category.id,
@@ -163,7 +163,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
     });
 
-    const responseData: ICategoryResponseData = {
+    const responseData: ICategory = {
       id: category.id,
       name: category.name,
       createdAt: category.createdAt,

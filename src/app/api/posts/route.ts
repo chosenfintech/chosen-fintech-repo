@@ -12,7 +12,7 @@ import {
 } from '@/utils/post-utils';
 import type {
   IPostsPaginatedResponse,
-  PostQueryParams,
+  IPostsQueryParams,
 } from '@/types/posts/post.types';
 import { createPostSchema } from '@/validations/posts/post-validation';
 import {
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const page = parseInt(searchParams.get('page') ?? '1');
     const limit = parseInt(searchParams.get('limit') ?? '10');
 
-    const queryParams: PostQueryParams = {
+    const queryParams: IPostsQueryParams = {
       categoryId: searchParams.get('categoryId') ?? undefined,
       authorId: searchParams.get('authorId') ?? undefined,
       isPublished: searchParams.get('isPublished') ?? undefined,

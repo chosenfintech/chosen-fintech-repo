@@ -11,7 +11,7 @@ import {
 } from '@/middlewares/error-handler';
 import { z } from 'zod';
 import type { Prisma } from '@/lib/prisma';
-import type { ICategoryResponseData } from '@/types/posts/category.types';
+import type { ICategory } from '@/types/posts/category.types';
 
 const updateCategorySchema = z.object({
   name: z
@@ -61,7 +61,7 @@ export async function GET(
     const unpublishedPostsCount =
       postCountsByStatus.find((g) => g.isPublished === false)?._count.id ?? 0;
 
-    const responseData: ICategoryResponseData = {
+    const responseData: ICategory = {
       id: category.id,
       name: category.name,
       createdAt: category.createdAt,
@@ -149,7 +149,7 @@ export async function PUT(
       });
     });
 
-    const responseData: ICategoryResponseData = {
+    const responseData: ICategory = {
       id: result.id,
       name: result.name,
       createdAt: result.createdAt,
