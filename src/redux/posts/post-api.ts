@@ -97,7 +97,7 @@ export const postApi = apiSlice.injectEndpoints({
 
     togglePostPublish: builder.mutation<ITogglePostResponse, string>({
       query: (postId) => ({
-        url: `/posts/${postId}/publish`,
+        url: `/posts/${postId}/toggle-publish`,
         method: 'PATCH',
       }),
       invalidatesTags: [
@@ -111,7 +111,7 @@ export const postApi = apiSlice.injectEndpoints({
 
     togglePostFeatured: builder.mutation<ITogglePostResponse, string>({
       query: (postId) => ({
-        url: `/posts/${postId}/feature`,
+        url: `/posts/${postId}/toggle-featured`,
         method: 'PATCH',
       }),
       invalidatesTags: [
