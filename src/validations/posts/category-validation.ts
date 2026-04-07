@@ -26,3 +26,5 @@ export const updateCategorySchema = z.object({
     .max(100, 'Category name must be less than 100 characters')
     .optional(),
 });
+
+export type ICategoryFormSchema = z.infer<typeof createCategorySchema>;

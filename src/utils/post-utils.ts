@@ -45,11 +45,11 @@ export const buildPostWhereClause = (
 
   if (options.forcePublished) {
     whereClause.isPublished = true;
-  } else if (isPublished === 'true') {
+  } else if (isPublished === true) {
     whereClause.isPublished = true;
   }
 
-  if (isFeatured === 'true') {
+  if (isFeatured === true) {
     whereClause.isFeatured = true;
   }
 

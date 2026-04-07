@@ -20,6 +20,7 @@ import {
   ValidationError,
   NotFoundError,
 } from '@/middlewares/error-handler';
+import { parseBoolean } from '@/utils/parse-booleans';
 
 const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
@@ -37,8 +38,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const queryParams: IPostsQueryParams = {
       categoryId: searchParams.get('categoryId') ?? undefined,
       authorId: searchParams.get('authorId') ?? undefined,
-      isPublished: searchParams.get('isPublished') ?? undefined,
-      isFeatured: searchParams.get('isFeatured') ?? undefined,
+      isPublished: parseBoolean(searchParams.get('isPublished')) ?? undefined,
+      isFeatured: parseBoolean(searchParams.get('isFeatured')) ?? undefined,
       search: searchParams.get('search') ?? undefined,
     };
 

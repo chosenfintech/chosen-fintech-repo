@@ -7,19 +7,12 @@ import {
   ValidationError,
   ConflictError,
 } from '@/middlewares/error-handler';
-import { z } from 'zod';
 import type { Prisma } from '@/lib/prisma';
 import type {
   ICategory,
   ICategoriesPaginatedResponse,
 } from '@/types/posts/category.types';
-
-const createCategorySchema = z.object({
-  name: z
-    .string()
-    .min(1, 'Category name is required')
-    .max(100, 'Category name must be less than 100 characters'),
-});
+import { createCategorySchema } from '@/validations/posts/category-validation';
 
 /**
  * GET /api/categories

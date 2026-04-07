@@ -4,6 +4,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import { StoreProvider } from './StoreProvider';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -59,6 +60,12 @@ export default function RootLayout({
         className={`${poppins.variable} antialiased flex flex-col min-h-screen`}
       >
         <StoreProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          ></ThemeProvider>
           <Toaster
             position="top-right"
             reverseOrder={false}
@@ -67,13 +74,9 @@ export default function RootLayout({
               loading: {
                 duration: Infinity,
               },
-              style: {
-                background: 'transparent',
-                padding: 0,
-                boxShadow: 'none',
-              },
             }}
           />
+
           <main className="flex-1">{children}</main>
 
           {/* JSON-LD */}

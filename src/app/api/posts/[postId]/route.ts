@@ -6,7 +6,6 @@ import { cloudinaryService } from '@/config/claudinary';
 import { generateSlug } from '@/utils/generate-slug';
 import { calculateReadTime } from '@/utils/read-time-calculator';
 import { parseBoolean } from '@/utils/parse-booleans';
-import { z } from 'zod';
 import type { Prisma } from '@/lib/prisma';
 import {
   handleApiError,
@@ -14,27 +13,9 @@ import {
   NotFoundError,
   ForbiddenError,
 } from '@/middlewares/error-handler';
+import { updatePostSchema } from '@/validations/posts/post-validation';
 
 const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
-
-const uuidRegex =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-const updatePostSchema = z.object({
-  title: z.string().min(1).max(255).optional(),
-  excerpt: z.string().min(1).max(500).optional(),
-  content: z.string().min(1).optional(),
-  isPublished: z.union([z.boolean(), z.string()]).optional(),
-  isFeatured: z.union([z.boolean(), z.string()]).optional(),
-  publishDate: z.string().datetime({ offset: true }).optional().nullable(),
-  categoryId: z
-    .string()
-    .regex(uuidRegex, 'Category ID must be a valid UUID')
-    .optional()
-    .nullable(),
-  createdAt: z.string().datetime({ offset: true }).optional(),
-  updatedAt: z.string().datetime({ offset: true }).optional(),
-});
 
 /**
  * GET /api/posts/[postId]

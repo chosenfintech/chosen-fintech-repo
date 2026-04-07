@@ -4,6 +4,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 // import { DashboardFooter } from "@/components/dashboard/DashboardFooter";
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 
+
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }

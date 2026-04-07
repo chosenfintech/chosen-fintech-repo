@@ -12,12 +12,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { User, Power } from 'lucide-react';
+import { User, Power, Sun, Moon } from 'lucide-react';
 import { RootState } from '@/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { userLoggedOut } from '@/redux/auth-slice';
 import { logout } from '@/lib/auth';
 import toast from 'react-hot-toast';
+import { useTheme } from 'next-themes';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 
 const UserProfileDropdown: React.FC = () => {
@@ -26,6 +27,7 @@ const UserProfileDropdown: React.FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   if (!user) return null;
 
@@ -37,6 +39,14 @@ const UserProfileDropdown: React.FC = () => {
     .join('')
     .slice(0, 2)
     .toUpperCase();
+
+  const themeIcons = {
+    light: <Sun className="h-4 w-4" />,
+    dark: <Moon className="h-4 w-4" />,
+  };
+
+  const currentThemeIcon =
+    themeIcons[theme as keyof typeof themeIcons] || themeIcons.light;
 
   const handleLogout = async () => {
     const toastId = toast.loading('Logging out...');
@@ -111,6 +121,15 @@ const UserProfileDropdown: React.FC = () => {
           </DropdownMenuItem>
 
           <DropdownMenuSeparator className="bg-border" />
+
+          {/* Theme Toggle */}
+          <DropdownMenuItem
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            className="cursor-pointer px-4 py-2 hover:bg-accent focus:bg-accent text-foreground flex items-center"
+          >
+            <span className="mr-2">{currentThemeIcon}</span>
+            <span>Toggle Theme</span>
+          </DropdownMenuItem>
 
           {/* Logout */}
           <DropdownMenuItem

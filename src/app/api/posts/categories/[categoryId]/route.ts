@@ -9,17 +9,9 @@ import {
   ConflictError,
   BadRequestError,
 } from '@/middlewares/error-handler';
-import { z } from 'zod';
 import type { Prisma } from '@/lib/prisma';
 import type { ICategory } from '@/types/posts/category.types';
-
-const updateCategorySchema = z.object({
-  name: z
-    .string()
-    .min(1, 'Category name is required')
-    .max(100, 'Category name must be less than 100 characters')
-    .optional(),
-});
+import { updateCategorySchema } from '@/validations/posts/category-validation';
 
 /**
  * GET /api/categories/[categoryId]

@@ -40,12 +40,12 @@ export interface IPost {
 }
 
 export interface IPostsQueryParams {
-  page?: string;
-  limit?: string;
+  page?: number;
+  limit?: number;
   categoryId?: string;
   authorId?: string;
-  isPublished?: string;
-  isFeatured?: string;
+  isPublished?: boolean;
+  isFeatured?: boolean;
   search?: string;
 }
 
