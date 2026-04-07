@@ -13,14 +13,26 @@ const footerLinks = {
     { to: '/faq', label: 'FAQ' },
   ],
   social: [
-    { href: 'fb.com/chosenfintech', icon: Facebook, label: 'Facebook' },
-    { href: 'x.com/chosenfintech', icon: Twitter, label: 'Twitter' },
+    {
+      href: 'https://fb.com/chosenfintech',
+      icon: Facebook,
+      label: 'Facebook',
+    },
+    {
+      href: 'https://x.com/chosenfintech',
+      icon: Twitter,
+      label: 'Twitter',
+    },
     {
       href: 'https://www.linkedin.com/company/chosenfintech/',
       icon: Linkedin,
       label: 'LinkedIn',
     },
-    { href: 'youtube.com/@cardanoghana', icon: Youtube, label: 'YouTube' },
+    {
+      href: 'https://youtube.com/@cardanoghana',
+      icon: Youtube,
+      label: 'YouTube',
+    },
   ],
 };
 
