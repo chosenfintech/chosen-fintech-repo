@@ -21,8 +21,8 @@ export const postApi = apiSlice.injectEndpoints({
         'Posts',
         'Post',
         'Categories',
-        'CategoryStats',
         'Category',
+        'CategoryStats',
       ],
     }),
 
@@ -40,8 +40,8 @@ export const postApi = apiSlice.injectEndpoints({
         'Posts',
         'Post',
         'Categories',
-        'CategoryStats',
         'Category',
+        'CategoryStats',
       ],
     }),
 
@@ -90,11 +90,8 @@ export const postApi = apiSlice.injectEndpoints({
         'Posts',
         'Post',
         'Categories',
-        'CategoryStats',
         'Category',
-        'TagStats',
-        'Tags',
-        'Tag',
+        'CategoryStats',
       ],
     }),
 
@@ -107,8 +104,8 @@ export const postApi = apiSlice.injectEndpoints({
         'Post',
         'Posts',
         'Categories',
-        'CategoryStats',
         'Category',
+        'CategoryStats',
       ],
     }),
 
@@ -121,8 +118,8 @@ export const postApi = apiSlice.injectEndpoints({
         'Posts',
         'Post',
         'Categories',
-        'CategoryStats',
         'Category',
+        'CategoryStats',
       ],
     }),
 

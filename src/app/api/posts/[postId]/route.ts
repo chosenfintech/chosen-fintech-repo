@@ -8,6 +8,12 @@ import { calculateReadTime } from '@/utils/read-time-calculator';
 import { parseBoolean } from '@/utils/parse-booleans';
 import { z } from 'zod';
 import type { Prisma } from '@/lib/prisma';
+import {
+  handleApiError,
+  ValidationError,
+  NotFoundError,
+  ForbiddenError,
+} from '@/middlewares/error-handler';
 
 const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
@@ -28,8 +34,45 @@ const updatePostSchema = z.object({
     .nullable(),
   createdAt: z.string().datetime({ offset: true }).optional(),
   updatedAt: z.string().datetime({ offset: true }).optional(),
-  // coverImage is handled separately from FormData — not part of Zod schema
 });
+
+/**
+ * GET /api/posts/[postId]
+ * Public — fetch a single post by UUID or slug.
+ */
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ postId: string }> },
+): Promise<NextResponse> {
+  try {
+    const { postId } = await params;
+
+    if (!postId) {
+      throw new ValidationError('Post identifier is required');
+    }
+
+    const post = await prisma.post.findFirst({
+      where: {
+        OR: [{ id: postId }, { slug: postId }],
+      },
+      include: {
+        author: { select: { id: true, fullname: true, email: true } },
+        category: { select: { id: true, name: true } },
+      },
+    });
+
+    if (!post) {
+      throw new NotFoundError('Post not found');
+    }
+
+    return NextResponse.json({
+      message: 'Post retrieved successfully',
+      data: post,
+    });
+  } catch (err) {
+    return handleApiError(err);
+  }
+}
 
 /**
  * PUT /api/posts/[postId]
@@ -46,10 +89,7 @@ export async function PUT(
     const { postId } = await params;
 
     if (!postId) {
-      return NextResponse.json(
-        { error: 'Post ID is required' },
-        { status: 400 },
-      );
+      throw new ValidationError('Post ID is required');
     }
 
     const formData = await req.formData();
@@ -60,7 +100,6 @@ export async function PUT(
       rawBody[key] = value;
     }
 
-    // Normalise null-like strings for nullable fields before validation
     for (const key of ['categoryId'] as const) {
       if (rawBody[key] === 'null' || rawBody[key] === 'undefined') {
         rawBody[key] = null;
@@ -69,15 +108,17 @@ export async function PUT(
 
     const validation = updatePostSchema.safeParse(rawBody);
     if (!validation.success) {
-      return NextResponse.json(
-        { error: 'Validation failed', details: validation.error.flatten() },
-        { status: 400 },
-      );
+      throw new ValidationError('Validation failed', {
+        code: 'VALIDATION_ERROR',
+        context: validation.error.flatten() as unknown as Record<
+          string,
+          unknown
+        >,
+      });
     }
 
     const postDetails = validation.data;
 
-    // Resolve coverImage intent from FormData
     let coverImageExplicitlySet = false;
     let coverImageNull = false;
 
@@ -120,7 +161,7 @@ export async function PUT(
       });
 
       if (!existingPost) {
-        throw Object.assign(new Error('Post not found'), { statusCode: 404 });
+        throw new NotFoundError('Post not found');
       }
 
       oldCoverImage = existingPost.coverImage;
@@ -133,9 +174,8 @@ export async function PUT(
           where: { id: postDetails.categoryId },
         });
         if (!category) {
-          throw Object.assign(
-            new Error(`Category with ID ${postDetails.categoryId} not found`),
-            { statusCode: 404 },
+          throw new NotFoundError(
+            `Category with ID ${postDetails.categoryId} not found`,
           );
         }
       }
@@ -229,83 +269,19 @@ export async function PUT(
         category: result.category ?? null,
       },
     });
-  } catch (error) {
+  } catch (err) {
     if (uploadedImageUrl) {
       await cloudinaryService
         .deleteImage(uploadedImageUrl)
         .catch((e) => console.error('Cloudinary cleanup failed:', e));
     }
-
-    const statusCode = (error as { statusCode?: number }).statusCode;
-    if (statusCode === 404) {
-      return NextResponse.json(
-        { error: (error as Error).message },
-        { status: 404 },
-      );
-    }
-    if (statusCode === 400) {
-      return NextResponse.json(
-        { error: (error as Error).message },
-        { status: 400 },
-      );
-    }
-
-    console.error('PUT /api/posts/[postId] error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 },
-    );
-  }
-}
-
-/**
- * GET /api/posts/[postId]
- * Public — fetch a single post by UUID or slug.
- */
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ postId: string }> },
-): Promise<NextResponse> {
-  try {
-    const { postId } = await params;
-
-    if (!postId) {
-      return NextResponse.json(
-        { error: 'Post identifier is required' },
-        { status: 400 },
-      );
-    }
-
-    const post = await prisma.post.findFirst({
-      where: {
-        OR: [{ id: postId }, { slug: postId }],
-      },
-      include: {
-        author: { select: { id: true, fullname: true, email: true } },
-        category: { select: { id: true, name: true } },
-      },
-    });
-
-    if (!post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({
-      message: 'Post retrieved successfully',
-      data: post,
-    });
-  } catch (error) {
-    console.error('GET /api/posts/[postId] error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 },
-    );
+    return handleApiError(err);
   }
 }
 
 /**
  * DELETE /api/posts/[postId]
- * Protected — deletes a post. Authors can only delete their own posts.
+ * Protected — authors can only delete their own posts.
  */
 export async function DELETE(
   _req: NextRequest,
@@ -316,10 +292,7 @@ export async function DELETE(
     const { postId } = await params;
 
     if (!postId) {
-      return NextResponse.json(
-        { error: 'Post ID is required' },
-        { status: 400 },
-      );
+      throw new ValidationError('Post ID is required');
     }
 
     const existingPost = await prisma.post.findUnique({
@@ -334,14 +307,11 @@ export async function DELETE(
     });
 
     if (!existingPost) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+      throw new NotFoundError('Post not found');
     }
 
     if (existingPost.authorId !== session.userId) {
-      return NextResponse.json(
-        { error: 'You can only delete your own posts' },
-        { status: 403 },
-      );
+      throw new ForbiddenError('You can only delete your own posts');
     }
 
     await prisma.post.delete({ where: { id: postId } });
@@ -355,11 +325,7 @@ export async function DELETE(
     return NextResponse.json({
       message: `Post "${existingPost.title}" by ${existingPost.author.fullname} deleted successfully`,
     });
-  } catch (error) {
-    console.error('DELETE /api/posts/[postId] error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 },
-    );
+  } catch (err) {
+    return handleApiError(err);
   }
 }

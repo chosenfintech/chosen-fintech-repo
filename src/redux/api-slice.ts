@@ -9,7 +9,7 @@ import {
 } from '@reduxjs/toolkit/query';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${process.env.NEXT_PUBLIC_SERVER_URI}/api/v1`,
+  baseUrl: `/api/`,
   credentials: 'include' as const,
 });
 
