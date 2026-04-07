@@ -121,7 +121,7 @@ export default function DashboardSidebar() {
       className="border-r border-sidebar-border/20 shadow-sm"
     >
       <SidebarHeader className="flex flex-row items-center justify-between my-5 lg:h-20">
-        <div className="flex items-center gap-3 flex-1 min-w-0">
+        <div className="flex items-center gap-6 flex-1 min-w-0">
           {!isCollapsed && (
             <>
               <Image
@@ -129,10 +129,10 @@ export default function DashboardSidebar() {
                 alt="Chosen Fintech Logo"
                 width={28}
                 height={28}
-                className="text-sidebar-primary shrink-0"
+                className="text-sidebar-primary shrink-0 border border-2 ml-3"
               />
               <span className="text-lg md:text-xl font-bold truncate text-sidebar-foreground">
-                CHOSEN FINTECH
+                CFS
               </span>
             </>
           )}
@@ -244,7 +244,7 @@ export default function DashboardSidebar() {
       <SidebarFooter className="mt-auto border-t border-sidebar-border/20">
         <SidebarMenuButton className="flex items-center gap-3 text-sidebar-foreground">
           <div className="text-[12px] text-sidebar-foreground/70">
-            Chosen Fintech
+            Chosen Fintech Solutions
           </div>
         </SidebarMenuButton>
       </SidebarFooter>

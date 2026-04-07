@@ -1,20 +1,24 @@
 // src/components/LoginForm.tsx
 'use client';
-import { AtSign, KeyRound, ArrowRight, ShieldCheck } from 'lucide-react';
+
+import { AtSign, KeyRound, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Button } from './ui/button';
-import { useActionState, useEffect } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { userLoggedIn } from '@/redux/auth-slice';
 import { signin, type SigninState } from '../lib/auth';
 import type { IUser } from '@/types/user.types';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 export default function LoginForm() {
   const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const [state, action, pending] = useActionState<SigninState, FormData>(
     signin,
@@ -41,11 +45,16 @@ export default function LoginForm() {
         <div className="bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden">
           {/* Header */}
           <div className="px-8 pt-8 pb-6 border-b border-gray-100 text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-600 mb-4">
-              <ShieldCheck className="h-6 w-6 text-white" />
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl border mb-4">
+              <Image
+                src="/logo.jpg"
+                alt="Chosen Fintech Logo"
+                width={38}
+                height={38}
+              />
             </div>
             <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
-              Chosen Fintech
+              Chosen Fintech Solutions
             </h1>
             <p className="mt-1 text-sm text-gray-500">
               Admin portal — sign in to continue
@@ -90,22 +99,39 @@ export default function LoginForm() {
               >
                 Password
               </label>
+
               <div className="relative">
                 <KeyRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 pointer-events-none" />
+
                 <input
-                  className="w-full h-11 pl-10 pr-4 text-sm
+                  className="w-full h-11 pl-10 pr-10 text-sm
                              bg-gray-50 border border-gray-200 rounded-xl text-gray-900
                              placeholder:text-gray-400
                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                              hover:border-gray-300 transition-colors"
                   id="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   name="password"
                   placeholder="••••••••"
                   required
                   minLength={4}
                 />
+
+                {/* Toggle visibility */}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 cursor-pointer top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
               </div>
+
               {state?.errors?.password && (
                 <div className="mt-1 p-3 bg-red-50 rounded-xl border border-red-100">
                   <ul className="list-disc pl-4 space-y-0.5">
@@ -119,17 +145,8 @@ export default function LoginForm() {
               )}
             </div>
 
-            {/* Remember me / Forgot password */}
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-offset-0"
-                />
-                <span className="text-sm text-gray-600">Remember me</span>
-              </label>
+            {/* Forgot password */}
+            <div className="flex justify-end">
               <a
                 href="#"
                 className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
@@ -153,6 +170,7 @@ export default function LoginForm() {
               </div>
             )}
 
+            {/* Submit */}
             <Button
               type="submit"
               className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700
