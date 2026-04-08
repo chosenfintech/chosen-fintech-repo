@@ -5,6 +5,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { LucideIcon } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useTheme } from 'next-themes';
 import {
   cardVariants,
   containerVariants,
@@ -23,10 +24,17 @@ interface WhatWeDoProps {
   focusAreas: FocusArea[];
 }
 
+const FOOTER_DEEP_BLUE = 'oklch(0.396 0.195 264)';
+
 export const WhatWeDo: React.FC<WhatWeDoProps> = ({
   description,
   focusAreas,
 }) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
+  const cardHoverBg = isDark ? FOOTER_DEEP_BLUE : 'var(--color-primary)';
+
   return (
     <motion.section
       initial="hidden"
@@ -42,7 +50,7 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
             variants={fadeUpVariants}
             className="lg:col-span-3 lg:sticky lg:top-8 lg:self-start"
           >
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-background leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-background dark:text-[oklch(0.396_0.195_264)] leading-tight">
               WHAT
               <br />
               WE
@@ -55,7 +63,9 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
               className="w-10 h-0.5 bg-background mt-4 origin-left"
             />
 
-            <p className="mt-4 text-gray-400 leading-relaxed">{description}</p>
+            <p className="mt-4 text-gray-400 dark:text-black leading-relaxed">
+              {description}
+            </p>
           </motion.div>
 
           {/* Right Column - Cards */}
@@ -72,7 +82,7 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
               >
                 <Card className="relative bg-[#252b3b] border border-[#2a3142] rounded-[5px] overflow-hidden">
                   <motion.div
-                    className="absolute inset-0 bg-primary z-0"
+                    className="absolute inset-0 z-0"
                     initial={{ scaleX: 0 }}
                     variants={{
                       hover: {
@@ -83,7 +93,7 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
                         },
                       },
                     }}
-                    style={{ originX: 0 }}
+                    style={{ originX: 0, backgroundColor: cardHoverBg }}
                   />
 
                   <CardContent className="relative z-10 p-8 h-full flex flex-col justify-between">

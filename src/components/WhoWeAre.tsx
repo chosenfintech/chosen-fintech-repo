@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { motion } from 'motion/react';
 import {
@@ -35,7 +34,7 @@ export const WhoWeAre: React.FC<WhoWeAreProps> = ({
               variants={fadeUpVariants}
               className="lg:col-span-3 lg:sticky lg:top-8 lg:self-start"
             >
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-primary leading-tight">
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-primary dark:text-foreground leading-tight">
                 WHO
                 <br />
                 WE
@@ -45,7 +44,7 @@ export const WhoWeAre: React.FC<WhoWeAreProps> = ({
 
               <motion.div
                 variants={lineRevealVariants}
-                className="w-10 h-0.5 bg-primary mt-4 origin-left"
+                className="w-10 h-0.5 bg-primary dark:bg-foreground mt-4 origin-left"
               />
             </motion.div>
 
@@ -64,7 +63,7 @@ export const WhoWeAre: React.FC<WhoWeAreProps> = ({
 
               {/* Vision */}
               <motion.div variants={fadeUpVariants} className="max-w-3xl">
-                <h3 className="font-display text-xl font-bold text-primary mb-3">
+                <h3 className="font-display text-xl font-bold text-primary dark:text-foreground mb-3">
                   VISION
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-[18px] font-light">
@@ -74,7 +73,7 @@ export const WhoWeAre: React.FC<WhoWeAreProps> = ({
 
               {/* Mission */}
               <motion.div variants={fadeUpVariants} className="max-w-3xl">
-                <h3 className="font-display text-xl font-bold text-primary mb-3">
+                <h3 className="font-display text-xl font-bold text-primary dark:text-foreground mb-3">
                   MISSION
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-[18px] font-light">

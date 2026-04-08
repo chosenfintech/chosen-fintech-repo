@@ -1,6 +1,5 @@
 // src/components/ui/PageHero.tsx
 'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Home, MoveRight } from 'lucide-react';
@@ -19,15 +18,16 @@ export function PageHero({ title }: PageHeroProps) {
           className="w-full h-full object-cover"
           fill
         />
-        <div className="absolute inset-0 bg-primary/80" />
+        <div
+          className="absolute inset-0"
+          style={{ backgroundColor: 'oklch(0.396 0.195 264 / 0.8)' }}
+        />
       </div>
-
       <div className="container-wide relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-primary-foreground pt-4 sm:pt-6 md:pt-0 mb-4 sm:mb-5 md:mb-6 uppercase tracking-wide animate-fade-in">
             {title}
           </h1>
-
           <div
             className="flex items-center justify-center gap-2 sm:gap-3 text-primary-foreground/80 animate-fade-in"
             style={{ animationDelay: '0.1s' }}

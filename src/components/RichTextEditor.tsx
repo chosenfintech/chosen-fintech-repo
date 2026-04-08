@@ -1,8 +1,10 @@
 // src/components/RichTextEditor.tsx
-"use client";
+'use client';
 
-import React, { useState, useCallback, useEffect } from "react";
-import { Editor } from "@tinymce/tinymce-react";
+import React, { useState, useCallback, useEffect } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+
+const tinyMceApiKey = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
 
 interface IRichTextInputProps {
   value: string;
@@ -21,15 +23,15 @@ interface IFilePickerMeta {
 }
 
 const RichTextInput: React.FC<IRichTextInputProps> = ({
-  value = "",
+  value = '',
   onChange,
   onSubmit,
   minLength = 10,
   maxLength = 5000,
   required = false,
-  placeholder = "Write your content here...",
+  placeholder = 'Write your content here...',
 }) => {
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [editorValue, setEditorValue] = useState<string>(value);
 
   useEffect(() => {
@@ -38,8 +40,8 @@ const RichTextInput: React.FC<IRichTextInputProps> = ({
 
   // Clean HTML content
   const cleanContent = (content: string) => {
-    let stripped = content.replace(/(<([^>]+)>)/gi, "").trim();
-    stripped = stripped.replace(/&nbsp;/g, "").trim();
+    let stripped = content.replace(/(<([^>]+)>)/gi, '').trim();
+    stripped = stripped.replace(/&nbsp;/g, '').trim();
     return stripped;
   };
 
@@ -48,7 +50,7 @@ const RichTextInput: React.FC<IRichTextInputProps> = ({
     (content: string) => {
       const strippedContent = cleanContent(content);
       if (required && strippedContent.length === 0) {
-        setError("Content cannot be empty.");
+        setError('Content cannot be empty.');
         return false;
       }
       if (strippedContent.length < minLength) {
@@ -59,10 +61,10 @@ const RichTextInput: React.FC<IRichTextInputProps> = ({
         setError(`Content cannot exceed ${maxLength} characters.`);
         return false;
       }
-      setError("");
+      setError('');
       return true;
     },
-    [minLength, maxLength, required]
+    [minLength, maxLength, required],
   );
 
   const handleChange = (content: string) => {
@@ -81,13 +83,13 @@ const RichTextInput: React.FC<IRichTextInputProps> = ({
 
   const filePickerCallback = useCallback(
     (
-      cb: (value: string, meta?: IFilePickerMeta) => void
+      cb: (value: string, meta?: IFilePickerMeta) => void,
       // value: string,
       // meta: FilePickerMeta
     ) => {
-      const input = document.createElement("input");
-      input.setAttribute("type", "file");
-      input.setAttribute("accept", "image/*");
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
 
       input.onchange = function () {
         const inputEl = this as HTMLInputElement;
@@ -106,61 +108,61 @@ const RichTextInput: React.FC<IRichTextInputProps> = ({
 
       input.click();
     },
-    []
+    [],
   );
 
   return (
     <div className="w-full">
       <div
         className={`outline-none bg-transparent border ${
-          error ? "border-destructive" : "border-input"
+          error ? 'border-destructive' : 'border-input'
         } shadow-lg w-full transition-all`}
       >
         <Editor
-          apiKey="7i60o5bvpwnqon07sudolfddvjfb8h5gtktplb99bq0arohl"
+          apiKey={tinyMceApiKey}
           value={editorValue}
           onEditorChange={handleChange}
           init={{
             height: 500,
             menubar: true,
             plugins: [
-              "advlist",
-              "autolink",
-              "lists",
-              "link",
-              "image",
-              "charmap",
-              "preview",
-              "anchor",
-              "searchreplace",
-              "visualblocks",
-              "code",
-              "fullscreen",
-              "insertdatetime",
-              "media",
-              "table",
-              "code",
-              "help",
-              "wordcount",
-              "imagetools",
+              'advlist',
+              'autolink',
+              'lists',
+              'link',
+              'image',
+              'charmap',
+              'preview',
+              'anchor',
+              'searchreplace',
+              'visualblocks',
+              'code',
+              'fullscreen',
+              'insertdatetime',
+              'media',
+              'table',
+              'code',
+              'help',
+              'wordcount',
+              'imagetools',
             ],
             toolbar:
-              "undo redo | formatselect | bold italic backcolor | \
+              'undo redo | formatselect | bold italic backcolor | \
               alignleft aligncenter alignright alignjustify | \
-              bullist numlist outdent indent | image media link | removeformat | help",
+              bullist numlist outdent indent | image media link | removeformat | help',
             placeholder,
             // Image settings with advanced options for positioning
             image_advtab: true,
             image_caption: true,
             image_title: true,
-            file_picker_types: "image",
+            file_picker_types: 'image',
             /* This is where the magic happens for image positioning */
             image_class_list: [
-              { title: "None", value: "" },
-              { title: "Float Left", value: "float-left mr-4" },
-              { title: "Float Right", value: "float-right ml-4" },
-              { title: "Centered", value: "mx-auto block" },
-              { title: "Full Width", value: "w-full" },
+              { title: 'None', value: '' },
+              { title: 'Float Left', value: 'float-left mr-4' },
+              { title: 'Float Right', value: 'float-right ml-4' },
+              { title: 'Centered', value: 'mx-auto block' },
+              { title: 'Full Width', value: 'w-full' },
             ],
             // Add custom styling for the editor using CSS variables
             content_style: `

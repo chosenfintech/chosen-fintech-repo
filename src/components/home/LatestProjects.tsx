@@ -35,12 +35,15 @@ const projects = [
 
 export function LatestProjects() {
   return (
-    <section className="relative py-16 md:py-20 lg:py-24 overflow-hidden">
-      {/* Background with overlay - matching HeroSection */}
+    <section
+      className="relative py-16 md:py-20 lg:py-24 overflow-hidden"
+      style={{ backgroundColor: 'oklch(0.396 0.195 264)' }}
+    >
+      {/* Background image with gradient overlays */}
       <div className="absolute inset-0">
         <Image src="/hero-bg.jpg" alt="" fill className="object-cover" />
-        <div className="absolute inset-0 bg-primary/80" />
-        <div className="absolute inset-0 bg-linear-to-br from-primary/40 via-transparent to-primary/20" />
+        <div className="absolute inset-0 bg-[oklch(0.396_0.195_264)]/80" />
+        <div className="absolute inset-0 bg-linear-to-br from-[oklch(0.396_0.195_264)]/40 via-transparent to-[oklch(0.396_0.195_264)]/20" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,7 +76,7 @@ export function LatestProjects() {
             >
               <Button
                 variant="outline"
-                className="relative z-10 w-fit border-2 border-primary-foreground/30 text-primary-foreground  backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
+                className="relative z-10 w-fit border-2 border-primary-foreground/30 text-primary-foreground backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
                 asChild
               >
                 <Link
@@ -104,7 +107,7 @@ export function LatestProjects() {
             {projects.map((project, index) => (
               <motion.div key={project.title} variants={cardVariants}>
                 <Link href={project.link} className="group block h-full">
-                  <Card className="overflow-hidden  hover:shadow-xl hover:border-primary transition-all duration-300 h-full flex flex-col">
+                  <Card className="overflow-hidden hover:shadow-xl hover:border-primary transition-all duration-300 h-full flex flex-col">
                     <CardContent className="p-6 flex flex-col items-center text-center">
                       {/* Project Image/Logo Area */}
                       <div className="w-full aspect-square max-w-50 p-6 flex justify-center items-center bg-white rounded-xl mb-6 transition-transform duration-300 group-hover:scale-105">

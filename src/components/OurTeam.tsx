@@ -56,7 +56,8 @@ export const OurTeam: React.FC<OurTeamProps> = ({
             variants={fadeUpVariants}
             className="lg:col-span-1 lg:sticky lg:top-8 lg:self-start"
           >
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-primary leading-tight">
+            {/* Change 1: dark:text-white so heading is white in dark mode */}
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-primary dark:text-white leading-tight">
               {title.split(' ').map((word, index) => (
                 <React.Fragment key={index}>
                   {word}
@@ -104,7 +105,7 @@ export const OurTeam: React.FC<OurTeamProps> = ({
                               aria-label={social.label}
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.95 }}
-                              className="w-10 h-10 bg-foreground text-primary-foreground flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors duration-300 shadow-md"
+                              className="w-10 h-10 bg-primary text-primary-foreground flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors duration-300 shadow-md"
                             >
                               <IconComponent className="w-5 h-5" />
                             </motion.a>
