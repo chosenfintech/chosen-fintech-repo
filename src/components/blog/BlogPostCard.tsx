@@ -110,7 +110,7 @@ export const BlogPostCard = ({ post }: BlogPostCardProps) => {
                 variant="link"
                 className="p-0 h-auto self-start group/btn text-sm lg:text-base font-semibold"
               >
-                Read Full Article
+                Read More
                 <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-2 transition-transform duration-300" />
               </Button>
             </motion.div>

@@ -1,12 +1,12 @@
-// app/blog/page.tsx
+// src/app/events/page.tsx
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import BlogPageServer from '@/components/blog/BlogPageServer';
 import BlogPageSkeleton from '@/components/posts/BlogPageSkeleton';
 
 export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Read the latest articles, guides, and insights from our team.',
+  title: 'Events',
+  description: 'Read the latest info, guides, and insights about our events from our team.',
 };
 
 interface BlogPageProps {

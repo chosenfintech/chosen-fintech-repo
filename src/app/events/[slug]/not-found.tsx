@@ -1,4 +1,4 @@
-// src/app/blog/[slug]/not-found.tsx
+// src/app/events/[slug]/not-found.tsx
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Home } from 'lucide-react';

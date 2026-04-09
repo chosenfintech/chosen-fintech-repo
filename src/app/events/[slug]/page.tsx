@@ -1,4 +1,4 @@
-// src/app/blog/[slug]/page.tsx
+// src/app/events/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import BlogPostDetailClient from '@/components/posts/detail/DetailClient';

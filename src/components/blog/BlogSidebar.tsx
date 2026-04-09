@@ -280,7 +280,7 @@ export const BlogSidebar = ({
           <Card className="border-border/50 p-0 shadow-sm hover:shadow-md transition-shadow duration-300">
             <CardContent className="p-5 lg:p-6">
               <h3 className="font-display text-base lg:text-lg font-semibold mb-4 text-foreground">
-                Search Articles
+                Search Posts
               </h3>
               <div className="relative">
                 <Search
@@ -289,7 +289,7 @@ export const BlogSidebar = ({
                 />
                 <Input
                   type="search"
-                  placeholder="Search articles..."
+                  placeholder="Search posts..."
                   value={localSearch}
                   onChange={(e) => handleSearchChange(e.target.value)}
                   className="pl-10 h-11 bg-background/50 border-border/50 focus:border-primary transition-colors"
