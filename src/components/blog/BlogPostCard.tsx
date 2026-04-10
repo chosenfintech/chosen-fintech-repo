@@ -26,7 +26,7 @@ export const BlogPostCard = ({ post }: BlogPostCardProps) => {
     : null;
 
   return (
-    <Link href={`/blog/${post.slug}`}>
+    <Link href={`/events/${post.slug}`}>
       <Card className="group overflow-hidden p-0 border-border/50 hover:border-primary/50 hover:shadow-xl transition-all duration-300">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
           {/* Image Section */}

@@ -75,12 +75,12 @@ export async function generateMetadata({
 
   return {
     title: `${post.title}`,
-    description: post.excerpt || 'Read this article on Hereafter Ghana Blog.',
+    description: post.excerpt || 'Read this post on Chosen Fintech Solutions Events page.',
     openGraph: {
       title: post.title,
       description: post.excerpt || '',
-      url: `${baseUrl}/blog/${post.slug}`,
-      siteName: 'Hereafter Ghana (My Hereafter Project - MHP)',
+      url: `${baseUrl}/events/${post.slug}`,
+      siteName: 'Chosen Fintech Solutions',
       images: [
         {
           url: ogImage,
