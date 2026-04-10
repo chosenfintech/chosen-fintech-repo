@@ -1,22 +1,12 @@
-// app/cardano-hub/page.tsx
+// src/app/academy/page.tsx
 'use client';
 import { useState } from 'react';
 import { PageHero } from '@/components/ui/PageHero';
 import { EducationalGuides } from '@/components/cardano/EducationalGuides';
 import { UpdatesList } from '@/components/cardano/UpdatesList';
 import { UpdatesSidebar } from '@/components/cardano/UpdatesSidebar';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { motion, Variants } from 'motion/react';
-import {
-  Wallet,
-  Coins,
-  Vote,
-  Code,
-  Shield,
-  BookOpen,
-  ArrowRight,
-} from 'lucide-react';
+import { motion } from 'motion/react';
+import { Wallet, Coins, Vote, Code, Shield, BookOpen } from 'lucide-react';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 
@@ -122,18 +112,7 @@ const updates = [
   },
 ];
 
-const hoverVariants: Variants = {
-  rest: { x: '-100%' },
-  hover: {
-    x: '0%',
-    transition: {
-      duration: 0.4,
-      ease: 'easeInOut',
-    },
-  },
-};
-
-const FintechAcademy = () => {
+const Academy = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredUpdates = updates.filter(
@@ -152,7 +131,7 @@ const FintechAcademy = () => {
   return (
     <div className="min-h-screen">
       <NavBar />
-      <PageHero title="Fintech Academy" />
+      <PageHero title="Academy" />
 
       {/* Educational Guides */}
       <EducationalGuides guides={guides} />
@@ -169,27 +148,9 @@ const FintechAcademy = () => {
           >
             <div>
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary">
-                FINTECH ECOSYSTEM UPDATES
+                EDUCATION & BLOGS
               </h2>
             </div>
-            <motion.div initial="rest" whileHover="hover">
-              <Button
-                variant="outline"
-                className="relative z-10 w-fit border-2 border-primary/30 text-foreground backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
-                asChild
-              >
-                <Link href="/blog" className="flex items-center justify-center">
-                  <span className="relative z-20 group-hover:text-primary-foreground transition-colors duration-300">
-                    View All Updates
-                    <ArrowRight className="ml-2 w-4 h-4 inline transition-transform group-hover:translate-x-1" />
-                  </span>
-                  <motion.span
-                    className="absolute inset-0 bg-primary rounded-full z-10"
-                    variants={hoverVariants}
-                  />
-                </Link>
-              </Button>
-            </motion.div>
           </motion.div>
 
           {/* Grid Layout */}
@@ -223,39 +184,9 @@ const FintechAcademy = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="pb-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              className="text-center bg-primary rounded-3xl p-6 md:p-8"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-                Ready to Dive Into Cardano?
-              </h2>
-              <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-                Join our community of learners and start your journey into the
-                Cardano ecosystem today.
-              </p>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button asChild size="lg" variant="secondary">
-                  <Link href="/contact">Get Started Now</Link>
-                </Button>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
       <Footer />
     </div>
   );
 };
 
-export default FintechAcademy;
+export default Academy;

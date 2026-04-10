@@ -13,7 +13,7 @@ import { useTheme } from 'next-themes';
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
-  { to: '/fintech-academy', label: 'Fintech Academy' },
+  { to: '/academy', label: 'Academy' },
   { to: '/events', label: 'Events' },
   { to: '/gallery', label: 'Gallery' },
   { to: '/faq', label: 'FAQ' },

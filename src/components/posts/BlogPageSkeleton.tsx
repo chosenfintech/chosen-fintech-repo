@@ -7,7 +7,7 @@ export default function BlogPageSkeleton() {
   return (
     <main className="min-h-screen bg-background">
       <NavBar />
-      <PageHero title="Blog" />
+      <PageHero title="Events" />
 
       {/* Featured Post Skeleton */}
       <section className="container mx-auto px-4 max-w-7xl border-b border-muted">

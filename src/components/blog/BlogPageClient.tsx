@@ -134,7 +134,7 @@ export default function BlogPageClient({
         params.set(key, value);
       }
     }
-    router.push(`/blog?${params.toString()}`);
+    router.push(`/events?${params.toString()}`);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -151,7 +151,7 @@ export default function BlogPageClient({
   };
 
   const clearFilters = () => {
-    router.push('/blog');
+    router.push('/events');
   };
 
   // Pagination helpers
@@ -237,7 +237,7 @@ export default function BlogPageClient({
                       <CardContent className="text-center py-16 lg:py-20">
                         <div className="max-w-md mx-auto">
                           <p className="text-muted-foreground text-base lg:text-lg mb-2">
-                            No articles found
+                            No posts found
                           </p>
                           <p className="text-muted-foreground/70 text-sm">
                             Try adjusting your search or filter criteria
