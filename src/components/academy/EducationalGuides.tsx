@@ -1,58 +1,20 @@
-// components/cardano/EducationalGuides.tsx
-"use client";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, LucideIcon } from "lucide-react";
-import { motion, Variants } from "motion/react";
-import Image from "next/image";
-
-interface Guide {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  level: "Beginner" | "Intermediate" | "Advanced";
-  image: string;
-  link: string;
-}
+'use client';
+import Link from 'next/link';
+import { Card, CardContent } from '@/components/ui/card';
+import { ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import Image from 'next/image';
+import { IAcademyGuide } from '@/static-data/academy-guides';
+import {
+  containerVariants,
+  fadeUpVariants,
+  lineRevealVariants,
+  cardVariants,
+} from '@/static-data/motion-variants';
 
 interface EducationalGuidesProps {
-  guides: Guide[];
+  guides: IAcademyGuide[];
 }
-
-const container: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const lineReveal: Variants = {
-  hidden: { scaleX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
 
 export function EducationalGuides({ guides }: EducationalGuidesProps) {
   return (
@@ -63,19 +25,19 @@ export function EducationalGuides({ guides }: EducationalGuidesProps) {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={container}
+            viewport={{ once: true, margin: '-80px' }}
+            variants={containerVariants}
             className="text-center max-w-3xl mx-auto mb-6 md:mb-8"
           >
-            <motion.div variants={fadeUp}>
-              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary md:mb-3 ">
+            <motion.div variants={fadeUpVariants}>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary md:mb-3">
                 EDUCATIONAL GUIDES
               </h2>
               <motion.div
-                variants={lineReveal}
-                className="w-10 h-0.5 bg-primary mx-auto origin-left  mt-4"
+                variants={lineRevealVariants}
+                className="w-10 h-0.5 bg-primary mx-auto origin-left mt-4"
               />
-              <p className="font-light text-base md:text-lg text-muted-foreground leading-relaxed mt-3 ">
+              <p className="font-light text-base md:text-lg text-muted-foreground leading-relaxed mt-3">
                 From beginner basics to advanced development, explore our
                 curated learning paths for the Cardano ecosystem.
               </p>
@@ -86,12 +48,12 @@ export function EducationalGuides({ guides }: EducationalGuidesProps) {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={container}
+            viewport={{ once: true, margin: '-80px' }}
+            variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           >
             {guides.map((guide) => (
-              <motion.div key={guide.title} variants={cardVariant}>
+              <motion.div key={guide.id} variants={cardVariants}>
                 <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full group p-0 border-border/50">
                   <CardContent className="p-0 relative h-full min-h-80">
                     {/* Background Image */}
@@ -109,7 +71,6 @@ export function EducationalGuides({ guides }: EducationalGuidesProps) {
 
                     {/* Content */}
                     <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-7">
-                      {/* Bottom - Text Content */}
                       <div>
                         <h3 className="font-display text-lg md:text-xl font-semibold text-primary-foreground mb-3 leading-tight">
                           {guide.title}
@@ -117,13 +78,13 @@ export function EducationalGuides({ guides }: EducationalGuidesProps) {
                         <p className="text-primary-foreground/90 text-sm leading-relaxed mb-5">
                           {guide.description}
                         </p>
-                        <a
-                          href={guide.link}
+                        <Link
+                          href={`/academy/${guide.slug}`}
                           className="inline-flex items-center gap-2 text-primary-foreground font-medium hover:gap-3 transition-all duration-300 group/link text-sm"
                         >
                           Start Learning
                           <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </CardContent>

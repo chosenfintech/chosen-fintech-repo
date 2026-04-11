@@ -14,70 +14,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 import { IPost } from '@/types/posts/post.types';
 import { cardVariants } from '@/static-data/motion-variants';
-import { Wallet, Coins, Vote, Code, Shield, BookOpen } from 'lucide-react';
-
-const guides = [
-  {
-    icon: Wallet,
-    title: 'Getting Started with Cardano',
-    description:
-      'Learn the basics: what is Cardano, how to set up a wallet, and buy your first ADA.',
-    level: 'Beginner' as const,
-    image:
-      'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80',
-    link: '#',
-  },
-  {
-    icon: Coins,
-    title: 'Staking & Delegation',
-    description:
-      'Understand how to stake your ADA, choose stake pools, and earn passive rewards.',
-    level: 'Beginner' as const,
-    image:
-      'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80',
-    link: '#',
-  },
-  {
-    icon: Vote,
-    title: 'Project Catalyst & Governance',
-    description:
-      "Participate in Cardano's decentralized governance and vote on funding proposals.",
-    level: 'Intermediate' as const,
-    image:
-      'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=800&q=80',
-    link: '#',
-  },
-  {
-    icon: Code,
-    title: 'Smart Contracts on Cardano',
-    description:
-      'Introduction to Plutus and Marlowe for building decentralized applications.',
-    level: 'Advanced' as const,
-    image:
-      'https://images.unsplash.com/photo-1622630998477-20aa696ecb05?w=800&q=80',
-    link: '#',
-  },
-  {
-    icon: Shield,
-    title: 'NFTs on Cardano',
-    description:
-      'Explore the native NFT ecosystem, marketplaces, and how to mint your own NFTs.',
-    level: 'Intermediate' as const,
-    image:
-      'https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80',
-    link: '#',
-  },
-  {
-    icon: BookOpen,
-    title: 'DeFi on Cardano',
-    description:
-      'Navigate DEXs, lending protocols, and yield opportunities in the Cardano ecosystem.',
-    level: 'Intermediate' as const,
-    image:
-      'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&q=80',
-    link: '#',
-  },
-];
+import { academyGuides } from '@/static-data/academy-guides';
 
 export interface IAcademyPageClientProps {
   posts: IPost[];
@@ -136,7 +73,7 @@ export default function AcademyPageClient({
       <PageHero title="Academy" />
 
       {/* Educational Guides — static, untouched */}
-      <EducationalGuides guides={guides} />
+      <EducationalGuides guides={academyGuides} />
 
       {/* Education & Blogs — API-driven */}
       <section className="py-12 lg:py-16 xl:py-20 bg-muted/30">

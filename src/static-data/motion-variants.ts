@@ -123,6 +123,10 @@ export const cardVariants: Variants = {
 };
 
 /**
+ * Card variant (stronger entrance, used in EducationalGuides)
+ */
+
+/**
  * Simple fade up (utility)
  */
 export const fadeUpVariants: Variants = {
