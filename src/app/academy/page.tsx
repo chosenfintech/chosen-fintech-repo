@@ -18,12 +18,10 @@ interface AcademyPageProps {
   }>;
 }
 
-export default async function AcademyPage({
-  searchParams,
-}: AcademyPageProps) {
+export default async function AcademyPage({ searchParams }: AcademyPageProps) {
   const resolvedSearchParams = await searchParams;
   return (
-    <Suspense fallback={<BlogPageSkeleton />}>
+    <Suspense fallback={<BlogPageSkeleton variant="academy" />}>
       <AcademyPageServer searchParams={resolvedSearchParams} />
     </Suspense>
   );

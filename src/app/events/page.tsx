@@ -6,7 +6,8 @@ import BlogPageSkeleton from '@/components/posts/BlogPageSkeleton';
 
 export const metadata: Metadata = {
   title: 'Events',
-  description: 'Read the latest info, guides, and insights about our events from our team.',
+  description:
+    'Read the latest info, guides, and insights about our events from our team.',
 };
 
 interface BlogPageProps {
