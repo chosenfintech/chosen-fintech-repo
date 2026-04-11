@@ -13,6 +13,7 @@ import {
   cardVariants,
   fadeUpVariants,
   lineRevealVariants,
+  textVariants,
 } from '@/static-data/motion-variants';
 
 const projects = [
@@ -70,21 +71,22 @@ export function LatestProjects() {
               </p>
             </motion.div>
             <motion.div
-              variants={fadeUpVariants}
+              variants={textVariants}
               initial="rest"
               whileHover="hover"
             >
               <Button
                 variant="outline"
-                className="relative z-10 w-fit border-2 border-primary-foreground/30 text-primary-foreground backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
+                size="lg"
+                className="relative z-10 border-2 border-primary/30 text-foreground rounded-full backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
                 asChild
               >
                 <Link
                   href="/projects"
                   className="flex items-center justify-center"
                 >
-                  <span className="relative z-20 text-primary group-hover:text-primary-foreground transition-colors duration-300">
-                    View All Our Projects
+                  <span className="relative z-20 group-hover:text-primary-foreground transition-colors duration-300">
+                    See All Projects
                     <ArrowRight className="ml-2 w-4 h-4 inline transition-transform group-hover:translate-x-1" />
                   </span>
                   <motion.span

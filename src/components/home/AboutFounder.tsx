@@ -1,17 +1,13 @@
 // src/components/home/AboutFounder.tsx
 'use client';
 
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import {
   containerVariants,
   imageVariants,
   contentVariants,
   textVariants,
-  hoverVariants,
 } from '@/static-data/motion-variants';
 
 export function AboutFounder() {
@@ -73,33 +69,6 @@ export function AboutFounder() {
                 <p className="font-medium text-foreground">
                   — Yakub Mohammed Mustapha, Founder & CEO
                 </p>
-              </motion.div>
-
-              <motion.div
-                variants={textVariants}
-                initial="rest"
-                whileHover="hover"
-              >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="relative z-10 border-2 border-primary/30 text-foreground rounded-full backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
-                  asChild
-                >
-                  <Link
-                    href="/about"
-                    className="flex items-center justify-center"
-                  >
-                    <span className="relative z-20 group-hover:text-primary-foreground transition-colors duration-300">
-                      Read Our Full Story
-                      <ArrowRight className="ml-2 w-4 h-4 inline transition-transform group-hover:translate-x-1" />
-                    </span>
-                    <motion.span
-                      className="absolute inset-0 bg-primary rounded-full z-10"
-                      variants={hoverVariants}
-                    />
-                  </Link>
-                </Button>
               </motion.div>
             </motion.div>
           </div>

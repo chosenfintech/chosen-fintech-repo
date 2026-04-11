@@ -13,8 +13,8 @@ const footerLinks = {
     { to: '/contact', label: 'Contact' },
   ],
   resources: [
-    { to: '/blog', label: 'Blog' },
-    { to: '/fintech-academy', label: 'Fintech Academy' },
+    { to: '/events', label: 'Events' },
+    { to: '/academy', label: 'Academy' },
     { to: '/faq', label: 'FAQ' },
   ],
   social: [

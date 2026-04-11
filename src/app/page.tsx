@@ -1,9 +1,10 @@
-// src/app/page.tsx
+import { Suspense } from 'react';
 import { Hero } from '@/components/home/Hero';
 import { Partners } from '@/components/home/Partners';
 import { MissionAndVision } from '@/components/home/MissionAndVision';
 import { Stats } from '@/components/home/Stats';
-import { LatestStories } from '@/components/home/LatestStories';
+import LatestEventsServer from '@/components/home/LatestEventsServer';
+import { LatestEventsSkeleton } from '@/components/home/LatestEventsSkeleton';
 import { LatestProjects } from '@/components/home/LatestProjects';
 import { AboutFounder } from '@/components/home/AboutFounder';
 import { NavBar } from '@/components/NavBar';
@@ -16,7 +17,9 @@ const Home = () => {
       <Hero />
       <MissionAndVision />
       <Stats />
-      <LatestStories />
+      <Suspense fallback={<LatestEventsSkeleton />}>
+        <LatestEventsServer />
+      </Suspense>
       <LatestProjects />
       <AboutFounder />
       <Partners />
