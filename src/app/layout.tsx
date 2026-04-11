@@ -16,9 +16,65 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Chosen Fintech Solutions',
+  title: {
+    template: '%s - Chosen Fintech Solutions',
+    default:
+      'Chosen Fintech Solutions — Empowering the Future of Financial Technology',
+  },
   description:
-    'Empowering individuals and organizations with practical cryptocurrency education, specializing in the Cardano ecosystem and the future of decentralized finance (DeFi).',
+    'Chosen Fintech Solutions is your trusted partner in fintech education and decentralised tech governance, with a focus on blockchain, digital innovation, and adoption. Specialising in the Cardano ecosystem and the future of decentralized finance (DeFi) across Ghana and Africa.',
+  keywords: [
+    'Chosen Fintech',
+    'Chosen Fintech Solutions',
+    'fintech Ghana',
+    'fintech Africa',
+    'blockchain Ghana',
+    'cryptocurrency education',
+    'Cardano Ghana',
+    'Cardano ecosystem',
+    'decentralized finance',
+    'DeFi',
+    'blockchain education',
+    'digital innovation Ghana',
+    'crypto adoption Africa',
+    'decentralised tech governance',
+    'Web3 Ghana',
+    'digital finance',
+    'financial technology Ghana',
+    'blockchain adoption',
+    'crypto Ghana',
+  ],
+  authors: [{ name: 'Chosen Fintech Solutions' }],
+  creator: 'Chosen Fintech Solutions',
+  publisher: 'Chosen Fintech Solutions',
+  metadataBase: new URL(baseUrl),
+  openGraph: {
+    title:
+      'Chosen Fintech Solutions — Empowering the Future of Financial Technology',
+    description:
+      'Your trusted partner in fintech education and decentralised tech governance, with a focus on blockchain, digital innovation, and adoption. Specialising in the Cardano ecosystem and DeFi across Ghana and Africa.',
+    url: baseUrl,
+    siteName: 'Chosen Fintech Solutions',
+    images: [
+      {
+        url: '/open-graph-images/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Chosen Fintech Solutions — Empowering the Future of Financial Technology',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title:
+      'Chosen Fintech Solutions — Empowering the Future of Financial Technology',
+    description:
+      'Chosen Fintech Solutions is your trusted partner in fintech education and decentralised tech governance, with a focus on blockchain, digital innovation, and adoption across Ghana and Africa.',
+    site: '@chosenfintech',
+    images: ['/open-graph-images/og-image.png'],
+  },
 };
 
 export default function RootLayout({
@@ -29,15 +85,21 @@ export default function RootLayout({
   const orgJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Chosen Fintech',
+    name: 'Chosen Fintech Solutions',
     url: baseUrl,
-    logo: `/logo.png`,
+    logo: `${baseUrl}/logo.png`,
+    sameAs: [
+      'https://fb.com/chosenfintech',
+      'https://x.com/chosenfintech',
+      'https://www.linkedin.com/company/chosenfintech/',
+      'https://youtube.com/@cardanoghana',
+    ],
   };
 
   const siteJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Chosen Fintech',
+    name: 'Chosen Fintech Solutions',
     url: baseUrl,
   };
 
