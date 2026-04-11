@@ -1,8 +1,6 @@
-// src/components/home/LatestProjects.tsx
 'use client';
 
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
@@ -15,24 +13,8 @@ import {
   lineRevealVariants,
   textVariants,
 } from '@/static-data/motion-variants';
-
-const projects = [
-  {
-    imageUrl: '/cardano-ghana-community.png',
-    title: 'Cardano Ghana',
-    link: '/projects/cardano-ghana',
-  },
-  {
-    imageUrl: '/scale-up-icp-logo.png',
-    title: 'Scale-UP ICP Ghana',
-    link: '/projects/scale-up-icp-ghana',
-  },
-  {
-    imageUrl: '/bch-house-logo.jpeg',
-    title: 'BCH House, Ghana',
-    link: '/projects/bch-house-ghana',
-  },
-];
+import { projects } from '@/static-data/projects';
+import { ProjectCard } from '../projects/ProjectCard';
 
 export function LatestProjects() {
   return (
@@ -107,37 +89,8 @@ export function LatestProjects() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           >
             {projects.map((project, index) => (
-              <motion.div key={project.title} variants={cardVariants}>
-                <Link href={project.link} className="group block h-full">
-                  <Card className="overflow-hidden hover:shadow-xl hover:border-primary transition-all duration-300 h-full flex flex-col">
-                    <CardContent className="p-6 flex flex-col items-center text-center">
-                      {/* Project Image/Logo Area */}
-                      <div className="w-full aspect-square max-w-50 p-6 flex justify-center items-center bg-white rounded-xl mb-6 transition-transform duration-300 group-hover:scale-105">
-                        <div className="relative w-full h-full">
-                          <Image
-                            src={project.imageUrl}
-                            alt={`${project.title} logo`}
-                            fill
-                            className="object-contain"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            priority={index === 0}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Project Title */}
-                      <h3 className="font-display text-xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-                        {project.title}
-                      </h3>
-
-                      {/* Read More Link */}
-                      <div className="flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all duration-300 mt-auto">
-                        Read More
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
+              <motion.div key={project.id} variants={cardVariants}>
+                <ProjectCard project={project} priority={index === 0} />
               </motion.div>
             ))}
           </motion.div>

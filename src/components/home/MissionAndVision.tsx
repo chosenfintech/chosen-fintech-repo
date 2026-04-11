@@ -1,4 +1,3 @@
-// src/components/home/MissionAndVision.tsx
 'use client';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -7,7 +6,6 @@ import {
   fadeUpVariants,
   lineRevealVariants,
 } from '@/static-data/motion-variants';
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 
@@ -17,14 +15,12 @@ const features = [
     description:
       'To educate, onboard and empower individuals and organisations to navigate digital technology for effective socio-economic systems.',
     image: '/mission-image.webp',
-    link: '/about',
   },
   {
     title: 'Vision',
     description:
       'To be a global catalyst for fintech innovation, mass adoption and ethical governance.',
     image: '/vision-image.png',
-    link: '/about',
   },
 ];
 
@@ -87,11 +83,10 @@ export function MissionAndVision() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
-                      {/* Fixed Cardano blue overlay */}
                       <div
                         className="absolute inset-0 transition-opacity duration-300"
                         style={{
-                          backgroundColor: 'oklch(0.396 0.195 264 / 0.80)',
+                          backgroundColor: 'oklch(0.396 0.195 264 / 0.85)',
                         }}
                         onMouseEnter={(e) => {
                           (
@@ -110,21 +105,14 @@ export function MissionAndVision() {
 
                     {/* Content */}
                     <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8">
-                      <div>
-                        <h3 className="font-display text-xl md:text-2xl font-semibold text-white mb-3">
-                          {feature.title}
-                        </h3>
-                        <p className="text-white/90 leading-relaxed mb-6">
-                          {feature.description}
-                        </p>
-                        <a
-                          href={feature.link}
-                          className="inline-flex items-center gap-2 text-white font-medium hover:gap-3 transition-all duration-300 group/link"
-                        >
-                          Learn More
-                          <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
-                        </a>
-                      </div>
+                      {/* Accent line */}
+                      <div className="w-8 h-0.5 bg-white/60 mb-4" />
+                      <h3 className="font-display text-2xl md:text-3xl font-semibold text-white mb-4">
+                        {feature.title}
+                      </h3>
+                      <p className="text-white/90 text-base md:text-lg leading-relaxed">
+                        {feature.description}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
