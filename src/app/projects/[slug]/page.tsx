@@ -1,4 +1,5 @@
 // src/app/projects/[slug]/page.tsx
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -7,8 +8,56 @@ import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import { projects } from '@/static-data/projects';
 
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
+
 interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: ProjectDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = projects.find((p) => p.slug === slug);
+
+  if (!project) {
+    return {
+      title: 'Project Not Found',
+      description: 'The requested project could not be found.',
+    };
+  }
+
+  return {
+    title: project.title,
+    description: project.description,
+    alternates: {
+      canonical: `${baseUrl}/projects/${slug}`,
+    },
+    openGraph: {
+      title: `${project.title} — Chosen Fintech Solutions`,
+      description: project.description,
+      url: `${baseUrl}/projects/${slug}`,
+      siteName: 'Chosen Fintech Solutions',
+      images: [
+        {
+          url: '/open-graph-images/og-image-projects.png',
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
+      locale: 'en_US',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} — Chosen Fintech Solutions`,
+      description: project.description,
+      site: '@chosenfintech',
+      images: ['/open-graph-images/og-image-projects.png'],
+    },
+  };
 }
 
 export default async function ProjectDetailPage({

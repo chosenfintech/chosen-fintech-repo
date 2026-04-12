@@ -42,40 +42,51 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: 'Blog',
-      description: 'Discover inspiring stories and updates from our community.',
+      title: 'Events',
+      description:
+        'Discover the latest events, workshops, and community meetups from Chosen Fintech Solutions.',
+      alternates: {
+        canonical: `${baseUrl}/events/${slug}`,
+      },
       openGraph: {
-        title: 'Blog',
+        title: 'Events — Chosen Fintech Solutions',
         description:
-          'Discover inspiring stories and updates from our community.',
-        url: `${baseUrl}/blog/${slug}`,
+          'Discover the latest events, workshops, and community meetups from Chosen Fintech Solutions.',
+        url: `${baseUrl}/events/${slug}`,
+        siteName: 'Chosen Fintech Solutions',
         images: [
           {
-            url: '/open-graph-images/og-image-blog.png',
+            url: '/open-graph-images/og-image-events.png',
             width: 1200,
             height: 630,
-            alt: 'Hereafter Ghana Blog Fallback Image',
+            alt: 'Chosen Fintech Solutions Events',
           },
         ],
+        locale: 'en_US',
+        type: 'article',
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'Blog | Hereafter Ghana',
+        title: 'Events — Chosen Fintech Solutions',
         description:
-          'Discover inspiring stories and updates from our community.',
-        site: '@Hereafter_Ghana',
-        images: ['/open-graph-images/og-image-blog.png'],
+          'Discover the latest events, workshops, and community meetups from Chosen Fintech Solutions.',
+        site: '@chosenfintech',
+        images: ['/open-graph-images/og-image-events.png'],
       },
     };
   }
 
   const ogImage = post.coverImage
     ? post.coverImage
-    : '/open-graph-images/og-image-blog.png';
+    : '/open-graph-images/og-image-events.png';
 
   return {
-    title: `${post.title}`,
-    description: post.excerpt || 'Read this post on Chosen Fintech Solutions Events page.',
+    title: post.title,
+    description:
+      post.excerpt || 'Read this event post on Chosen Fintech Solutions.',
+    alternates: {
+      canonical: `${baseUrl}/events/${post.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt || '',
@@ -89,14 +100,14 @@ export async function generateMetadata({
           alt: post.title,
         },
       ],
-      type: 'article',
       locale: 'en_US',
+      type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt || '',
-      site: '@Hereafter_Ghana',
+      site: '@chosenfintech',
       images: [ogImage],
     },
   };
