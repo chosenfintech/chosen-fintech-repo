@@ -92,7 +92,7 @@ export default async function AcademyDetailPage({
         />
         <div className="absolute inset-0 bg-primary/80" />
 
-        <div className="relative z-10 flex flex-col justify-between h-full min-h-64 md:min-h-80 lg:min-h-96 px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-8 max-w-7xl mx-auto w-full">
+        <div className="relative z-10 flex flex-col justify-end gap-4 h-full min-h-64 md:min-h-80 lg:min-h-96 px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-8 max-w-7xl mx-auto w-full">
           <Link
             href="/academy"
             className="hidden lg:inline-flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground text-sm transition-colors w-fit"
@@ -101,7 +101,7 @@ export default async function AcademyDetailPage({
             Back to Academy
           </Link>
 
-          <div className="mt-6">
+          <div>
             <div className="flex items-center gap-3 mb-3">
               <Badge
                 className={`text-xs font-medium border ${levelColors[guide.level]}`}

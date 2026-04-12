@@ -88,20 +88,16 @@ export default async function ProjectDetailPage({
           style={{ backgroundColor: 'oklch(0.396 0.195 264 / 0.8)' }}
         />
 
-        {/* Full-size positioned layer */}
-        <div className="absolute inset-0 flex flex-col justify-between pt-28 md:pt-40 pb-8">
-          {/* Width-constrained inner wrapper */}
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-            <Link
-              href="/projects"
-              className="hidden lg:inline-flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground text-sm transition-colors w-fit"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Projects
-            </Link>
-          </div>
+        <div className="relative z-10 flex flex-col justify-end gap-4 h-full min-h-64 md:min-h-80 lg:min-h-96 px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-8 max-w-7xl mx-auto w-full">
+          <Link
+            href="/projects"
+            className="hidden lg:inline-flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground text-sm transition-colors w-fit"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Projects
+          </Link>
 
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+          <div>
             <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground max-w-3xl leading-tight">
               {project.title}
             </h1>
