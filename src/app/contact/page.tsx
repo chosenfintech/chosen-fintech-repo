@@ -1,10 +1,16 @@
+// src/app/contact/page.tsx
 'use client';
 
 import { PageHero } from '@/components/ui/PageHero';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { motion, Variants } from 'motion/react';
+import { motion } from 'motion/react';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
+import {
+  containerVariants,
+  itemVariants,
+  iconVariants,
+} from '@/static-data/motion-variants';
 
 const contactInfo = [
   {
@@ -26,48 +32,6 @@ const contactInfo = [
     href: null,
   },
 ];
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-    scale: 0.9,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      damping: 15,
-    },
-  },
-};
-
-const iconVariants: Variants = {
-  hover: {
-    scale: 1.1,
-    rotate: [0, -10, 10, -10, 0],
-    transition: {
-      duration: 0.5,
-    },
-  },
-  tap: {
-    scale: 0.95,
-  },
-};
 
 const Contact = () => {
   return (

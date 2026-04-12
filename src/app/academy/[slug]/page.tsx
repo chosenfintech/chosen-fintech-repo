@@ -1,4 +1,5 @@
 // src/app/academy/[slug]/page.tsx
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -8,6 +9,9 @@ import { Footer } from '@/components/Footer';
 import { academyGuides } from '@/static-data/academy-guides';
 import { Badge } from '@/components/ui/badge';
 
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
+
 const levelColors: Record<'Beginner' | 'Intermediate' | 'Advanced', string> = {
   Beginner: 'bg-green-500/20 text-green-400 border-green-500/30',
   Intermediate: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
@@ -16,6 +20,51 @@ const levelColors: Record<'Beginner' | 'Intermediate' | 'Advanced', string> = {
 
 interface AcademyDetailPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: AcademyDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const guide = academyGuides.find((g) => g.slug === slug);
+
+  if (!guide) {
+    return {
+      title: 'Guide Not Found',
+      description: 'The requested academy guide could not be found.',
+    };
+  }
+
+  return {
+    title: guide.title,
+    description: guide.description,
+    alternates: {
+      canonical: `${baseUrl}/academy/${slug}`,
+    },
+    openGraph: {
+      title: `${guide.title} — Chosen Fintech Solutions`,
+      description: guide.description,
+      url: `${baseUrl}/academy/${slug}`,
+      siteName: 'Chosen Fintech Solutions',
+      images: [
+        {
+          url: guide.image,
+          width: 1200,
+          height: 630,
+          alt: guide.title,
+        },
+      ],
+      locale: 'en_US',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${guide.title} — Chosen Fintech Solutions`,
+      description: guide.description,
+      site: '@chosenfintech',
+      images: [guide.image],
+    },
+  };
 }
 
 export default async function AcademyDetailPage({

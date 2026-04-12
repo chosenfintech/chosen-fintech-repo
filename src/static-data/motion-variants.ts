@@ -207,3 +207,34 @@ export const ctaVariants: Variants = {
     },
   },
 };
+
+export const itemVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
+
+export const iconVariants: Variants = {
+  hover: {
+    scale: 1.1,
+    rotate: [0, -10, 10, -10, 0],
+    transition: {
+      duration: 0.5,
+    },
+  },
+  tap: {
+    scale: 0.95,
+  },
+};
