@@ -53,17 +53,32 @@ export function AboutFounder() {
                 variants={textVariants}
               >
                 <p>
-                  &quot;When I started Chosen Fintech, my vision was simple:
-                  make blockchain technology and cryptocurrency accessible to
-                  everyone. Too often, financial innovation leaves behind the
-                  very people who could benefit most from it.&quot;
+                  My journey into fintech began in 2017 during my time on
+                  campus, driven by volunteerism, youth leadership, and a
+                  passion for financial and technology innovation. After earning
+                  my Bachelor&apos;s degree in Integrated Business Studies
+                  (Accounting) from the University for Development Studies in
+                  2019, and completing my mandatory National Service in 2020
+                  amid the global COVID-19 pandemic, I found myself at a
+                  defining moment.
                 </p>
 
                 <p>
-                  &quot;We chose Cardano as our focus because it represents what
-                  we believe in — a technology built on rigorous research,
-                  designed for sustainability, and committed to real-world
-                  impact.&quot;
+                  The period of lockdown, isolation, and social distancing
+                  offered a rare opportunity for deep reflection and active
+                  engagement in virtual learning and professional communities.
+                  It was during this time that the vision for Chosen Fintech
+                  Solutions was born.
+                </p>
+
+                <p>
+                  What started as a personal pursuit evolved into a clear
+                  mission; to formalize my fintech activities into a structured
+                  and scalable organization. Today, Chosen Fintech Solutions is
+                  committed to delivering impactful financial and technology
+                  education, empowering youth and institutions with the
+                  knowledge and tools needed to thrive in a rapidly evolving
+                  digital economy.
                 </p>
 
                 <p className="font-medium text-foreground">
