@@ -1,160 +1,108 @@
 export const pageConfigs = [
   {
-    paths: ["/dashboard"],
-    title: "Dashboard",
-    description: "Admin dashboard overview",
+    paths: ['/dashboard'],
+    title: 'Dashboard',
+    description: 'Admin dashboard overview',
     exact: true,
   },
+
   // === USER MANAGEMENT ===
   {
-    paths: ["/dashboard/users/:id/user-profile"],
+    paths: ['/dashboard/users/:id/user-profile'],
     dynamicPaths: [/^\/dashboard\/users\/[^/]+\/user-profile$/],
-    title: "User Profile",
-    description: "View and manage your profile details",
+    title: 'User Profile',
+    description: 'View and manage your profile details',
   },
   {
-    paths: ["/dashboard/users/create-user"],
+    paths: ['/dashboard/users/create-user'],
     dynamicPaths: [/^\/dashboard\/users\/[^/]+$/],
-    title: "Create Admin",
-    description: "Create admins, all admins have management access",
+    title: 'Create Admin',
+    description: 'Create admins, all admins have management access',
   },
   {
-    paths: ["/dashboard/users"],
+    paths: ['/dashboard/users'],
     dynamicPaths: [/^\/dashboard\/users\/[^/]+$/],
-    title: "Admin Management",
-    description: "Manage and monitor admin accounts",
+    title: 'Admin Management',
+    description: 'Manage and monitor admin accounts',
   },
 
-  // === DONOR MANAGEMENT - DETAIL PAGES ===
+  // === POSTS MANAGEMENT ===
   {
-    paths: ["/dashboard/donors/create-donor"],
-    title: "Create Donor",
-    description: "Add a new donor to the management system",
-  },
-  {
-    paths: ["/dashboard/donors/:id/edit"],
-    dynamicPaths: [/^\/dashboard\/donors\/[^/]+\/edit$/],
-    title: "Edit Donor",
-    description: "Update donor information and contact details",
-  },
-  {
-    paths: ["/dashboard/donors/:id/detail"],
-    dynamicPaths: [/^\/dashboard\/donors\/[^/]+\/detail$/],
-    title: "Donor Details",
-    description: "View comprehensive donor profile and donation history",
-  },
-  {
-    paths: ["/dashboard/donors/:id/donations"],
-    dynamicPaths: [/^\/dashboard\/donors\/[^/]+\/donations$/],
-    title: "Donor Donations",
-    description: "View all donations made by this donor",
-  },
-
-  // === DONOR UPLOADS - DETAIL PAGES ===
-  {
-    paths: ["/dashboard/donors/uploads/:id/details"],
-    dynamicPaths: [/^\/dashboard\/donors\/uploads\/[^/]+\/details$/],
-    title: "Upload Details",
-    description: "View upload results including successful entries and errors",
-  },
-  {
-    paths: ["/dashboard/donors/uploads/momo-statement"],
-    title: "Upload MoMo Statement",
-    description: "Import donor data from mobile money statement",
-  },
-  {
-    paths: ["/dashboard/donors/uploads/donors-data"],
-    title: "Upload Donor Data",
-    description: "Bulk import donor information from file",
-  },
-  {
-    paths: ["/dashboard/donors/uploads"],
-    title: "Upload History",
-    description: "Track all donor data imports and mobile money statements",
-  },
-  {
-    paths: ["/dashboard/donors"],
-    title: "Donor Management",
-    description: "View and manage all donors in the system",
-  },
-
-  // === DONATIONS ===
-  {
-    paths: ["/dashboard/donations"],
-    title: "All Donations",
-    description: "Comprehensive view of all donations received",
-  },
-
-  // === CONTACTS ===
-  {
-    paths: ["/dashboard/contacts"],
-    title: "Contact Management",
-    description: "Manage contacts and communication recipients",
-  },
-
-  // === MESSAGES - DETAIL PAGES ===
-  {
-    paths: ["/dashboard/messages/:id/preview"],
-    dynamicPaths: [/^\/dashboard\/messages\/[^/]+\/preview$/],
-    title: "Message Preview",
+    paths: ['/dashboard/posts/categories/:id/view'],
+    dynamicPaths: [/^\/dashboard\/posts\/categories\/[^/]+\/view$/],
+    title: 'View Post Category',
     description:
-      "Review message content before sending or view sent message details",
+      'View details of this post category below including associated posts',
   },
   {
-    paths: ["/dashboard/messages/:id/delivery-logs"],
-    dynamicPaths: [/^\/dashboard\/messages\/[^/]+\/delivery-logs$/],
-    title: "Delivery Logs",
-    description: "Track message delivery status and recipient engagement",
-  },
-
-  // === SMS MESSAGES ===
-  {
-    paths: ["/dashboard/messages/sms/create"],
-    title: "Create SMS Message",
-    description: "Compose and send SMS to donors and contacts",
-  },
-  {
-    paths: ["/dashboard/messages/sms/:id/edit"],
-    dynamicPaths: [/^\/dashboard\/messages\/sms\/[^/]+\/edit$/],
-    title: "Edit SMS Message",
-    description: "Update SMS message content and recipients",
-  },
-  {
-    paths: ["/dashboard/messages/sms"],
-    title: "SMS Messages",
-    description: "View all SMS messages sent to donors and contacts",
+    paths: ['/dashboard/posts/categories/:id/edit'],
+    dynamicPaths: [/^\/dashboard\/posts\/categories\/[^/]+\/edit$/],
+    title: 'Edit Post Category',
+    description: 'Edit an existing post category to update its details',
   },
 
-  // === EMAIL MESSAGES ===
   {
-    paths: ["/dashboard/messages/email/create"],
-    title: "Create Email Message",
-    description: "Compose and send email to donors and contacts",
+    paths: ['/dashboard/posts/categories/create'],
+    dynamicPaths: [/^\/dashboard\/posts\/categories\/create\/?$/],
+    title: 'Create Post Category',
+    description: 'Fill in the form below to create a new post category',
   },
   {
-    paths: ["/dashboard/messages/email/:id/edit"],
-    dynamicPaths: [/^\/dashboard\/messages\/email\/[^/]+\/edit$/],
-    title: "Edit Email Message",
-    description: "Update email message content and recipients",
+    paths: ['/dashboard/posts/categories'],
+    dynamicPaths: [/^\/dashboard\/posts\/categories$/],
+    title: 'Post Categories',
+    description: 'A list of all post categories to organize your blog posts',
   },
   {
-    paths: ["/dashboard/messages/email"],
-    title: "Email Messages",
-    description: "View all email messages sent to donors and contacts",
+    paths: ['/dashboard/posts/:slug/edit'],
+    dynamicPaths: [/^\/dashboard\/posts\/[^/]+\/edit/],
+    title: 'Edit Post',
+    description: 'Edit an existing blog post with the rich text editor',
   },
-
-  // === ALL MESSAGES ===
   {
-    paths: ["/dashboard/messages"],
-    title: "Message History",
+    paths: ['/dashboard/posts/:slug/edit'],
+    dynamicPaths: [/^\/dashboard\/posts\/[^/]+\/preview/],
+    title: 'Preview Post',
     description:
-      "Complete record of all communications sent to donors and contacts",
+      'Preview the blog post before publishing as it will appear on the site',
+  },
+  {
+    paths: ['/dashboard/posts/create'],
+    dynamicPaths: [/^\/dashboard\/posts\/[^/]+$/],
+    title: 'Create Post',
+    description: 'Create a new blog post with the rich text editor',
+  },
+  {
+    paths: ['/dashboard/posts'],
+    dynamicPaths: [/^\/dashboard\/posts\/[^/]+$/],
+    title: 'All Posts',
+    description: 'A comprehensive list of all blog posts in a datatable format',
   },
 
-  // === SETTINGS ===
+  // === GALLERY MANAGEMENT ===
   {
-    paths: ["/dashboard/settings"],
-    title: "Settings",
-    description: "Configure system preferences and account settings",
+    paths: ['/dashboard/gallery/photos/upload'],
+    dynamicPaths: [/^\/dashboard\/gallery\/photos\/upload\/?$/],
+    title: 'Upload Photo',
+    description: 'Upload a new photo to the gallery',
+  },
+  {
+    paths: ['/dashboard/gallery/photos'],
+    dynamicPaths: [/^\/dashboard\/gallery\/photos$/],
+    title: 'All Photos',
+    description:
+      'A comprehensive list of all gallery photos in a datatable format',
+  },
+  {
+    paths: ['/dashboard/gallery/categories/create'],
+    dynamicPaths: [/^\/dashboard\/gallery\/categories\/create\/?$/],
+    title: 'Create Gallery Category',
+    description: 'Fill in the form below to create a new gallery category',
+  },
+  {
+    paths: ['/dashboard/gallery/categories'],
+    dynamicPaths: [/^\/dashboard\/gallery\/categories$/],
+    title: 'Gallery Categories',
+    description: 'A list of all gallery categories to organize your photos',
   },
 ];
