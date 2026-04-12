@@ -76,7 +76,7 @@ const navigationItems: NavigationItem[] = [
     submenuItems: [
       {
         name: 'All Photos',
-        path: '/dashboard/gallery',
+        path: '/dashboard/gallery/photos',
       },
       {
         name: 'Categories',
