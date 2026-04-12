@@ -175,3 +175,35 @@ export const statVariants: Variants = {
     transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
   },
 };
+
+export const categoryVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
+
+export const ctaVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
