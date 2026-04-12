@@ -81,9 +81,17 @@ export function AboutFounder() {
                   digital economy.
                 </p>
 
-                <p className="font-medium text-foreground">
-                  — Yakub Mohammed Mustapha, Founder & CEO
-                </p>
+                <div className="pt-4 border-t border-border">
+                  <p className="font-semibold text-foreground text-base sm:text-lg">
+                    — Yakub Mohammed Mustapha
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-0.5">
+                    Founder & CEO
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-0.5">
+                    MBA (Operations) · MSc ICT · BA Business (Accounting)
+                  </p>
+                </div>
               </motion.div>
             </motion.div>
           </div>
