@@ -1,170 +1,146 @@
 // src/components/posts/detail/ShareMenu.tsx
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Share2, Copy, Twitter, Linkedin, Facebook, Mail } from "lucide-react";
-import toast from "react-hot-toast";
+  Check,
+  Copy,
+  Twitter,
+  Linkedin,
+  Facebook,
+  Mail,
+  Share2,
+} from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import toast from 'react-hot-toast';
 
 interface ShareMenuProps {
   postTitle: string;
-  variant?: "default" | "icon-only";
 }
 
-export const ShareMenu: React.FC<ShareMenuProps> = ({
-  postTitle,
-  variant = "default",
-}) => {
-  const [value, setValue] = useState<string>("");
+export const ShareMenu: React.FC<ShareMenuProps> = ({ postTitle }) => {
+  const [copied, setCopied] = useState(false);
 
   const shareOptions = [
     {
-      name: "Copy Link",
-      value: "copy",
-      icon: Copy,
-      color: "text-muted-foreground",
+      name: 'Copy link',
+      icon: copied ? Check : Copy,
       action: async () => {
         try {
           await navigator.clipboard.writeText(window.location.href);
-          toast.success("Link copied to clipboard!");
-        } catch (err) {
-          console.error(err);
-          toast.error("Failed to copy link");
+          setCopied(true);
+          toast.success('Link copied!');
+          setTimeout(() => setCopied(false), 2000);
+        } catch {
+          toast.error('Failed to copy link');
         }
       },
     },
     {
-      name: "Twitter",
-      value: "twitter",
+      name: 'Share on X',
       icon: Twitter,
-      color: "text-blue-500",
       action: () => {
         const text = encodeURIComponent(
           `${postTitle}\n\n${window.location.href}`,
         );
         window.open(
           `https://twitter.com/intent/tweet?text=${text}`,
-          "_blank",
-          "noopener,noreferrer",
+          '_blank',
+          'noopener,noreferrer',
         );
       },
     },
     {
-      name: "LinkedIn",
-      value: "linkedin",
+      name: 'Share on LinkedIn',
       icon: Linkedin,
-      color: "text-blue-700",
       action: () => {
         const url = encodeURIComponent(window.location.href);
         window.open(
           `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-          "_blank",
-          "noopener,noreferrer",
+          '_blank',
+          'noopener,noreferrer',
         );
       },
     },
     {
-      name: "Facebook",
-      value: "facebook",
+      name: 'Share on Facebook',
       icon: Facebook,
-      color: "text-blue-600",
       action: () => {
         const url = encodeURIComponent(window.location.href);
         window.open(
           `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-          "_blank",
-          "noopener,noreferrer",
+          '_blank',
+          'noopener,noreferrer',
         );
       },
     },
     {
-      name: "Email",
-      value: "email",
+      name: 'Share via email',
       icon: Mail,
-      color: "text-green-600",
       action: () => {
-        const subject = encodeURIComponent(
-          `Check out this article: ${postTitle}`,
-        );
+        const subject = encodeURIComponent(`Check out: ${postTitle}`);
         const body = encodeURIComponent(
-          `I thought you might be interested in this article:\n\n${postTitle}\n${window.location.href}`,
+          `${postTitle}\n${window.location.href}`,
         );
         window.open(`mailto:?subject=${subject}&body=${body}`);
       },
     },
   ];
 
-  const handleValueChange = (newValue: string) => {
-    const option = shareOptions.find((opt) => opt.value === newValue);
-    if (option) {
-      option.action();
-      // Reset the select after action
-      setTimeout(() => setValue(""), 100);
-    }
-  };
+  const iconClass = 'h-4 w-4';
 
-  if (variant === "icon-only") {
-    return (
-      <Select value={value} onValueChange={handleValueChange}>
-        <SelectTrigger
-          className="rounded-xl flex-1 cursor-pointer"
-          aria-label="Share Article"
-        >
-          <div className="flex items-center">
-            <Share2 className="h-5 w-5" />
-            <span className="ml-2">Share</span>
-          </div>
-        </SelectTrigger>
-        <SelectContent className="w-64">
-          {shareOptions.map((option) => (
-            <SelectItem
-              key={option.value}
-              value={option.value}
-              className="flex items-center gap-3 px-4 py-3 cursor-pointer"
-            >
-              <div className="flex items-center gap-3">
-                <option.icon
-                  className={`h-5 w-5 ${option.color} transition-transform shrink-0`}
-                />
-                <span className="font-medium text-sm">{option.name}</span>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    );
-  }
+  const btnClass =
+    'flex items-center cursor-pointer justify-center w-9 h-9 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors';
 
   return (
-    <Select value={value} onValueChange={handleValueChange}>
-      <SelectTrigger className="rounded-xl w-full h-11 cursor-pointer">
-        <div className="flex items-center">
-          <Share2 className="h-5 w-5 mr-3" />
-          <SelectValue placeholder="Share Article" />
-        </div>
-      </SelectTrigger>
-      <SelectContent className="w-64">
-        {shareOptions.map((option) => (
-          <SelectItem
-            key={option.value}
-            value={option.value}
-            className="flex items-center gap-3 px-4 py-3 cursor-pointer"
-          >
-            <div className="flex items-center gap-3">
-              <option.icon
-                className={`h-5 w-5 ${option.color} transition-transform shrink-0`}
-              />
-              <span className="font-medium text-sm">{option.name}</span>
-            </div>
-          </SelectItem>
+    <TooltipProvider delayDuration={300}>
+      {/* Desktop: vertical icon rail */}
+      <div className="hidden lg:flex flex-col items-center gap-2">
+        <span className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
+          Share
+        </span>
+        {shareOptions.map((opt) => (
+          <Tooltip key={opt.name}>
+            <TooltipTrigger asChild>
+              <button
+                onClick={opt.action}
+                className={btnClass}
+                aria-label={opt.name}
+              >
+                <opt.icon className={iconClass} />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              <p className="text-xs">{opt.name}</p>
+            </TooltipContent>
+          </Tooltip>
         ))}
-      </SelectContent>
-    </Select>
+      </div>
+
+      {/* Mobile: horizontal bottom bar */}
+      <div className="flex lg:hidden items-center justify-between w-full px-1">
+        <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+          <Share2 className="h-3.5 w-3.5" />
+          Share
+        </span>
+        <div className="flex items-center gap-1">
+          {shareOptions.map((opt) => (
+            <button
+              key={opt.name}
+              onClick={opt.action}
+              className={btnClass}
+              aria-label={opt.name}
+            >
+              <opt.icon className={iconClass} />
+            </button>
+          ))}
+        </div>
+      </div>
+    </TooltipProvider>
   );
 };
