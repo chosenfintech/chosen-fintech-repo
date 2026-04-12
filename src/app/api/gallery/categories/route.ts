@@ -31,11 +31,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const sortOrder = (searchParams.get('sortOrder') ?? 'desc') as
       | 'asc'
       | 'desc';
+    const hasPhotos = searchParams.get('hasPhotos') === 'true';
 
     const whereClause: Prisma.GalleryCategoryWhereInput = {};
 
     if (search) {
       whereClause.name = { contains: search, mode: 'insensitive' };
+    }
+
+    if (hasPhotos) {
+      whereClause.photos = { some: { isPublished: true } };
     }
 
     const orderBy: Prisma.GalleryCategoryOrderByWithRelationInput = {};
@@ -96,7 +101,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       };
     });
 
-    // totalPhotoCount sort is derived, so done in-memory
     if (sortBy === 'totalPhotoCount') {
       response.sort((a, b) => {
         const diff = a.totalPhotosCount - b.totalPhotosCount;

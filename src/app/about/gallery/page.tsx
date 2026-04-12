@@ -1,8 +1,10 @@
-// src/app/gallery/page.tsx
+// src/app/about/gallery/page.tsx
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
-import GalleryPageClient from '@/components/gallery/GalleryPageClient';
+import GalleryPageServer from '@/components/gallery/GalleryPageServer';
+import GalleryPageSkeleton from '@/components/gallery/GalleryPageSkeleton';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -41,12 +43,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GalleryPage() {
+interface GalleryPageProps {
+  searchParams: Promise<{ page?: string }>;
+}
+
+export default async function GalleryPage({ searchParams }: GalleryPageProps) {
+  const resolvedSearchParams = await searchParams;
+
   return (
     <div>
-      <NavBar />
-      <GalleryPageClient />
-      <Footer />
+      <Suspense fallback={<GalleryPageSkeleton />}>
+        <NavBar />
+        <GalleryPageServer searchParams={resolvedSearchParams} />
+        <Footer />
+      </Suspense>
     </div>
   );
 }

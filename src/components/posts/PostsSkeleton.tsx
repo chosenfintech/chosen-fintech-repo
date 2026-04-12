@@ -1,4 +1,4 @@
-// src/components/posts/BlogPageSkeleton.tsx
+// src/components/posts/PostsSkeleton.tsx
 import { NavBar } from '../NavBar';
 import { Footer } from '../Footer';
 import { PageHero } from '../ui/PageHero';
