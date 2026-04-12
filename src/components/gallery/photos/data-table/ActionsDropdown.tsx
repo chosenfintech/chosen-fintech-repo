@@ -1,8 +1,15 @@
-// src/components/gallery/photos/data-table/ActionsDropdown.tsx
 'use client';
 import * as React from 'react';
-import { MoreHorizontal, Eye, EyeOff, Pencil, Trash2 } from 'lucide-react';
+import {
+  MoreHorizontal,
+  Eye,
+  EyeOff,
+  Pencil,
+  Trash2,
+  ZoomIn,
+} from 'lucide-react';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -40,6 +47,7 @@ export function GalleryPhotoActionsDropdown({
 }: GalleryPhotoActionsDropdownProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [editDialogOpen, setEditDialogOpen] = React.useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
 
   const [altText, setAltText] = React.useState(photo.altText ?? '');
   const [caption, setCaption] = React.useState(photo.caption ?? '');
@@ -49,7 +57,6 @@ export function GalleryPhotoActionsDropdown({
   const [updatePhoto, { isLoading: isUpdating }] =
     useUpdateGalleryPhotoMutation();
 
-  // Keep local state in sync if the photo prop changes (e.g. after a refetch)
   React.useEffect(() => {
     setAltText(photo.altText ?? '');
     setCaption(photo.caption ?? '');
@@ -122,6 +129,16 @@ export function GalleryPhotoActionsDropdown({
 
           <DropdownMenuItem
             className="hover:cursor-pointer"
+            onClick={() => setViewDialogOpen(true)}
+          >
+            <ZoomIn className="mr-2 h-4 w-4" />
+            View Photo
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
             onClick={() => setEditDialogOpen(true)}
           >
             <Pencil className="mr-2 h-4 w-4" />
@@ -158,6 +175,32 @@ export function GalleryPhotoActionsDropdown({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* View Photo Dialog */}
+      <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
+        <DialogContent className="sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>{photo.altText ?? photo.category.name}</DialogTitle>
+          </DialogHeader>
+          <div
+            className="relative w-full"
+            style={{ minHeight: '300px', maxHeight: '60vh' }}
+          >
+            <Image
+              src={photo.url}
+              alt={photo.altText ?? photo.category.name}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 768px"
+            />
+          </div>
+          {photo.caption && (
+            <p className="text-sm text-muted-foreground text-center pt-2">
+              {photo.caption}
+            </p>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Edit Details Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>

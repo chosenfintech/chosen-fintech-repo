@@ -13,11 +13,11 @@ export const updateGalleryCategorySchema = z.object({
   name: z
     .string({ message: 'Category name must be a string' })
     .min(1, 'Category name must not be empty')
-    .max(100, 'Category name must be less than 100 characters')
+    .max(100, 'Cataegory name must be less than 100 characters')
     .optional(),
   isFeatured: z.boolean().optional(),
 });
 
-export type IGalleryCategoryFormSchema = z.infer<
+export type IGalleryCategoryFormSchema = z.input<
   typeof createGalleryCategorySchema
 >;

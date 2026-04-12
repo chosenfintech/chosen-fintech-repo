@@ -1,0 +1,130 @@
+// src/components/gallery/categories/data-table
+'use client';
+
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Loader2, ArrowLeft, LayoutGrid } from 'lucide-react';
+import { UseFormReturn } from 'react-hook-form';
+import { IGalleryCategoryFormSchema } from '@/validations/gallery/gallery-category-validation';
+import { IGalleryCategory } from '@/types/gallery/gallery-category.types';
+
+interface IGalleryCategoryFormProps {
+  form: UseFormReturn<IGalleryCategoryFormSchema>;
+  onSubmit: (data: IGalleryCategoryFormSchema) => Promise<void>;
+  isLoading: boolean;
+  initialData?: IGalleryCategory | null;
+  mode: 'create' | 'update';
+}
+
+export default function GalleryCategoryForm({
+  form,
+  onSubmit,
+  isLoading,
+  mode,
+}: IGalleryCategoryFormProps) {
+  return (
+    <div className="w-full">
+      <Button
+        type="button"
+        variant="ghost"
+        onClick={() => window.history.back()}
+        className="mb-4 text-muted-foreground hover:text-foreground transition-colors hover:cursor-pointer"
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Button>
+
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 md:p-8">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-semibold text-foreground flex items-center gap-2">
+                    <LayoutGrid className="h-4 w-4" />
+                    Category Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter category name..."
+                      className="bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-lg h-12 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="text-sm text-muted-foreground">
+                    Choose a descriptive name for this gallery category
+                  </p>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="isFeatured"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 bg-slate-50 dark:bg-slate-700 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value ?? false}
+                      onCheckedChange={field.onChange}
+                      className="data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel className="font-medium">
+                      Featured Category
+                    </FormLabel>
+                    <p className="text-sm text-muted-foreground">
+                      Highlight this category in featured gallery sections
+                    </p>
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 pt-8 border-t border-slate-200 dark:border-slate-700">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isLoading}
+                onClick={() => window.history.back()}
+                className="w-full sm:w-auto px-6 py-2 hover:cursor-pointer border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all order-2 sm:order-1"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                type="submit"
+                className="w-full sm:w-auto hover:cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 min-w-[140px] shadow-lg transition-all order-1 sm:order-2"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {mode === 'create' ? 'Creating...' : 'Updating...'}
+                  </>
+                ) : mode === 'create' ? (
+                  'Create Category'
+                ) : (
+                  'Update Category'
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </div>
+  );
+}
