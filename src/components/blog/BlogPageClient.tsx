@@ -3,7 +3,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
-import { BlogPostCard } from './BlogPostCard';
+import { BlogPostCard } from '../posts/PostCard';
 import { BlogSidebar } from './BlogSidebar';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';

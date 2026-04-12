@@ -19,7 +19,8 @@ const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
 /**
  * GET /api/posts/[postId]
- * Public — fetch a single post by UUID or slug.
+ * - Authenticated: returns any post (published or draft)
+ * - Unauthenticated: returns published posts only
  */
 export async function GET(
   _req: NextRequest,
@@ -32,9 +33,18 @@ export async function GET(
       throw new ValidationError('Post identifier is required');
     }
 
+    let isAuthenticated = false;
+    try {
+      await verifySession();
+      isAuthenticated = true;
+    } catch {
+      // unauthenticated — restrict to published posts below
+    }
+
     const post = await prisma.post.findFirst({
       where: {
         OR: [{ id: postId }, { slug: postId }],
+        ...(isAuthenticated ? {} : { isPublished: true }),
       },
       include: {
         author: { select: { id: true, fullname: true, email: true } },

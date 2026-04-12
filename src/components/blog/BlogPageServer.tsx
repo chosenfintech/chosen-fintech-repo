@@ -11,9 +11,10 @@ export async function fetchEventsPosts(params: {
   categoryId?: string;
   search?: string;
 }): Promise<IPostsPaginatedResponse> {
-  const url = new URL(`/api/posts/events`, baseUrl);
+  const url = new URL(`/api/posts/published`, baseUrl);
   url.searchParams.set('page', params.page.toString());
   url.searchParams.set('limit', params.limit.toString());
+  url.searchParams.set('postType', 'events');
   if (params.categoryId) url.searchParams.set('categoryId', params.categoryId);
   if (params.search) url.searchParams.set('search', params.search);
 
@@ -35,10 +36,11 @@ export async function fetchEventsPosts(params: {
 }
 
 async function fetchLatestFeaturedPost(): Promise<IPost | null> {
-  const url = new URL(`/api/posts/events`, baseUrl);
+  const url = new URL(`/api/posts/published`, baseUrl);
   url.searchParams.set('page', '1');
   url.searchParams.set('limit', '1');
   url.searchParams.set('isFeatured', 'true');
+  url.searchParams.set('postType', 'events');
 
   const response = await fetch(url.toString(), {
     headers: { 'Content-Type': 'application/json' },

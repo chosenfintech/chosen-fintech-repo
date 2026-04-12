@@ -1,4 +1,4 @@
-// src/app/events/[slug]/page.tsx
+// src/app/posts/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import BlogPostDetailClient from '@/components/posts/detail/DetailClient';
@@ -42,24 +42,24 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: 'Events',
+      title: 'Post Not Found',
       description:
-        'Discover the latest events, workshops, and community meetups from Chosen Fintech Solutions.',
+        'Explore articles, events, and educational content from Chosen Fintech Solutions.',
       alternates: {
-        canonical: `${baseUrl}/events/${slug}`,
+        canonical: `${baseUrl}/posts/${slug}`,
       },
       openGraph: {
-        title: 'Events — Chosen Fintech Solutions',
+        title: 'Chosen Fintech Solutions',
         description:
-          'Discover the latest events, workshops, and community meetups from Chosen Fintech Solutions.',
-        url: `${baseUrl}/events/${slug}`,
+          'Explore articles, events, and educational content from Chosen Fintech Solutions.',
+        url: `${baseUrl}/posts/${slug}`,
         siteName: 'Chosen Fintech Solutions',
         images: [
           {
-            url: '/open-graph-images/og-image-events.png',
+            url: '/open-graph-images/og-image.png',
             width: 1200,
             height: 630,
-            alt: 'Chosen Fintech Solutions Events',
+            alt: 'Chosen Fintech Solutions',
           },
         ],
         locale: 'en_US',
@@ -67,30 +67,29 @@ export async function generateMetadata({
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'Events — Chosen Fintech Solutions',
+        title: 'Chosen Fintech Solutions',
         description:
-          'Discover the latest events, workshops, and community meetups from Chosen Fintech Solutions.',
+          'Explore articles, events, and educational content from Chosen Fintech Solutions.',
         site: '@chosenfintech',
-        images: ['/open-graph-images/og-image-events.png'],
+        images: ['/open-graph-images/og-image.png'],
       },
     };
   }
 
-  const ogImage = post.coverImage
-    ? post.coverImage
-    : '/open-graph-images/og-image-events.png';
+  const ogImage = post.coverImage ?? '/open-graph-images/og-image.png';
+  const description =
+    post.excerpt || 'Read this post on Chosen Fintech Solutions.';
 
   return {
     title: post.title,
-    description:
-      post.excerpt || 'Read this event post on Chosen Fintech Solutions.',
+    description,
     alternates: {
-      canonical: `${baseUrl}/events/${post.slug}`,
+      canonical: `${baseUrl}/posts/${post.slug}`,
     },
     openGraph: {
       title: post.title,
-      description: post.excerpt || '',
-      url: `${baseUrl}/events/${post.slug}`,
+      description,
+      url: `${baseUrl}/posts/${post.slug}`,
       siteName: 'Chosen Fintech Solutions',
       images: [
         {
@@ -106,18 +105,18 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.excerpt || '',
+      description,
       site: '@chosenfintech',
       images: [ogImage],
     },
   };
 }
 
-interface BlogPostPageProps {
+interface PostPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
+export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
   const post = await fetchPost(slug);
 

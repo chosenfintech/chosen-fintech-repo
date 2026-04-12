@@ -82,7 +82,7 @@ export default async function AcademyDetailPage({
       <NavBar />
 
       {/* Hero Banner */}
-      <div className="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+      <div className="relative w-full min-h-64 md:min-h-80 lg:min-h-96 overflow-hidden">
         <Image
           src={guide.image}
           alt={guide.title}
@@ -91,24 +91,28 @@ export default async function AcademyDetailPage({
           priority
         />
         <div className="absolute inset-0 bg-primary/80" />
-        <div className="absolute inset-0 flex flex-col justify-end px-4 sm:px-6 lg:px-8 pb-8 max-w-7xl mx-auto w-full">
+
+        <div className="relative z-10 flex flex-col justify-between h-full min-h-64 md:min-h-80 lg:min-h-96 px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-8 max-w-7xl mx-auto w-full">
           <Link
             href="/academy"
-            className="inline-flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground text-sm mb-4 transition-colors w-fit"
+            className="hidden lg:inline-flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground text-sm transition-colors w-fit"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Academy
           </Link>
-          <div className="flex items-center gap-3 mb-3">
-            <Badge
-              className={`text-xs font-medium border ${levelColors[guide.level]}`}
-            >
-              {guide.level}
-            </Badge>
+
+          <div className="mt-6">
+            <div className="flex items-center gap-3 mb-3">
+              <Badge
+                className={`text-xs font-medium border ${levelColors[guide.level]}`}
+              >
+                {guide.level}
+              </Badge>
+            </div>
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground max-w-3xl leading-tight">
+              {guide.title}
+            </h1>
           </div>
-          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground max-w-3xl leading-tight">
-            {guide.title}
-          </h1>
         </div>
       </div>
 

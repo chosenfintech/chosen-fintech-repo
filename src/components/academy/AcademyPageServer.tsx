@@ -14,9 +14,10 @@ async function fetchBlogAndEducationPosts(params: {
   search?: string;
   categoryId?: string;
 }): Promise<IPostsPaginatedResponse> {
-  const url = new URL(`/api/posts/blog-and-education`, baseUrl);
+  const url = new URL(`/api/posts/published`, baseUrl);
   url.searchParams.set('page', params.page.toString());
   url.searchParams.set('limit', params.limit.toString());
+  url.searchParams.set('postType', 'blog-and-education');
   if (params.search) url.searchParams.set('search', params.search);
   if (params.categoryId) url.searchParams.set('categoryId', params.categoryId);
 

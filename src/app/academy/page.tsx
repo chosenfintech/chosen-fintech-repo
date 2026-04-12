@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import AcademyPageServer from '@/components/academy/AcademyPageServer';
-import BlogPageSkeleton from '@/components/posts/BlogPageSkeleton';
+import BlogPageSkeleton from '@/components/posts/PostsSkeleton';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';

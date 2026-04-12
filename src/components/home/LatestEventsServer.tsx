@@ -6,9 +6,10 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 async function fetchLatestEvents(): Promise<IPost[]> {
   try {
-    const url = new URL('/api/posts/events', baseUrl);
+    const url = new URL('/api/posts/published', baseUrl);
     url.searchParams.set('page', '1');
     url.searchParams.set('limit', '3');
+    url.searchParams.set('postType', 'events');
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },
