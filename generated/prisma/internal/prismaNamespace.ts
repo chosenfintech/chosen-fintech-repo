@@ -386,7 +386,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Post: 'Post',
-  Category: 'Category'
+  Category: 'Category',
+  GalleryCategory: 'GalleryCategory',
+  GalleryPhoto: 'GalleryPhoto'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -402,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "post" | "category"
+    modelProps: "user" | "post" | "category" | "galleryCategory" | "galleryPhoto"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -628,6 +630,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GalleryCategory: {
+      payload: Prisma.$GalleryCategoryPayload<ExtArgs>
+      fields: Prisma.GalleryCategoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GalleryCategoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GalleryCategoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>
+        }
+        findFirst: {
+          args: Prisma.GalleryCategoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GalleryCategoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>
+        }
+        findMany: {
+          args: Prisma.GalleryCategoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>[]
+        }
+        create: {
+          args: Prisma.GalleryCategoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>
+        }
+        createMany: {
+          args: Prisma.GalleryCategoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GalleryCategoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>[]
+        }
+        delete: {
+          args: Prisma.GalleryCategoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>
+        }
+        update: {
+          args: Prisma.GalleryCategoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.GalleryCategoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GalleryCategoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GalleryCategoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.GalleryCategoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryCategoryPayload>
+        }
+        aggregate: {
+          args: Prisma.GalleryCategoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGalleryCategory>
+        }
+        groupBy: {
+          args: Prisma.GalleryCategoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GalleryCategoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GalleryCategoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GalleryCategoryCountAggregateOutputType> | number
+        }
+      }
+    }
+    GalleryPhoto: {
+      payload: Prisma.$GalleryPhotoPayload<ExtArgs>
+      fields: Prisma.GalleryPhotoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GalleryPhotoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GalleryPhotoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>
+        }
+        findFirst: {
+          args: Prisma.GalleryPhotoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GalleryPhotoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>
+        }
+        findMany: {
+          args: Prisma.GalleryPhotoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>[]
+        }
+        create: {
+          args: Prisma.GalleryPhotoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>
+        }
+        createMany: {
+          args: Prisma.GalleryPhotoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GalleryPhotoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>[]
+        }
+        delete: {
+          args: Prisma.GalleryPhotoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>
+        }
+        update: {
+          args: Prisma.GalleryPhotoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>
+        }
+        deleteMany: {
+          args: Prisma.GalleryPhotoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GalleryPhotoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GalleryPhotoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>[]
+        }
+        upsert: {
+          args: Prisma.GalleryPhotoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPhotoPayload>
+        }
+        aggregate: {
+          args: Prisma.GalleryPhotoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGalleryPhoto>
+        }
+        groupBy: {
+          args: Prisma.GalleryPhotoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GalleryPhotoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GalleryPhotoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GalleryPhotoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -706,6 +856,31 @@ export const CategoryScalarFieldEnum = {
 } as const
 
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const GalleryCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  isFeatured: 'isFeatured',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GalleryCategoryScalarFieldEnum = (typeof GalleryCategoryScalarFieldEnum)[keyof typeof GalleryCategoryScalarFieldEnum]
+
+
+export const GalleryPhotoScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  altText: 'altText',
+  caption: 'caption',
+  isPublished: 'isPublished',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GalleryPhotoScalarFieldEnum = (typeof GalleryPhotoScalarFieldEnum)[keyof typeof GalleryPhotoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -884,6 +1059,8 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   post?: Prisma.PostOmit
   category?: Prisma.CategoryOmit
+  galleryCategory?: Prisma.GalleryCategoryOmit
+  galleryPhoto?: Prisma.GalleryPhotoOmit
 }
 
 /* Types for Logging */

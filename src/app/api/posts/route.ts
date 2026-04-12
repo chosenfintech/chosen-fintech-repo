@@ -92,6 +92,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const validation = createPostSchema.safeParse(rawBody);
+    
     if (!validation.success) {
       throw new ValidationError('Validation failed', {
         code: 'VALIDATION_ERROR',

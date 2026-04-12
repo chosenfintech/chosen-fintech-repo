@@ -1,4 +1,4 @@
-// components/blog/BlogSidebar.tsx
+// src/components/posts/PostsSidebar.tsx
 'use client';
 
 import * as React from 'react';

@@ -1,7 +1,7 @@
 // src/app/events/page.tsx
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import BlogPageServer from '@/components/blog/BlogPageServer';
+import BlogPageServer from '@/components/events/EventsPageServer';
 import BlogPageSkeleton from '@/components/posts/PostsSkeleton';
 
 const baseUrl =

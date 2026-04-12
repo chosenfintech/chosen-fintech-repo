@@ -58,3 +58,34 @@ model Category {
   @@index([id])
   @@index([name])
 }
+
+model GalleryCategory {
+  id         String   @id @default(uuid())
+  name       String   @unique @db.VarChar(100)
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  photos GalleryPhoto[]
+
+  @@index([id])
+  @@index([name])
+  @@index([isFeatured])
+}
+
+model GalleryPhoto {
+  id          String          @id @default(uuid())
+  url         String          @db.VarChar(500)
+  altText     String?         @db.VarChar(255)
+  caption     String?         @db.VarChar(500)
+  isPublished Boolean         @default(false)
+  categoryId  String
+  category    GalleryCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([id])
+  @@index([categoryId])
+  @@index([isPublished])
+}

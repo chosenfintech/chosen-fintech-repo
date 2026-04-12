@@ -192,34 +192,24 @@ export default async function AcademyDetailPage({
                 <h2 className="font-display font-bold text-primary text-lg mb-4 uppercase tracking-wide">
                   All Guides
                 </h2>
-                <ul className="space-y-3">
-                  {otherGuides.map((g) => {
-                    const Icon = g.icon;
-                    return (
-                      <li key={g.id}>
-                        <Link
-                          href={`/academy/${g.slug}`}
-                          className="flex items-start gap-3 group p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                <ul className="space-y-1">
+                  {otherGuides.map((g) => (
+                    <li key={g.id}>
+                      <Link
+                        href={`/academy/${g.slug}`}
+                        className="flex flex-col gap-0.5 p-2 rounded-lg hover:bg-muted/50 transition-colors group"
+                      >
+                        <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
+                          {g.title}
+                        </p>
+                        <span
+                          className={`text-xs font-medium ${levelColors[g.level].split(' ')[1]}`}
                         >
-                          <span className="mt-0.5 text-primary shrink-0">
-                            <Icon className="w-4 h-4" />
-                          </span>
-                          <div>
-                            <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
-                              {g.title}
-                            </p>
-                            <span
-                              className={`text-xs font-medium mt-1 inline-block ${
-                                levelColors[g.level].split(' ')[1]
-                              }`}
-                            >
-                              {g.level}
-                            </span>
-                          </div>
-                        </Link>
-                      </li>
-                    );
-                  })}
+                          {g.level}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>

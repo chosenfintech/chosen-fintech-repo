@@ -1,5 +1,5 @@
 // src/utils/post-utils.ts
-import prisma, { Prisma } from '../lib/prisma';
+import prisma, { Prisma } from '@/lib/prisma';
 import { IPost, IPostsQueryParams } from '../types/posts/post.types';
 
 export const BLOG_AND_EDUCATION_CATEGORY_NAMES = ['blog', 'education'];

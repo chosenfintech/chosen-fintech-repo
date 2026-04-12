@@ -1,10 +1,8 @@
 // src/static-data/academy-guides.ts
-import { Wallet, Coins, Vote, Code, Shield, BookOpen } from 'lucide-react';
 
 export interface IAcademyGuide {
   id: string;
   slug: string;
-  icon: React.ElementType;
   title: string;
   description: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
@@ -16,7 +14,6 @@ export const academyGuides: IAcademyGuide[] = [
   {
     id: '1',
     slug: 'getting-started-with-cardano',
-    icon: Wallet,
     title: 'Getting Started with Cardano',
     description:
       'Learn the basics: what is Cardano, how to set up a wallet, and buy your first ADA.',
@@ -169,7 +166,6 @@ export const academyGuides: IAcademyGuide[] = [
   {
     id: '2',
     slug: 'staking-and-delegation',
-    icon: Coins,
     title: 'Staking & Delegation',
     description:
       'Understand how to stake your ADA, choose stake pools, and earn passive rewards.',
@@ -306,7 +302,6 @@ export const academyGuides: IAcademyGuide[] = [
   {
     id: '3',
     slug: 'project-catalyst-and-governance',
-    icon: Vote,
     title: 'Project Catalyst & Governance',
     description:
       "Participate in Cardano's decentralized governance and vote on funding proposals.",
@@ -436,7 +431,6 @@ export const academyGuides: IAcademyGuide[] = [
   {
     id: '4',
     slug: 'smart-contracts-on-cardano',
-    icon: Code,
     title: 'Smart Contracts on Cardano',
     description:
       'Introduction to Plutus and Marlowe for building decentralized applications.',
@@ -559,7 +553,6 @@ export const academyGuides: IAcademyGuide[] = [
   {
     id: '5',
     slug: 'nfts-on-cardano',
-    icon: Shield,
     title: 'NFTs on Cardano',
     description:
       'Explore the native NFT ecosystem, marketplaces, and how to mint your own NFTs.',
@@ -691,7 +684,6 @@ export const academyGuides: IAcademyGuide[] = [
   {
     id: '6',
     slug: 'defi-on-cardano',
-    icon: BookOpen,
     title: 'DeFi on Cardano',
     description:
       'Navigate DEXs, lending protocols, and yield opportunities in the Cardano ecosystem.',

@@ -4,7 +4,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { BlogPostCard } from '../posts/PostCard';
-import { BlogSidebar } from '../blog/BlogSidebar';
+import { BlogSidebar } from '../posts/PostsSidebar';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import { PageHero } from '@/components/ui/PageHero';

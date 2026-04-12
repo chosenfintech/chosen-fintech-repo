@@ -97,10 +97,7 @@ export function Hero() {
               className="relative z-10 !border-white text-white rounded-full backdrop-blur-sm h-12 sm:h-14 2xl:h-16 3xl:h-18 px-6 sm:px-8 2xl:px-10 3xl:px-12 text-sm sm:text-base 2xl:text-lg 3xl:text-xl font-medium overflow-hidden group transition-colors duration-300 bg-transparent hover:bg-transparent"
               asChild
             >
-              <Link
-                href="/projects"
-                className="flex items-center justify-center"
-              >
+              <Link href="/events" className="flex items-center justify-center">
                 <span className="relative z-20 text-white group-hover:text-white transition-colors duration-300">
                   <Play className="mr-2 w-4 h-4 sm:w-5 sm:h-5 2xl:w-6 2xl:h-6 inline" />
                   Explore Our Work

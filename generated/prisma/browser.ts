@@ -32,3 +32,13 @@ export type Post = Prisma.PostModel
  * 
  */
 export type Category = Prisma.CategoryModel
+/**
+ * Model GalleryCategory
+ * 
+ */
+export type GalleryCategory = Prisma.GalleryCategoryModel
+/**
+ * Model GalleryPhoto
+ * 
+ */
+export type GalleryPhoto = Prisma.GalleryPhotoModel

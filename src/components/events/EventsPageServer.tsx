@@ -1,5 +1,5 @@
-// src/components/blog/BlogPageServer.tsx
-import BlogPageClient from './BlogPageClient';
+// src/components/events/BlogPageServer.tsx
+import BlogPageClient from './EventsPageClient';
 import { IPost, IPostsPaginatedResponse } from '@/types/posts/post.types';
 import { ICategoriesPaginatedResponse } from '@/types/posts/category.types';
 

@@ -1,10 +1,10 @@
-// components/blog/BlogPageClient.tsx
+// src/components/events/BlogPageClient.tsx
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { BlogPostCard } from '../posts/PostCard';
-import { BlogSidebar } from './BlogSidebar';
+import { BlogSidebar } from '../posts/PostsSidebar';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import { PageHero } from '@/components/ui/PageHero';
