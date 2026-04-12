@@ -42,7 +42,7 @@ function FeaturedPostCard({ post }: { post: IPost }) {
     : null;
 
   return (
-    <Link href={`/events/${post.slug}`}>
+    <Link href={`/posts/${post.slug}`}>
       <Card className="group overflow-hidden p-0 border-border/50 hover:border-primary/50 hover:shadow-2xl transition-all duration-500">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
           {/* Image */}
