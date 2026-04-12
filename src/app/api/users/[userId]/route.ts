@@ -96,11 +96,6 @@ export async function PUT(
 
     const userDetails = validation.data;
 
-    // Non-admins cannot touch isAdmin
-    if (!session.isAdmin && userDetails.isAdmin !== undefined) {
-      throw new ForbiddenError('Only admins can change admin status');
-    }
-
     const existingUser = await prisma.user.findUnique({
       where: { id: userId },
       select: { id: true, email: true },
@@ -129,8 +124,6 @@ export async function PUT(
       updateData.fullname = userDetails.fullname;
     if (userDetails.email !== undefined) updateData.email = userDetails.email;
     if (userDetails.phone !== undefined) updateData.phone = userDetails.phone;
-    if (session.isAdmin && userDetails.isAdmin !== undefined)
-      updateData.isAdmin = userDetails.isAdmin;
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
@@ -157,7 +150,8 @@ export async function PUT(
 
 /**
  * DELETE /api/users/[userId]
- * Protected, admin only — cannot self-delete.
+ * Protected, admin only — cannot self-delete, cannot delete other admins.
+ * Posts authored by the deleted user are reassigned to the deleting admin.
  */
 export async function DELETE(
   _req: NextRequest,
@@ -181,14 +175,26 @@ export async function DELETE(
 
     const existingUser = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, fullname: true, email: true },
+      select: { id: true, fullname: true, email: true, isAdmin: true },
     });
 
     if (!existingUser) {
       throw new NotFoundError('User not found');
     }
 
-    await prisma.user.delete({ where: { id: userId } });
+    if (existingUser.isAdmin) {
+      throw new ForbiddenError('Admin accounts cannot be deleted');
+    }
+
+    // Reassign any posts authored by this user to the deleting admin,
+    // then delete the user — all in a single atomic transaction.
+    await prisma.$transaction([
+      prisma.post.updateMany({
+        where: { authorId: userId },
+        data: { authorId: session.userId },
+      }),
+      prisma.user.delete({ where: { id: userId } }),
+    ]);
 
     return NextResponse.json({
       message: `User "${existingUser.fullname}" (${existingUser.email}) deleted successfully`,

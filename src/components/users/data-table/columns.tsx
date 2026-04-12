@@ -78,7 +78,9 @@ export const createUserColumns = (): ColumnDef<IUser>[] => [
     cell: ({ row }) => {
       const isAdmin = row.getValue('isAdmin') as boolean | undefined;
       return (
-        <span className="text-xs sm:text-sm">{isAdmin ? 'Admin' : 'User'}</span>
+        <span className="text-xs sm:text-sm">
+          {isAdmin ? 'Super Admin' : 'Admin'}
+        </span>
       );
     },
   },

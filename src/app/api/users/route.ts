@@ -24,7 +24,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const session = await verifySession();
 
     if (!session.isAdmin) {
-      throw new ForbiddenError('Only admins can view all users');
+      throw new ForbiddenError('Only super admins can view all admins');
     }
 
     const { searchParams } = req.nextUrl;
@@ -89,7 +89,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const session = await verifySession();
 
     if (!session.isAdmin) {
-      throw new ForbiddenError('Only admins can create new users');
+      throw new ForbiddenError('Only super admins can create new admins');
     }
 
     const body = await req.json();
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      throw new ConflictError(`A user with email "${email}" already exists`);
+      throw new ConflictError(`An admin with email "${email}" already exists`);
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
@@ -133,7 +133,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
 
     return NextResponse.json(
-      { message: 'User created successfully', data: user as IUser },
+      { message: 'Admin created successfully', data: user as IUser },
       { status: 201 },
     );
   } catch (err) {

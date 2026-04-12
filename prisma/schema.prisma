@@ -36,10 +36,10 @@ model Post {
 
   // Relations`
   authorId String
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   categoryId String?
-  category   Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -87,7 +87,7 @@ model GalleryPhoto {
   caption     String?         @db.VarChar(500)
   isPublished Boolean         @default(false)
   categoryId  String
-  category    GalleryCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  category    GalleryCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
