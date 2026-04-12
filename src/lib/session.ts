@@ -15,6 +15,7 @@ const SESSION_DURATION = '7d';
 
 export interface SessionPayload extends JWTPayload {
   userId: string;
+  isAdmin: boolean;
   expiresAt: Date;
 }
 
@@ -43,9 +44,12 @@ export async function decrypt(
   }
 }
 
-export async function createSession(userId: string): Promise<void> {
+export async function createSession(
+  userId: string,
+  isAdmin: boolean,
+): Promise<void> {
   const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
-  const session = await encrypt({ userId, expiresAt });
+  const session = await encrypt({ userId, isAdmin, expiresAt });
   const cookieStore = await cookies();
 
   cookieStore.set('session', session, {
@@ -89,7 +93,7 @@ export const verifySession = cache(async () => {
     throw new UnauthorizedError();
   }
 
-  return { isAuth: true, userId: session.userId };
+  return { isAuth: true, userId: session.userId, isAdmin: session.isAdmin };
 });
 
 // Redirects — use in Server Components and Server Actions
@@ -101,5 +105,5 @@ export const requireSession = cache(async () => {
     redirect('/login');
   }
 
-  return { isAuth: true, userId: session.userId };
+  return { isAuth: true, userId: session.userId, isAdmin: session.isAdmin };
 });

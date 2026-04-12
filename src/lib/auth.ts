@@ -28,7 +28,10 @@ async function getUser(email: string) {
         email: true,
         fullname: true,
         phone: true,
+        isAdmin: true,
         password: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
   } catch (error) {
@@ -73,7 +76,7 @@ export async function signin(
     };
   }
 
-  await createSession(user.id);
+  await createSession(user.id, user.isAdmin);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password: _, ...safeUser } = user;

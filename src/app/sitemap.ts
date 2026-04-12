@@ -16,7 +16,7 @@ async function fetchAllEventPosts(): Promise<IPost[]> {
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },
-      cache: 'no-store',
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
@@ -41,7 +41,7 @@ async function fetchAllAcademyPosts(): Promise<IPost[]> {
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },
-      cache: 'no-store',
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {

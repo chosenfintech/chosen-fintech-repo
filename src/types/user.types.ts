@@ -4,6 +4,23 @@ export interface IUser {
   email: string;
   fullname: string;
   phone?: string | null;
+  isAdmin?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ICreateUserInput {
+  fullname: string;
+  email: string;
+  password: string;
+  phone?: string;
+}
+
+export interface IUpdateUserInput {
+  fullname?: string;
+  email?: string;
+  phone?: string;
+  isAdmin?: boolean;
 }
 
 export interface IUserResponse {
@@ -20,11 +37,6 @@ export interface IUsersPaginatedResponse {
     limit: number;
     totalPages: number;
   };
-}
-
-export interface IDeleteUsersResponse {
-  message: string;
-  deletedCount: number;
 }
 
 export interface IUsersQueryParams {

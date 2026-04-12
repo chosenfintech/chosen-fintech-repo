@@ -36,10 +36,12 @@ async function seedAdmin() {
       email,
       password: hashedPassword,
       fullname: fullname,
+      isAdmin: true,
       ...(phone ? { phone } : {}),
     },
     update: {
       password: hashedPassword,
+      isAdmin: true,
       ...(fullname ? { fullname: fullname } : {}),
       ...(phone ? { phone } : {}),
     },

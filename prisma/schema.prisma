@@ -8,12 +8,18 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  fullname String
-  phone    String?
-  password String
-  posts    Post[]
+  id        String   @id @default(uuid())
+  email     String   @unique
+  fullname  String
+  phone     String?
+  password  String
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+
+  @@index([email])
+  @@index([id])
 }
 
 model Post {

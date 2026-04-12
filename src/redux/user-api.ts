@@ -1,31 +1,32 @@
 // src/redux/user-api.ts
 import { apiSlice } from './api-slice';
 import {
-  IDeleteUsersResponse,
   IUserResponse,
   IUsersPaginatedResponse,
   IUsersQueryParams,
+  ICreateUserInput,
+  IUpdateUserInput,
 } from '@/types/user.types';
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createUser: builder.mutation<IUserResponse, FormData>({
-      query: (formData) => ({
+    createUser: builder.mutation<IUserResponse, ICreateUserInput>({
+      query: (body) => ({
         url: '/users',
         method: 'POST',
-        body: formData,
+        body,
       }),
       invalidatesTags: [{ type: 'Users', id: 'LIST' }, 'DashboardStats'],
     }),
 
     updateUser: builder.mutation<
       IUserResponse,
-      { userId: string; formData: FormData }
+      { userId: string; body: IUpdateUserInput }
     >({
-      query: ({ userId, formData }) => ({
+      query: ({ userId, body }) => ({
         url: `/users/${userId}`,
         method: 'PUT',
-        body: formData,
+        body,
       }),
       invalidatesTags: (result, error, { userId }) => [
         { type: 'User', id: userId },
@@ -35,10 +36,7 @@ export const userApi = apiSlice.injectEndpoints({
     }),
 
     getUser: builder.query<IUserResponse, string>({
-      query: (userId) => ({
-        url: `/users/${userId}`,
-        method: 'GET',
-      }),
+      query: (userId) => `/users/${userId}`,
       providesTags: (result, error, userId) => [{ type: 'User', id: userId }],
     }),
 
@@ -52,17 +50,17 @@ export const userApi = apiSlice.injectEndpoints({
           }
         });
 
-        return {
-          url: `/users${
-            searchParams.toString() ? `?${searchParams.toString()}` : ''
-          }`,
-          method: 'GET',
-        };
+        const queryString = searchParams.toString();
+
+        return `/users${queryString ? `?${queryString}` : ''}`;
       },
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: 'User' as const, id })),
+              ...result.data.map(({ id }) => ({
+                type: 'User' as const,
+                id,
+              })),
               { type: 'Users' as const, id: 'LIST' },
             ]
           : [{ type: 'Users' as const, id: 'LIST' }],
@@ -80,53 +78,14 @@ export const userApi = apiSlice.injectEndpoints({
       ],
     }),
 
-    deleteAllUsers: builder.mutation<
-      IDeleteUsersResponse,
-      { confirmDelete: string }
-    >({
-      query: (body) => ({
-        url: '/users',
-        method: 'DELETE',
-        body,
-      }),
-      invalidatesTags: [{ type: 'Users', id: 'LIST' }, 'DashboardStats'],
-    }),
-
-    searchUsers: builder.query<
-      IUsersPaginatedResponse,
-      { search: string } & Omit<IUsersQueryParams, 'search'>
-    >({
-      query: ({ search, ...params }) => {
-        const searchParams = new URLSearchParams({ search });
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null) {
-            searchParams.append(key, String(value));
-          }
-        });
-
-        return {
-          url: `/users?${searchParams.toString()}`,
-          method: 'GET',
-        };
-      },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.data.map(({ id }) => ({ type: 'User' as const, id })),
-              { type: 'Users' as const, id: 'LIST' },
-            ]
-          : [{ type: 'Users' as const, id: 'LIST' }],
-    }),
-
     changePassword: builder.mutation<
       { message: string },
-      { currentPassword: string; newPassword: string }
+      { userId: string; currentPassword: string; newPassword: string }
     >({
-      query: (data) => ({
-        url: '/users/change-password',
+      query: ({ userId, ...body }) => ({
+        url: `/users/${userId}/change-password`,
         method: 'PATCH',
-        body: data,
+        body,
       }),
     }),
   }),
@@ -138,12 +97,9 @@ export const {
   useGetUserQuery,
   useGetAllUsersQuery,
   useDeleteUserMutation,
-  useDeleteAllUsersMutation,
-  useSearchUsersQuery,
   useChangePasswordMutation,
 
   // Lazy queries
   useLazyGetAllUsersQuery,
   useLazyGetUserQuery,
-  useLazySearchUsersQuery,
 } = userApi;
