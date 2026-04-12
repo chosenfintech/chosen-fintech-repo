@@ -1,3 +1,4 @@
+// src/components/academy/EducationalGuides.tsx
 'use client';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';

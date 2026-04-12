@@ -5,7 +5,7 @@ import { ICategoriesPaginatedResponse } from '@/types/posts/category.types';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-async function fetchEventsPosts(params: {
+export async function fetchEventsPosts(params: {
   page: number;
   limit: number;
   categoryId?: string;
@@ -60,6 +60,7 @@ async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
     url.searchParams.set('limit', '1000');
     url.searchParams.set('sortBy', 'name');
     url.searchParams.set('sortOrder', 'asc');
+    url.searchParams.set('postType', 'events');
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },

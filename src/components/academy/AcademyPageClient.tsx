@@ -4,7 +4,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { BlogPostCard } from '../blog/BlogPostCard';
-import { AcademySidebar } from './AcademySidebar';
+import { BlogSidebar } from '../blog/BlogSidebar';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import { PageHero } from '@/components/ui/PageHero';
@@ -13,33 +13,38 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 import { IPost } from '@/types/posts/post.types';
+import { ICategory } from '@/types/posts/category.types';
 import { cardVariants } from '@/static-data/motion-variants';
 import { academyGuides } from '@/static-data/academy-guides';
 
 export interface IAcademyPageClientProps {
   posts: IPost[];
   recentPosts: IPost[];
+  categories: ICategory[];
   totalPages: number;
   currentPage: number;
   pageSize: number;
   totalCount: number;
   searchQuery?: string;
+  selectedCategory?: string;
 }
 
 export default function AcademyPageClient({
   posts,
   recentPosts,
+  categories,
   totalPages,
   currentPage,
   totalCount,
   searchQuery,
+  selectedCategory,
 }: IAcademyPageClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const hasActiveSearch = !!searchQuery;
-  const noDataAtAll = totalCount === 0 && !hasActiveSearch;
-  const noResultsFromSearch = hasActiveSearch && posts.length === 0;
+  const hasActiveFilters = !!(selectedCategory || searchQuery);
+  const noDataAtAll = totalCount === 0 && !hasActiveFilters;
+  const noResultsFromFilters = hasActiveFilters && posts.length === 0;
   const showPagination = totalPages > 1;
 
   const updateParams = (updates: Record<string, string | null>) => {
@@ -63,7 +68,11 @@ export default function AcademyPageClient({
     updateParams({ page: '1', search: query || null });
   };
 
-  const handleClearSearch = () => {
+  const handleCategoryFilter = (categoryId: string | null) => {
+    updateParams({ page: '1', categoryId: categoryId ?? null });
+  };
+
+  const clearFilters = () => {
     router.push('/academy');
   };
 
@@ -119,6 +128,19 @@ export default function AcademyPageClient({
             >
               {/* Main Content */}
               <div className="lg:col-span-8">
+                {/* Mobile sidebar (search + drawer) */}
+                <div className="lg:hidden">
+                  <BlogSidebar
+                    categories={categories}
+                    recentPosts={recentPosts}
+                    selectedCategory={selectedCategory}
+                    searchQuery={searchQuery}
+                    onCategoryFilter={handleCategoryFilter}
+                    onSearch={handleSearch}
+                    onClearFilters={clearFilters}
+                  />
+                </div>
+
                 {/* Posts count */}
                 {!noDataAtAll && (
                   <p className="text-sm text-muted-foreground mb-6">
@@ -126,7 +148,7 @@ export default function AcademyPageClient({
                   </p>
                 )}
 
-                {noResultsFromSearch ? (
+                {noResultsFromFilters ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -139,7 +161,7 @@ export default function AcademyPageClient({
                             No posts found
                           </p>
                           <p className="text-muted-foreground/70 text-sm">
-                            Try adjusting your search criteria
+                            Try adjusting your search or filter criteria
                           </p>
                         </div>
                       </CardContent>
@@ -262,7 +284,7 @@ export default function AcademyPageClient({
                 )}
               </div>
 
-              {/* Sidebar */}
+              {/* Desktop Sidebar */}
               <motion.div
                 className="hidden lg:block lg:col-span-4"
                 initial={{ opacity: 0, x: 20 }}
@@ -270,11 +292,14 @@ export default function AcademyPageClient({
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <div className="lg:sticky lg:top-24">
-                  <AcademySidebar
+                  <BlogSidebar
+                    categories={categories}
                     recentPosts={recentPosts}
+                    selectedCategory={selectedCategory}
                     searchQuery={searchQuery}
+                    onCategoryFilter={handleCategoryFilter}
                     onSearch={handleSearch}
-                    onClearSearch={handleClearSearch}
+                    onClearFilters={clearFilters}
                   />
                 </div>
               </motion.div>

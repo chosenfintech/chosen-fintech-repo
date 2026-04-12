@@ -83,7 +83,7 @@ export function AboutFounder() {
 
                 <div className="pt-4 border-t border-border">
                   <p className="font-semibold text-foreground text-base sm:text-lg">
-                    — Yakub Mohammed Mustapha
+                    — Mohammed Mustapha Yakubu
                   </p>
                   <p className="text-sm text-muted-foreground mt-0.5">
                     Founder & CEO

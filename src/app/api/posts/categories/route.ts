@@ -18,6 +18,10 @@ import { BLOG_AND_EDUCATION_CATEGORY_NAMES } from '@/utils/post-utils';
 /**
  * GET /api/categories
  * Public — returns all categories with pagination, search, and sort.
+ * Accepts optional postType param:
+ *   - 'events'              → excludes blog and education categories
+ *   - 'blog-and-education'  → returns only blog and education categories
+ *   - omitted               → returns all categories
  */
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
@@ -31,15 +35,23 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const sortOrder = (searchParams.get('sortOrder') ?? 'desc') as
       | 'asc'
       | 'desc';
+    const postType = searchParams.get('postType') ?? undefined;
 
-    const whereClause: Prisma.CategoryWhereInput = {
-      NOT: {
+    const whereClause: Prisma.CategoryWhereInput = {};
+
+    if (postType === 'events') {
+      whereClause.NOT = {
         name: {
           in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
           mode: 'insensitive',
         },
-      },
-    };
+      };
+    } else if (postType === 'blog-and-education') {
+      whereClause.name = {
+        in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
+        mode: 'insensitive',
+      };
+    }
 
     if (search) {
       whereClause.name = { contains: search, mode: 'insensitive' };
