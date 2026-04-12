@@ -1,9 +1,8 @@
-// src/components/WhatWeDo.tsx
+// src/components/about/WhatWeDo.tsx
 'use client';
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { LucideIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTheme } from 'next-themes';
 import {
@@ -12,16 +11,11 @@ import {
   fadeUpVariants,
   lineRevealVariants,
 } from '@/static-data/motion-variants';
-
-export interface FocusArea {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-}
+import { IFocusArea } from '@/static-data/about';
 
 interface WhatWeDoProps {
   description: string;
-  focusAreas: FocusArea[];
+  focusAreas: IFocusArea[];
 }
 
 const FOOTER_DEEP_BLUE = 'oklch(0.396 0.195 264)';

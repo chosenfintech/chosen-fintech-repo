@@ -1,3 +1,4 @@
+// src/app/about/faq/page.tsx
 'use client';
 
 import { PageHero } from '@/components/ui/PageHero';

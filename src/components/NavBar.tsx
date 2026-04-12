@@ -13,8 +13,8 @@ import { useTheme } from 'next-themes';
 
 const aboutLinks = [
   { to: '/about', label: 'About Us' },
-  { to: '/gallery', label: 'Gallery' },
-  { to: '/faq', label: 'FAQ' },
+  { to: '/about/gallery', label: 'Gallery' },
+  { to: '/about/faq', label: 'FAQ' },
 ];
 
 const navLinks = [

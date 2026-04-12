@@ -1,105 +1,52 @@
-'use client';
-// pages/About.tsx
-import { PageHero } from '@/components/ui/PageHero';
-import { WhoWeAre } from '@/components/WhoWeAre';
-import { WhatWeDo, FocusArea } from '@/components/WhatWeDo';
-import { OurTeam, TeamMember } from '@/components/OurTeam';
-import {
-  GraduationCap,
-  Rocket,
-  Smartphone,
-  Coins,
-  Facebook,
-  Linkedin,
-  X,
-} from 'lucide-react';
+// src/app/about/page.tsx
+import type { Metadata } from 'next';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
+import AboutPageClient from '@/components/about/AboutPageClient';
 
-const focusAreas: FocusArea[] = [
-  {
-    icon: GraduationCap,
-    title: 'Blockchain & ICT Education',
-    description:
-      "We educate, develop, empower, and onboard Africans into the world of blockchain and cryptocurrency, while promoting digital literacy by equipping individuals with essential ICT skills to thrive in today's technology-driven world.",
-  },
-  {
-    icon: Rocket,
-    title: 'Entrepreneurship Development',
-    description:
-      'We support startups and small businesses through incubation and acceleration programs, providing tools, mentorship, and resources to scale sustainable ventures and drive economic growth.',
-  },
-  {
-    icon: Smartphone,
-    title: 'Mobile Money Transactions',
-    description:
-      'We deliver seamless mobile money payment solutions across platforms including MTN Ghana, Telecel, and other telecom networks—enhancing financial accessibility and convenience.',
-  },
-  {
-    icon: Coins,
-    title: 'Digital Asset Trading & Management',
-    description:
-      'We empower users to safely trade and manage digital tokens, ensuring secure and value-driven participation in the digital economy.',
-  },
-];
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
 
-const teamMembers: TeamMember[] = [
-  {
-    name: 'Mohammed Mustapha Yakubu',
-    role: 'Founder & CEO',
-    image: '/founder.jpg',
-    socials: [
-      { icon: Facebook, href: '#', label: 'Facebook' },
-      { icon: X, href: 'x.com/mmustaphayakubu', label: 'X / Twitter' },
+export const metadata: Metadata = {
+  title: 'About Us',
+  description:
+    'Learn more about Chosen Fintech Solutions — our mission, vision, founding story, and the dedicated team driving fintech education, blockchain adoption, and digital financial inclusion across Ghana and Africa.',
+  alternates: {
+    canonical: `${baseUrl}/about`,
+  },
+  openGraph: {
+    title: 'About Us — Chosen Fintech Solutions',
+    description:
+      'Discover the story of Chosen Fintech Solutions, founded in 2020 in Tamale, Ghana. Learn about our mission to educate and empower individuals and organisations through blockchain, DeFi, and financial technology across Africa.',
+    url: `${baseUrl}/about`,
+    siteName: 'Chosen Fintech Solutions',
+    images: [
       {
-        icon: Linkedin,
-        href: 'https://www.linkedin.com/in/mohammed-mustapha-yakubu-a08455125',
-        label: 'Linkedin',
+        url: '/open-graph-images/og-image-about.png',
+        width: 1200,
+        height: 630,
+        alt: 'About Chosen Fintech Solutions',
       },
     ],
+    locale: 'en_US',
+    type: 'website',
   },
-  {
-    name: 'Seidu Ziblim',
-    role: 'Project Support',
-    image: '/seidu-ziblim.jpeg',
-    socials: [
-      { icon: Facebook, href: '#', label: 'Facebook' },
-      { icon: X, href: 'v', label: 'X / Twitter' },
-      {
-        icon: Linkedin,
-        href: '#',
-        label: 'Linkedin',
-      },
-    ],
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Us — Chosen Fintech Solutions',
+    description:
+      'Learn more about Chosen Fintech Solutions, our mission, vision, and the team dedicated to driving fintech education, blockchain adoption, and digital inclusion across Ghana and Africa.',
+    site: '@chosenfintech',
+    images: ['/open-graph-images/og-image-about.png'],
   },
-  {
-    name: 'Osman Mohammed',
-    role: 'Events Support',
-    image: '/osman-mohammed.jpeg',
-  },
-];
-
-const About = () => {
-  return (
-    <div>
-      <NavBar />
-      <PageHero title="About Us" />
-
-      <WhoWeAre
-        description="Chosen Fintech Solutions, founded and registered in 2020,based in Tamale, Ghana, is committed to promoting financial technology (fintech) adoption and inclusion across Africa. Our core objective is to drive financial inclusion and economic empowerment through innovative fintech and digital services."
-        vision="To be a global catalyst for fintech innovation, mass adoption and ethical governance."
-        mission="To educate, onboard and empower individuals and organisations to naviage digital technology for effective socio-economic systems."
-      />
-
-      <WhatWeDo
-        description="At Chosen Fintech Solutions, our work is centered around enhancing digital inclusion through strategic focus areas that empower individuals and organizations."
-        focusAreas={focusAreas}
-      />
-
-      <OurTeam teamMembers={teamMembers} />
-      <Footer />
-    </div>
-  );
 };
 
-export default About;
+export default function AboutPage() {
+  return (
+    <>
+      <NavBar />
+      <AboutPageClient />
+      <Footer />
+    </>
+  );
+}

@@ -1,4 +1,4 @@
-// src/components/OurTeam.tsx
+// src/components/about/OurTeam.tsx
 'use client';
 
 import React from 'react';
@@ -11,26 +11,14 @@ import {
   fadeUpVariants,
   cardVariants,
 } from '@/static-data/motion-variants';
-
-interface SocialLink {
-  icon: React.FC<{ className?: string }>;
-  href: string;
-  label: string;
-}
-
-export interface TeamMember {
-  name: string;
-  role: string;
-  image: string;
-  socials?: SocialLink[];
-}
+import { ITeamMember, ISocialLink } from '@/static-data/about';
 
 interface OurTeamProps {
   title?: string;
-  teamMembers: TeamMember[];
+  teamMembers: ITeamMember[];
 }
 
-const defaultSocials: SocialLink[] = [
+const defaultSocials: ISocialLink[] = [
   { icon: Facebook, href: '#', label: 'Facebook' },
   { icon: X, href: '#', label: 'X / Twitter' },
   { icon: Linkedin, href: '#', label: 'Linkedin' },

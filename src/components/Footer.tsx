@@ -15,7 +15,7 @@ const footerLinks = {
   resources: [
     { to: '/events', label: 'Events' },
     { to: '/academy', label: 'Academy' },
-    { to: '/faq', label: 'FAQ' },
+    { to: '/about/faq', label: 'FAQ' },
   ],
   social: [
     { href: 'https://fb.com/chosenfintech', icon: Facebook, label: 'Facebook' },
