@@ -26,10 +26,12 @@ const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
 /**
  * GET /api/posts
- * Public — returns all posts with pagination and filters.
+ * Protected — returns all posts with pagination and filters (admin use).
  */
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
+    await verifySession();
+
     const { searchParams } = req.nextUrl;
 
     const page = parseInt(searchParams.get('page') ?? '1');
@@ -38,12 +40,15 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const queryParams: IPostsQueryParams = {
       categoryId: searchParams.get('categoryId') ?? undefined,
       authorId: searchParams.get('authorId') ?? undefined,
-      isPublished: parseBoolean(searchParams.get('isPublished')) ?? undefined,
-      isFeatured: parseBoolean(searchParams.get('isFeatured')) ?? undefined,
+      isPublished:
+        parseBoolean(searchParams.get('isPublished'), null) ?? undefined,
+      isFeatured:
+        parseBoolean(searchParams.get('isFeatured'), null) ?? undefined,
       search: searchParams.get('search') ?? undefined,
     };
 
     const whereClause = buildPostWhereClause(queryParams);
+
     const { posts, total } = await fetchPostsWithPagination(
       whereClause,
       page,

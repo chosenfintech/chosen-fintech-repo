@@ -1,17 +1,17 @@
-// components/blog/BlogPageServer.tsx
+// src/components/blog/BlogPageServer.tsx
 import BlogPageClient from './BlogPageClient';
 import { IPost, IPostsPaginatedResponse } from '@/types/posts/post.types';
 import { ICategoriesPaginatedResponse } from '@/types/posts/category.types';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-async function fetchPosts(params: {
+async function fetchEventsPosts(params: {
   page: number;
   limit: number;
   categoryId?: string;
   search?: string;
 }): Promise<IPostsPaginatedResponse> {
-  const url = new URL(`/api/posts`, baseUrl);
+  const url = new URL(`/api/posts/events`, baseUrl);
   url.searchParams.set('page', params.page.toString());
   url.searchParams.set('limit', params.limit.toString());
   if (params.categoryId) url.searchParams.set('categoryId', params.categoryId);
@@ -23,7 +23,7 @@ async function fetchPosts(params: {
   });
 
   if (!response.ok) {
-    console.error('Failed to fetch posts');
+    console.error('Failed to fetch events posts');
     return {
       message: 'Error',
       data: [],
@@ -34,19 +34,24 @@ async function fetchPosts(params: {
   return response.json();
 }
 
-async function fetchRecentPosts(): Promise<IPost[]> {
-  const url = new URL(`/api/posts`, baseUrl);
+async function fetchLatestFeaturedPost(): Promise<IPost | null> {
+  const url = new URL(`/api/posts/events`, baseUrl);
   url.searchParams.set('page', '1');
-  url.searchParams.set('limit', '3');
+  url.searchParams.set('limit', '1');
+  url.searchParams.set('isFeatured', 'true');
 
   const response = await fetch(url.toString(), {
     headers: { 'Content-Type': 'application/json' },
     cache: 'no-store',
   });
 
-  if (!response.ok) return [];
-  const result: IPostsPaginatedResponse = await response.json();
-  return result.data ?? [];
+  if (!response.ok) {
+    console.error('Failed to fetch featured post');
+    return null;
+  }
+
+  const result = await response.json();
+  return result?.data?.[0] ?? null;
 }
 
 async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
@@ -100,30 +105,32 @@ export default async function BlogPageServer({
     data: [],
     meta: { total: 0, page: 1, limit, totalPages: 1 },
   };
-  let recentPosts: IPost[] = [];
+  let featuredPost: IPost | null = null;
   let categories: ICategoriesPaginatedResponse['data'] = [];
 
   try {
-    const [posts, recent, categoriesResp] = await Promise.all([
-      fetchPosts({ page, limit, categoryId, search }),
-      fetchRecentPosts(),
+    const [posts, featured, categoriesResp] = await Promise.all([
+      fetchEventsPosts({ page, limit, categoryId, search }),
+      fetchLatestFeaturedPost(),
       fetchCategories(),
     ]);
 
     postsResponse = posts;
-    recentPosts = recent;
-    categories = categoriesResp.data ?? [];
+    featuredPost = featured;
+    // The events route already excludes blog and education on the backend,
+    // so all categories returned from it are safe to display as filters.
+    categories = categoriesResp.data;
   } catch (error) {
     console.error('Error fetching blog data:', error);
   }
 
-  const hasActiveFilters = !!(categoryId || search);
-  const featuredPost =
-    !hasActiveFilters && page === 1 && postsResponse.data.length > 0
-      ? postsResponse.data[0]
-      : null;
+  const featuredPostId = featuredPost?.id;
 
-  const posts = featuredPost ? postsResponse.data.slice(1) : postsResponse.data;
+  const recentPosts = postsResponse.data
+    .slice(0, 5)
+    .filter((post) => post.id !== featuredPostId);
+
+  const posts = postsResponse.data.filter((post) => post.id !== featuredPostId);
 
   return (
     <BlogPageClient

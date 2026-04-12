@@ -1,5 +1,12 @@
-// Helper function to parse booleans safely
-export const parseBoolean = (value: unknown): boolean => {
+// src/utils/parse-booleans.ts
+export function parseBoolean(value: unknown, fallback?: false): boolean;
+
+export function parseBoolean(value: unknown, fallback: null): boolean | null;
+
+export function parseBoolean(
+  value: unknown,
+  fallback: false | null = false,
+): boolean | null {
   if (typeof value === 'boolean') {
     return value;
   }
@@ -16,5 +23,5 @@ export const parseBoolean = (value: unknown): boolean => {
     }
   }
 
-  return false;
-};
+  return fallback;
+}

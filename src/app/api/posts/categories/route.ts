@@ -13,6 +13,7 @@ import type {
   ICategoriesPaginatedResponse,
 } from '@/types/posts/category.types';
 import { createCategorySchema } from '@/validations/posts/category-validation';
+import { BLOG_AND_EDUCATION_CATEGORY_NAMES } from '@/utils/post-utils';
 
 /**
  * GET /api/categories
@@ -31,7 +32,15 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       | 'asc'
       | 'desc';
 
-    const whereClause: Prisma.CategoryWhereInput = {};
+    const whereClause: Prisma.CategoryWhereInput = {
+      NOT: {
+        name: {
+          in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
+          mode: 'insensitive',
+        },
+      },
+    };
+
     if (search) {
       whereClause.name = { contains: search, mode: 'insensitive' };
     }

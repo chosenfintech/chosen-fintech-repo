@@ -1,4 +1,4 @@
-// src/middleware.ts
+// src/proxy.ts
 import { NextResponse } from 'next/server';
 import { decrypt } from './lib/session';
 import { cookies } from 'next/headers';
@@ -14,6 +14,7 @@ export default async function middleware(req: NextRequest) {
   );
 
   const cookie = (await cookies()).get('session')?.value;
+  
   const session = await decrypt(cookie);
 
   if (isProtectedRoute && !session?.userId) {

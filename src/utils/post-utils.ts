@@ -2,8 +2,11 @@
 import prisma, { Prisma } from '../lib/prisma';
 import { IPost, IPostsQueryParams } from '../types/posts/post.types';
 
+export const BLOG_AND_EDUCATION_CATEGORY_NAMES = ['blog', 'education'];
+
 export interface GetPostsOptions {
   forcePublished?: boolean;
+  postType?: 'events' | 'blog-and-education';
 }
 
 const POST_INCLUDE = {
@@ -22,7 +25,6 @@ const POST_INCLUDE = {
   },
 } satisfies Prisma.PostInclude;
 
-// Type is now derived from the const — single source of truth
 type PostWithRelations = Prisma.PostGetPayload<{
   include: typeof POST_INCLUDE;
 }>;
@@ -32,27 +34,75 @@ export const buildPostWhereClause = (
   options: GetPostsOptions = {},
 ): Prisma.PostWhereInput => {
   const { categoryId, authorId, isPublished, isFeatured, search } = params;
+  const { forcePublished, postType } = options;
 
   const whereClause: Prisma.PostWhereInput = {};
 
-  if (categoryId) {
+  // --- categoryId ---
+  // Only applied when no postType is set, because postType controls
+  // its own category filtering. Passing categoryId alongside a postType
+  // would produce conflicting conditions.
+  if (categoryId && !postType) {
     whereClause.categoryId = categoryId;
   }
 
+  // --- authorId ---
   if (authorId) {
     whereClause.authorId = authorId;
   }
 
-  if (options.forcePublished) {
+  // --- isPublished ---
+  // forcePublished takes priority — used by public routes to always
+  // return only published posts regardless of what the client sends.
+  // Otherwise, we respect whatever the caller passed explicitly.
+  if (forcePublished) {
     whereClause.isPublished = true;
   } else if (isPublished === true) {
     whereClause.isPublished = true;
+  } else if (isPublished === false) {
+    whereClause.isPublished = false;
   }
+  // If isPublished is undefined and forcePublished is false,
+  // no isPublished filter is applied — all posts are returned (admin use).
 
+  // --- isFeatured ---
   if (isFeatured === true) {
     whereClause.isFeatured = true;
+  } else if (isFeatured === false) {
+    whereClause.isFeatured = false;
   }
 
+  // --- postType / category scope ---
+  // blog-and-education: only return posts whose category name is
+  // 'blog' OR 'education' (case-insensitive).
+  //
+  // events: only return posts whose category is NOT 'blog' or 'education'.
+  // Posts with NO category (null) also pass this filter naturally,
+  // because a null relation never matches the NOT condition.
+  if (postType === 'blog-and-education') {
+    whereClause.category = {
+      name: {
+        in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
+        mode: 'insensitive',
+      },
+    };
+  } else if (postType === 'events') {
+    whereClause.NOT = {
+      category: {
+        name: {
+          in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
+          mode: 'insensitive',
+        },
+      },
+    };
+  }
+
+  // --- search ---
+  // Searches across title, excerpt, and content.
+  // Because the category scope above uses `category` and `NOT` keys,
+  // and search uses `OR`, there is no key conflict at the top level.
+  // Prisma applies all top-level keys as implicit AND conditions,
+  // so the category filter and the search filter both apply together.
   if (search) {
     whereClause.OR = [
       { title: { contains: search, mode: 'insensitive' } },

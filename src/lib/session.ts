@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { ENV } from '../config/env';
+import { UnauthorizedError } from '@/middlewares/error-handler';
 
 const secretKey = ENV.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -79,7 +80,20 @@ export async function deleteSession(): Promise<void> {
   cookieStore.delete('session');
 }
 
+// Throws UnauthorizedError — use in API route handlers
 export const verifySession = cache(async () => {
+  const cookie = (await cookies()).get('session')?.value;
+  const session = await decrypt(cookie);
+
+  if (!session || !session.userId) {
+    throw new UnauthorizedError();
+  }
+
+  return { isAuth: true, userId: session.userId };
+});
+
+// Redirects — use in Server Components and Server Actions
+export const requireSession = cache(async () => {
   const cookie = (await cookies()).get('session')?.value;
   const session = await decrypt(cookie);
 
