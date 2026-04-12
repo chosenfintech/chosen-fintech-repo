@@ -72,7 +72,7 @@ const CreateGalleryPhotoPage = () => {
   }
 
   return (
-    <div className="container mx-auto max-w-7xl">
+    <div className="container mx-auto max-w-2xl">
       <GalleryPhotoForm form={form} onSubmit={onSubmit} isLoading={isLoading} />
     </div>
   );
