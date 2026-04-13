@@ -22,6 +22,7 @@ const navLinks = [
   { to: '/projects', label: 'Projects' },
   { to: '/academy', label: 'Academy' },
   { to: '/events', label: 'Events' },
+  { to: '/donate', label: 'Donate' },
 ];
 
 export function NavBar() {
