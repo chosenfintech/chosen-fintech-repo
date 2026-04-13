@@ -16,6 +16,7 @@ import {
   textVariants,
 } from '@/static-data/motion-variants';
 import { IPost } from '@/types/posts/post.types';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 interface LatestEventsProps {
   posts: IPost[];
@@ -91,15 +92,13 @@ export function LatestEvents({ posts }: LatestEventsProps) {
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
               variants={fadeUpVariants}
-              className="flex flex-col items-center justify-center py-20 text-center"
             >
-              <Calendar className="w-12 h-12 text-muted-foreground mb-4" />
-              <p className="text-lg font-medium text-foreground mb-2">
-                No events at the moment
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Check back later for upcoming events and activities.
-              </p>
+              <EmptyState
+                icon={Calendar}
+                title="No events at the moment"
+                description="Check back later for upcoming events and activities."
+                showCreateButton={false}
+              />
             </motion.div>
           ) : (
             /* Event Cards Grid */
@@ -124,7 +123,7 @@ export function LatestEvents({ posts }: LatestEventsProps) {
                             src={post.coverImage}
                             alt={post.title}
                             fill
-                            className="object-cover transition-transform duration-500 "
+                            className="object-cover transition-transform duration-500"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             priority={index === 0}
                           />
@@ -137,18 +136,13 @@ export function LatestEvents({ posts }: LatestEventsProps) {
 
                       {/* Content */}
                       <CardContent className="p-6 flex-1 flex flex-col">
-                        {/* Meta Information */}
-                        <div className="flex items-center gap-3 mb-4">
-                          {post.category && (
-                            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium uppercase tracking-wide">
-                              {post.category.name}
-                            </span>
-                          )}
-                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <Calendar className="w-3.5 h-3.5" />
-                            {formatDate(post)}
+                        {/* Category */}
+                        {post.category?.name && (
+                          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary mb-4">
+                            <span className="w-4 h-px bg-primary" />
+                            {post.category.name}
                           </span>
-                        </div>
+                        )}
 
                         {/* Title */}
                         <h3 className="font-display text-xl font-semibold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
@@ -160,10 +154,16 @@ export function LatestEvents({ posts }: LatestEventsProps) {
                           {post.excerpt}
                         </p>
 
-                        {/* Read More Link */}
-                        <div className="flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all duration-300">
-                          Read More
-                          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        {/* Footer: Date + Read More */}
+                        <div className="flex items-center justify-between">
+                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Calendar className="w-3.5 h-3.5" />
+                            {formatDate(post)}
+                          </span>
+                          <div className="flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all duration-300">
+                            Read More
+                            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                          </div>
                         </div>
                       </CardContent>
                     </Card>

@@ -1,7 +1,6 @@
 // src/components/posts/detail/Header.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { IPost } from '@/types/posts/post.types';
 import { AuthorMetaCard } from './AuthorMetaCard';
@@ -13,19 +12,19 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ post }) => {
   return (
     <header className="w-full mb-10">
-      {/* Category badge */}
+      {/* Category */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="mb-5"
       >
-        <Badge
-          variant="secondary"
-          className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary border-0 rounded-full tracking-wide uppercase"
-        >
-          {post.category?.name || 'Article'}
-        </Badge>
+        {post.category?.name && (
+          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary">
+            <span className="w-4 h-px bg-primary" />
+            {post.category.name}
+          </span>
+        )}
       </motion.div>
 
       {/* Title */}

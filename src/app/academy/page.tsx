@@ -1,8 +1,13 @@
 // src/app/academy/page.tsx
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import AcademyPageServer from '@/components/academy/AcademyPageServer';
-import BlogPageSkeleton from '@/components/posts/PostsSkeleton';
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
+import { PageHero } from '@/components/ui/PageHero';
+import { EducationalGuides } from '@/components/academy/EducationalGuides';
+import AcademyBlogsServer from '@/components/academy/AcademyBlogsServer';
+import AcademyBlogsSkeleton from '@/components/academy/AcademyBlogsSkeleton';
+import { academyGuides } from '@/static-data/academy-guides';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -46,14 +51,22 @@ interface AcademyPageProps {
     page?: string;
     limit?: string;
     search?: string;
+    categoryId?: string;
   }>;
 }
 
 export default async function AcademyPage({ searchParams }: AcademyPageProps) {
   const resolvedSearchParams = await searchParams;
+
   return (
-    <Suspense fallback={<BlogPageSkeleton variant="academy" />}>
-      <AcademyPageServer searchParams={resolvedSearchParams} />
-    </Suspense>
+    <main className="min-h-screen bg-background">
+      <NavBar />
+      <PageHero title="Academy" />
+      <EducationalGuides guides={academyGuides} />
+      <Suspense fallback={<AcademyBlogsSkeleton />}>
+        <AcademyBlogsServer searchParams={resolvedSearchParams} />
+      </Suspense>
+      <Footer />
+    </main>
   );
 }

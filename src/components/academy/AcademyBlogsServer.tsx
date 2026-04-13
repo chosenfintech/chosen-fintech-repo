@@ -1,5 +1,5 @@
-// src/components/academy/AcademyPageServer.tsx
-import AcademyPageClient from './AcademyPageClient';
+// src/components/academy/AcademyBlogsServer.tsx
+import AcademyBlogsClient from './AcademyBlogsClient';
 import { IPost, IPostsPaginatedResponse } from '@/types/posts/post.types';
 import {
   ICategory,
@@ -68,7 +68,7 @@ async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
   }
 }
 
-interface AcademyPageServerProps {
+interface AcademyBlogsServerProps {
   searchParams: {
     page?: string;
     limit?: string;
@@ -77,9 +77,9 @@ interface AcademyPageServerProps {
   };
 }
 
-export default async function AcademyPageServer({
+export default async function AcademyBlogsServer({
   searchParams,
-}: AcademyPageServerProps) {
+}: AcademyBlogsServerProps) {
   const page = parseInt(searchParams.page || '1');
   const limit = parseInt(searchParams.limit || '5');
   const search = searchParams.search;
@@ -104,11 +104,11 @@ export default async function AcademyPageServer({
     recentPosts = recentResp.data;
     categories = categoriesResp.data;
   } catch (error) {
-    console.error('Error fetching academy data:', error);
+    console.error('Error fetching academy blogs data:', error);
   }
 
   return (
-    <AcademyPageClient
+    <AcademyBlogsClient
       posts={posts}
       recentPosts={recentPosts}
       categories={categories}

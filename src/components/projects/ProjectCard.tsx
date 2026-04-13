@@ -13,7 +13,7 @@ interface ProjectCardProps {
 export function ProjectCard({ project, priority = false }: ProjectCardProps) {
   return (
     <Link href={`/projects/${project.slug}`} className="group block h-full">
-      <Card className="overflow-hidden hover:shadow-xl hover:border-primary transition-all duration-300 h-full flex flex-col">
+      <Card className="overflow-hidden hover:shadow-sm hover:border-primary transition-all duration-300 h-full flex flex-col">
         <CardContent className="p-6 flex flex-col items-center text-center">
           {/* Project Image/Logo Area */}
           <div className="w-full aspect-square max-w-50 p-6 flex justify-center items-center bg-white rounded-xl mb-6 transition-transform duration-300 group-hover:scale-105">
