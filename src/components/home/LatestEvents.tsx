@@ -113,10 +113,10 @@ export function LatestEvents({ posts }: LatestEventsProps) {
               {posts.map((post, index) => (
                 <motion.div key={post.id} variants={cardVariants}>
                   <Link
-                    href={`/events/${post.slug}`}
+                    href={`/posts/${post.slug}`}
                     className="group block h-full"
                   >
-                    <Card className="overflow-hidden border-border hover:shadow-xl hover:border-primary/20 transition-all duration-300 h-full flex flex-col p-0">
+                    <Card className="overflow-hidden border-border hover:shadow-sm hover:border-primary/50 transition-all duration-300 h-full flex flex-col p-0">
                       {/* Image Container */}
                       <div className="relative aspect-16/10 overflow-hidden bg-muted">
                         {post.coverImage ? (
@@ -124,7 +124,7 @@ export function LatestEvents({ posts }: LatestEventsProps) {
                             src={post.coverImage}
                             alt={post.title}
                             fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                            className="object-cover transition-transform duration-500 "
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             priority={index === 0}
                           />
@@ -133,8 +133,6 @@ export function LatestEvents({ posts }: LatestEventsProps) {
                             <Calendar className="w-10 h-10 text-muted-foreground" />
                           </div>
                         )}
-                        {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-linear-to-t from-background/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
 
                       {/* Content */}
