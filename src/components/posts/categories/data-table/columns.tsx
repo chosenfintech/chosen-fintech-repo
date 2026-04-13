@@ -4,6 +4,12 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Calendar } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { ICategory } from '@/types/posts/category.types';
 import { CategoryActionsDropdown } from './ActionsDropdown';
 import { format } from 'date-fns';
@@ -65,11 +71,30 @@ export const createCategoryColumns = (): ColumnDef<ICategory>[] => [
       </button>
     ),
     cell: ({ row }) => {
-      const totalPostsCount = row.getValue('totalPostsCount') as number;
+      const category = row.original;
+      const total = category.totalPostsCount;
+      const published = category.publishedPostsCount ?? 0;
+      const unpublished = category.unpublishedPostsCount ?? 0;
+
       return (
-        <Badge variant="secondary" className="w-fit text-xs">
-          {totalPostsCount} {totalPostsCount === 1 ? 'post' : 'posts'}
-        </Badge>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Badge
+                variant="secondary"
+                className="w-fit text-xs cursor-default"
+              >
+                {total} {total === 1 ? 'post' : 'posts'}
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="text-xs space-y-1">
+              <p className="text-green-600 font-medium">
+                {published} published
+              </p>
+              <p className="text-muted-foreground">{unpublished} hidden</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       );
     },
   },
@@ -87,9 +112,12 @@ export const createCategoryColumns = (): ColumnDef<ICategory>[] => [
     ),
     cell: ({ row }) => {
       const createdAt = row.getValue('createdAt') as string | null;
+      if (!createdAt) return <span className="text-muted-foreground">—</span>;
+      const date = new Date(createdAt);
       return (
-        <div className="text-xs sm:text-sm">
-          {createdAt ? format(new Date(createdAt), 'MMM d, yyyy') : '—'}
+        <div className="text-xs sm:text-sm space-y-0.5">
+          <div className="font-medium">{format(date, 'MMM dd, yyyy')}</div>
+          <div className="text-muted-foreground">{format(date, 'h:mm a')}</div>
         </div>
       );
     },
@@ -108,14 +136,12 @@ export const createCategoryColumns = (): ColumnDef<ICategory>[] => [
     ),
     cell: ({ row }) => {
       const updatedAt = row.getValue('updatedAt') as string | null;
+      if (!updatedAt) return <span className="text-muted-foreground">—</span>;
+      const date = new Date(updatedAt);
       return (
-        <div className="text-xs sm:text-sm text-muted-foreground">
-          <div className="sm:hidden">
-            {updatedAt ? format(new Date(updatedAt), 'MMM d, yyyy') : '—'}
-          </div>
-          <div className="hidden sm:block">
-            {updatedAt ? format(new Date(updatedAt), 'MMM d, yyyy') : '—'}
-          </div>
+        <div className="text-xs sm:text-sm space-y-0.5">
+          <div className="font-medium">{format(date, 'MMM dd, yyyy')}</div>
+          <div className="text-muted-foreground">{format(date, 'h:mm a')}</div>
         </div>
       );
     },
