@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Copy, Check, Coins, Building2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import Image from 'next/image';
 import {
   containerVariants,
   fadeUpVariants,
@@ -12,7 +13,7 @@ import {
   lineRevealVariants,
 } from '@/static-data/motion-variants';
 
-const FOOTER_DEEP_BLUE = 'oklch(0.396 0.195 264)';
+export const FOOTER_DEEP_BLUE = 'oklch(0.396 0.195 264)';
 
 interface DonationEntry {
   label: string;
@@ -87,7 +88,7 @@ function CopyButton({ value }: { value: string }) {
       whileTap={{ scale: 0.9 }}
       whileHover={{ scale: 1.05 }}
       aria-label={copied ? 'Copied' : 'Copy to clipboard'}
-      className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors duration-200"
+      className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 transition-colors duration-200"
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
@@ -98,9 +99,9 @@ function CopyButton({ value }: { value: string }) {
           transition={{ duration: 0.15 }}
         >
           {copied ? (
-            <Check className="w-4 h-4 text-green-400" />
+            <Check className="w-4 h-4 text-green-500 dark:text-green-400" />
           ) : (
-            <Copy className="w-4 h-4 text-white/60" />
+            <Copy className="w-4 h-4 text-gray-500 dark:text-white/60 group-hover:text-white/60" />
           )}
         </motion.div>
       </AnimatePresence>
@@ -122,7 +123,8 @@ function MethodCard({
       whileHover="hover"
       className="relative group h-full"
     >
-      <Card className="relative bg-[#252b3b] border border-[#2a3142] rounded-[5px] overflow-hidden h-full">
+      <Card className="relative bg-white dark:bg-[#252b3b] border border-gray-200 dark:border-[#2a3142] rounded-[5px] overflow-hidden h-full">
+        {/* Hover sweep — same color in both modes */}
         <motion.div
           className="absolute inset-0 z-0"
           initial={{ scaleX: 0 }}
@@ -141,7 +143,7 @@ function MethodCard({
             <div className="w-10 h-10">
               <Icon className="w-full h-full text-primary group-hover:text-white transition-colors duration-300" />
             </div>
-            <h3 className="font-display text-xl font-bold text-white">
+            <h3 className="font-display text-xl font-bold text-gray-900 dark:text-white group-hover:text-white transition-colors duration-300">
               {method.title}
             </h3>
           </div>
@@ -150,7 +152,7 @@ function MethodCard({
           <div className="flex flex-col gap-4">
             {method.entries.map((entry) => (
               <div key={entry.label} className="flex flex-col gap-1">
-                <span className="text-xs font-medium text-gray-400 group-hover:text-white/60 uppercase tracking-wider transition-colors duration-300">
+                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-white/60 uppercase tracking-wider transition-colors duration-300">
                   {entry.label}
                   {entry.subLabel && (
                     <span className="normal-case tracking-normal ml-1 opacity-70">
@@ -159,7 +161,7 @@ function MethodCard({
                   )}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-white font-mono break-all leading-relaxed flex-1">
+                  <span className="text-sm text-gray-800 dark:text-white group-hover:text-white font-mono break-all leading-relaxed flex-1 transition-colors duration-300">
                     {entry.value}
                   </span>
                   <CopyButton value={entry.value} />
@@ -170,7 +172,7 @@ function MethodCard({
 
           {/* Note */}
           {method.note && (
-            <p className="text-xs text-gray-400 group-hover:text-white/60 transition-colors duration-300 border-t border-white/10 pt-4">
+            <p className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-white/60 transition-colors duration-300 border-t border-gray-200 dark:border-white/10 group-hover:border-white/10 pt-4">
               {method.note}
             </p>
           )}
@@ -181,9 +183,6 @@ function MethodCard({
 }
 
 export function DonateMethods() {
-  // Mirror the WhatWeDo pattern for dark/light hover
-  // The section bg is bg-foreground (dark navy in light, near-white in dark)
-  // so we always want the deep blue for hover — same as WhatWeDo
   const cardHoverBg = FOOTER_DEEP_BLUE;
 
   return (
@@ -192,16 +191,25 @@ export function DonateMethods() {
       whileInView="visible"
       viewport={{ once: true, margin: '-80px' }}
       variants={containerVariants}
-      className="bg-foreground dark:bg-card py-16 md:py-24"
+      className="relative py-16 md:py-24 overflow-hidden"
+      style={{ backgroundColor: FOOTER_DEEP_BLUE }}
     >
-      <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Background image with gradient overlays */}
+      <div className="absolute inset-0">
+        <Image src="/hero-bg.jpg" alt="" fill className="object-cover" />
+        <div className="absolute inset-0 bg-[oklch(0.396_0.195_264)]/80" />
+        <div className="absolute inset-0 bg-linear-to-br from-[oklch(0.396_0.195_264)]/40 via-transparent to-[oklch(0.396_0.195_264)]/20" />
+      </div>
+
+      {/* Foreground content */}
+      <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Left sticky label */}
           <motion.div
             variants={fadeUpVariants}
             className="lg:col-span-3 lg:sticky lg:top-8 lg:self-start"
           >
-            <h2 className="font-display dark:text-white text-3xl md:text-4xl font-bold text-background dark:text-[oklch(0.396_0.195_264)] leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground leading-tight">
               WAYS
               <br />
               TO
@@ -211,10 +219,10 @@ export function DonateMethods() {
 
             <motion.div
               variants={lineRevealVariants}
-              className="w-10 h-0.5 bg-background dark:bg-white mt-4 origin-left"
+              className="w-10 h-0.5 bg-primary-foreground mt-4 origin-left"
             />
 
-            <p className="mt-4 text-gray-400 dark:text-muted-foreground leading-relaxed">
+            <p className="mt-4 text-primary-foreground/90 leading-relaxed">
               Choose the method that works best for you. Every contribution is
               received with gratitude.
             </p>

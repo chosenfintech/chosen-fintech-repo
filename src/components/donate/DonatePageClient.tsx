@@ -11,6 +11,8 @@ import {
   lineRevealVariants,
   cardVariants,
 } from '@/static-data/motion-variants';
+import Image from 'next/image';
+import { FOOTER_DEEP_BLUE } from '@/components/donate/DonateMethods';
 
 const impactItems = [
   {
@@ -172,22 +174,31 @@ export default function DonatePageClient() {
         whileInView="visible"
         viewport={{ once: true, margin: '-80px' }}
         variants={containerVariants}
-        className="bg-foreground dark:bg-card py-16 md:py-20"
+        className="relative py-16 md:py-20 overflow-hidden"
+        style={{ backgroundColor: FOOTER_DEEP_BLUE }}
       >
-        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        {/* Background image with gradient overlays */}
+        <div className="absolute inset-0">
+          <Image src="/hero-bg.jpg" alt="" fill className="object-cover" />
+          <div className="absolute inset-0 bg-[oklch(0.396_0.195_264)]/80" />
+          <div className="absolute inset-0 bg-linear-to-br from-[oklch(0.396_0.195_264)]/40 via-transparent to-[oklch(0.396_0.195_264)]/20" />
+        </div>
+
+        {/* Foreground content */}
+        <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.h2
             variants={fadeUpVariants}
-            className="font-display dark:text-white text-3xl md:text-4xl font-bold text-background dark:text-[oklch(0.396_0.195_264)] mb-6"
+            className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-6"
           >
             THANK YOU
           </motion.h2>
           <motion.div
             variants={lineRevealVariants}
-            className="w-10 h-0.5 bg-background dark:bg-white mx-auto mb-8 origin-center"
+            className="w-10 h-0.5 bg-primary-foreground mx-auto mb-8 origin-center"
           />
           <motion.p
             variants={fadeUpVariants}
-            className="text-gray-400 dark:text-muted-foreground leading-relaxed text-lg max-w-2xl mx-auto font-light"
+            className="text-primary-foreground/90 leading-relaxed text-lg max-w-2xl mx-auto font-light"
           >
             We are deeply grateful for your support in helping us create and
             shape a more inclusive and empowered financial and tech future.

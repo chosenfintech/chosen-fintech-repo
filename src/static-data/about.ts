@@ -90,7 +90,7 @@ export const teamMembers: ITeamMember[] = [
 
 export const faqCategories = [
   {
-    category: 'About Chosen Fintech',
+    category: 'ABOUT CHOSEN FINTECH',
     questions: [
       {
         q: 'What is Chosen Fintech?',
@@ -107,7 +107,7 @@ export const faqCategories = [
     ],
   },
   {
-    category: 'Cryptocurrency & Blockchain',
+    category: 'CRYPTO & BLOCKCHAIN',
     questions: [
       {
         q: 'What is cryptocurrency?',
@@ -124,7 +124,7 @@ export const faqCategories = [
     ],
   },
   {
-    category: 'Cardano Specific',
+    category: 'CARDANO SPECIFIC',
     questions: [
       {
         q: 'What is ADA?',
@@ -141,7 +141,7 @@ export const faqCategories = [
     ],
   },
   {
-    category: 'Getting Started',
+    category: 'GETTING STARTED',
     questions: [
       {
         q: 'How do I start learning about crypto?',

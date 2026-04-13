@@ -9,12 +9,16 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import {
   containerVariants,
   categoryVariants,
-  ctaVariants,
+  fadeUpVariants,
+  lineRevealVariants,
+  hoverVariants,
+  textVariants,
 } from '@/static-data/motion-variants';
 import { faqCategories } from '@/static-data/about';
 
@@ -24,99 +28,138 @@ export default function FaqPageClient() {
       <PageHero title="FAQ" />
 
       {/* FAQ Content */}
-      <section className="py-16 lg:py-24">
-        <div className="w-full mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={containerVariants}
+        className="relative py-16 md:py-24 bg-muted/30"
+      >
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="space-y-12 lg:space-y-16"
+            className="space-y-16 lg:space-y-24"
             variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
           >
             {faqCategories.map((category, categoryIndex) => (
-              <motion.div key={category.category} variants={categoryVariants}>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-6 lg:mb-8">
-                  {category.category}
-                </h2>
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="space-y-3 lg:space-y-4"
+              <motion.div
+                key={category.category}
+                variants={categoryVariants}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12"
+              >
+                {/* Left sticky label */}
+                <motion.div
+                  variants={fadeUpVariants}
+                  className="lg:col-span-3 lg:sticky lg:top-8 lg:self-start"
                 >
-                  {category.questions.map((item, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        delay: index * 0.1,
-                        type: 'spring',
-                        stiffness: 100,
-                        damping: 15,
-                      }}
-                    >
-                      <AccordionItem
-                        value={`${categoryIndex}-${index}`}
-                        className="bg-card rounded-xl border px-5 sm:px-6 lg:px-8 card-shadow hover:shadow-lg transition-shadow duration-300"
+                  <h2 className="font-display text-3xl md:text-4xl font-bold text-primary dark:text-foreground leading-tight">
+                    {' '}
+                    {category.category.split(' ').map((word) => (
+                      <span key={word}>
+                        {word}
+                        <br />
+                      </span>
+                    ))}
+                  </h2>
+                  <motion.div
+                    variants={lineRevealVariants}
+                    className="w-10 h-0.5 bg-primary dark:bg-foreground mt-4 origin-left"
+                  />
+                </motion.div>
+
+                {/* Right accordion */}
+                <div className="lg:col-span-9">
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="space-y-3 lg:space-y-4"
+                  >
+                    {category.questions.map((item, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          delay: index * 0.08,
+                          type: 'spring',
+                          stiffness: 100,
+                          damping: 15,
+                        }}
                       >
-                        <AccordionTrigger className="text-left font-medium hover:no-underline py-4 sm:py-5 text-sm sm:text-base">
-                          {item.q}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-muted-foreground leading-relaxed pb-4 sm:pb-5 text-sm sm:text-base">
-                          {item.a}
-                        </AccordionContent>
-                      </AccordionItem>
-                    </motion.div>
-                  ))}
-                </Accordion>
+                        <AccordionItem
+                          value={`${categoryIndex}-${index}`}
+                          className="bg-card border border-border rounded-[5px] px-5 sm:px-6 lg:px-8 overflow-hidden transition-shadow duration-300 hover:shadow-lg hover:shadow-black/10"
+                        >
+                          <AccordionTrigger className="text-left font-medium hover:no-underline py-4 sm:py-5 text-sm sm:text-base text-foreground data-[state=open]:text-primary transition-colors duration-200">
+                            {item.q}
+                          </AccordionTrigger>
+                          <AccordionContent className="text-muted-foreground leading-relaxed pb-4 sm:pb-5 text-sm sm:text-base">
+                            {item.a}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </motion.div>
+                    ))}
+                  </Accordion>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Still Have Questions */}
-      <section className="py-16 lg:py-24 bg-muted/30">
-        <div className="w-full mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="text-center"
-            variants={ctaVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.5 }}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-80px' }}
+        variants={containerVariants}
+        className="relative py-16 md:py-24 bg-muted/20 border-t border-border/50"
+      >
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+          <motion.h2
+            variants={fadeUpVariants}
+            className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-primary dark:text-foreground"
           >
-            <motion.h2
-              className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 lg:mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
+            STILL HAVE QUESTIONS?
+          </motion.h2>
+
+          <motion.div
+            variants={lineRevealVariants}
+            className="w-10 h-0.5 bg-primary dark:bg-foreground mx-auto mt-4 mb-6 origin-center"
+          />
+
+          <motion.p
+            variants={fadeUpVariants}
+            className="text-muted-foreground text-base sm:text-lg mb-10 max-w-xl mx-auto"
+          >
+            Can&apos;t find the answer you&apos;re looking for? Our team is here
+            to help.
+          </motion.p>
+
+          <motion.div variants={textVariants} initial="rest" whileHover="hover">
+            <Button
+              variant="outline"
+              size="lg"
+              className="relative z-10 border-2 border-border text-foreground rounded-full backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
+              asChild
             >
-              Still Have Questions?
-            </motion.h2>
-            <motion.p
-              className="text-muted-foreground text-base sm:text-lg mb-8 lg:mb-10 max-w-xl mx-auto px-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              Can&apos;t find the answer you&apos;re looking for? Our team is
-              here to help.
-            </motion.p>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-            >
-              <Button asChild size="lg">
-                <Link href="/contact">Contact Us</Link>
-              </Button>
-            </motion.div>
+              <Link
+                href="/contact"
+                className="flex items-center justify-center"
+              >
+                <span className="relative z-20 group-hover:text-primary-foreground transition-colors duration-300">
+                  Contact Us
+                  <ArrowRight className="ml-2 w-4 h-4 inline transition-transform group-hover:translate-x-1" />
+                </span>
+                <motion.span
+                  className="absolute inset-0 bg-primary rounded-full z-10"
+                  variants={hoverVariants}
+                />
+              </Link>
+            </Button>
           </motion.div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }

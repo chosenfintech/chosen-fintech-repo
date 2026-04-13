@@ -1,9 +1,10 @@
+// src/components/about/WhatWeDo.tsx
 'use client';
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'motion/react';
-import { useTheme } from 'next-themes';
+import Image from 'next/image';
 import {
   cardVariants,
   containerVariants,
@@ -23,26 +24,31 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
   description,
   focusAreas,
 }) => {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark';
-
-  const cardHoverBg = isDark ? FOOTER_DEEP_BLUE : 'var(--color-primary)';
-
   return (
     <motion.section
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-80px' }}
       variants={containerVariants}
-      className="bg-foreground dark:bg-card py-16 md:py-24"
+      className="relative py-16 md:py-24 overflow-hidden"
+      style={{ backgroundColor: FOOTER_DEEP_BLUE }}
     >
-      <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Background image with gradient overlays */}
+      <div className="absolute inset-0">
+        <Image src="/hero-bg.jpg" alt="" fill className="object-cover" />
+        <div className="absolute inset-0 bg-[oklch(0.396_0.195_264)]/80" />
+        <div className="absolute inset-0 bg-linear-to-br from-[oklch(0.396_0.195_264)]/40 via-transparent to-[oklch(0.396_0.195_264)]/20" />
+      </div>
+
+      {/* Foreground content */}
+      <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* Left sticky label */}
           <motion.div
             variants={fadeUpVariants}
             className="lg:col-span-3 lg:sticky lg:top-8 lg:self-start"
           >
-            <h2 className="font-display dark:text-white text-3xl md:text-4xl font-bold text-background dark:text-[oklch(0.396_0.195_264)] leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground leading-tight">
               WHAT
               <br />
               WE
@@ -52,14 +58,15 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
 
             <motion.div
               variants={lineRevealVariants}
-              className="w-10 h-0.5 bg-background dark:bg-white mt-4 origin-left "
+              className="w-10 h-0.5 bg-primary-foreground mt-4 origin-left"
             />
 
-            <p className="mt-4 text-gray-400 dark:text-muted-foreground leading-relaxed">
+            <p className="mt-4 text-primary-foreground/90 leading-relaxed">
               {description}
             </p>
           </motion.div>
 
+          {/* Right: focus area cards */}
           <motion.div
             variants={containerVariants}
             className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 gap-6"
@@ -71,7 +78,7 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
                 whileHover="hover"
                 className="relative group"
               >
-                <Card className="relative bg-[#252b3b] border border-[#2a3142] rounded-[5px] overflow-hidden">
+                <Card className="relative bg-white dark:bg-[#252b3b] border border-gray-200 dark:border-[#2a3142] rounded-[5px] overflow-hidden">
                   <motion.div
                     className="absolute inset-0 z-0"
                     initial={{ scaleX: 0 }}
@@ -84,7 +91,7 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
                         },
                       },
                     }}
-                    style={{ originX: 0, backgroundColor: cardHoverBg }}
+                    style={{ originX: 0, backgroundColor: FOOTER_DEEP_BLUE }}
                   />
 
                   <CardContent className="relative z-10 p-8 h-full flex flex-col justify-between">
@@ -103,10 +110,10 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
                     </div>
 
                     <div>
-                      <h3 className="font-display text-xl font-bold text-white mb-2">
+                      <h3 className="font-display text-xl font-bold text-gray-900 dark:text-white group-hover:text-white transition-colors duration-300 mb-2">
                         {area.title}
                       </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed group-hover:text-white/90 transition-colors duration-300">
+                      <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed group-hover:text-white/90 transition-colors duration-300">
                         {area.description}
                       </p>
                     </div>
