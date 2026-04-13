@@ -27,6 +27,12 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { ICategory } from '@/types/posts/category.types';
 import { IPost } from '@/types/posts/post.types';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface BlogSidebarProps {
   categories: ICategory[];
@@ -44,43 +50,84 @@ interface CategoriesListProps {
   onCategoryFilter: (categoryId: string | null) => void;
 }
 
-const CategoriesList = ({
+function CategoryButton({
+  cat,
+  isSelected,
+  onCategoryFilter,
+}: {
+  cat: ICategory;
+  isSelected: boolean;
+  onCategoryFilter: (id: string | null) => void;
+}) {
+  const nameRef = React.useRef<HTMLSpanElement>(null);
+  const [isTruncated, setIsTruncated] = React.useState(false);
+
+  React.useLayoutEffect(() => {
+    const el = nameRef.current;
+    if (el) {
+      setIsTruncated(el.scrollWidth > el.offsetWidth);
+    }
+  }, [cat.name]);
+
+  const button = (
+    <Button
+      variant={isSelected ? 'default' : 'ghost'}
+      className="justify-between h-11 text-sm font-medium transition-all duration-200 hover:translate-x-1 w-full"
+      onClick={() => onCategoryFilter(isSelected ? null : cat.id)}
+    >
+      <span ref={nameRef} className="truncate min-w-0 text-left">
+        {cat.name}
+      </span>
+      {cat.publishedPostsCount !== undefined && (
+        <span className="shrink-0 ml-2 text-[10px] bg-muted px-1.5 py-0.5 rounded-md font-mono opacity-70">
+          {cat.publishedPostsCount}
+        </span>
+      )}
+    </Button>
+  );
+
+  if (!isTruncated) return button;
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent side="right">
+        <p>{cat.name}</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+export const CategoriesList = ({
   categories,
   selectedCategory,
   onCategoryFilter,
 }: CategoriesListProps) => (
-  <div className="flex flex-col gap-2">
-    <Button
-      variant={!selectedCategory ? 'default' : 'ghost'}
-      className="justify-start h-11 text-sm font-medium transition-all duration-200 hover:translate-x-1"
-      onClick={() => onCategoryFilter(null)}
-    >
-      All
-    </Button>
-    {categories.map((cat, index) => (
-      <motion.div
-        key={cat.id}
-        initial={{ opacity: 0, x: -10 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.1 + index * 0.05 }}
+  <TooltipProvider delayDuration={300}>
+    <div className="flex flex-col gap-2">
+      <Button
+        variant={!selectedCategory ? 'default' : 'ghost'}
+        className="justify-start h-11 text-sm font-medium transition-all duration-200 hover:translate-x-1"
+        onClick={() => onCategoryFilter(null)}
       >
-        <Button
-          variant={selectedCategory === cat.id ? 'default' : 'ghost'}
-          className="justify-between h-11 text-sm font-medium transition-all duration-200 hover:translate-x-1 w-full"
-          onClick={() =>
-            onCategoryFilter(selectedCategory === cat.id ? null : cat.id)
-          }
+        All
+      </Button>
+      {categories.map((cat, index) => (
+        <motion.div
+          key={cat.id}
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 + index * 0.05 }}
         >
-          <span>{cat.name}</span>
-          {cat.publishedPostsCount !== undefined && (
-            <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded-md font-mono opacity-70">
-              {cat.publishedPostsCount}
-            </span>
-          )}
-        </Button>
-      </motion.div>
-    ))}
-  </div>
+          <CategoryButton
+            cat={cat}
+            isSelected={selectedCategory === cat.id}
+            onCategoryFilter={onCategoryFilter}
+          />
+        </motion.div>
+      ))}
+    </div>
+  </TooltipProvider>
 );
 
 interface RecentPostsListProps {

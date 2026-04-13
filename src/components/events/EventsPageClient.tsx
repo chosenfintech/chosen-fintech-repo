@@ -56,7 +56,6 @@ function FeaturedPostCard({ post }: { post: IPost }) {
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </>
             ) : (
               <div className="h-full w-full flex items-center justify-center">
@@ -74,10 +73,12 @@ function FeaturedPostCard({ post }: { post: IPost }) {
           {/* Content */}
           <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
             {post.category?.name && (
-              <span className="inline-block mb-4 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wide w-fit">
+              <span className="inline-flex mb-5 items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary">
+                <span className="w-4 h-px bg-primary" />
                 {post.category.name}
               </span>
             )}
+
             <h2 className="font-display text-2xl lg:text-3xl xl:text-4xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300 leading-tight">
               {post.title}
             </h2>

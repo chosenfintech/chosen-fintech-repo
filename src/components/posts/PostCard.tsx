@@ -27,11 +27,11 @@ export const BlogPostCard = ({ post }: BlogPostCardProps) => {
 
   return (
     <Link href={`/posts/${post.slug}`}>
-      <Card className="group overflow-hidden p-0 border-border/50 hover:border-primary/50 hover:shadow-md transition-all duration-300">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
+      <Card className="group overflow-hidden p-0 border-border/50 hover:border-primary/50 hover:shadow-sm transition-all duration-300">
+        <div className="flex flex-col sm:grid sm:grid-cols-5 gap-0">
           {/* Image Section */}
           <motion.div
-            className="md:col-span-2 relative aspect-video md:aspect-auto md:h-full overflow-hidden bg-muted"
+            className="sm:col-span-2 relative w-full aspect-[16/9] sm:aspect-auto sm:min-h-[200px] overflow-hidden bg-muted"
             variants={imageVariants}
             initial="rest"
             whileHover="hover"
@@ -45,75 +45,54 @@ export const BlogPostCard = ({ post }: BlogPostCardProps) => {
                   className="object-cover"
                 />
                 <motion.div
-                  className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 />
               </>
             ) : (
-              <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50 min-h-[160px]">
-                <ImageIcon className="w-12 h-12 text-muted-foreground/30" />
+              <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50 min-h-[180px]">
+                <ImageIcon className="w-10 h-10 text-muted-foreground/30" />
               </div>
             )}
           </motion.div>
 
           {/* Content Section */}
-          <CardContent className="md:col-span-3 p-6 lg:p-8 xl:p-10 flex flex-col justify-center">
-            {/* Meta Info */}
-            <motion.div
-              className="flex items-center gap-3 mb-4"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              {post.category?.name && (
-                <span className="px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wide">
-                  {post.category.name}
-                </span>
-              )}
+          <CardContent className="sm:col-span-3 p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col justify-center gap-3 sm:gap-4">
+            {post.category?.name && (
+              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary">
+                <span className="w-4 h-px bg-primary" />
+                {post.category.name}
+              </span>
+            )}
+
+            {/* Title */}
+            <h3 className="font-display text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 leading-snug line-clamp-2">
+              {post.title}
+            </h3>
+
+            {/* Excerpt */}
+            <p className="text-xs sm:text-sm lg:text-base text-muted-foreground line-clamp-2 sm:line-clamp-3 leading-relaxed">
+              {post.excerpt}
+            </p>
+
+            {/* Date + Read More */}
+            <div className="flex items-center justify-between">
               {formattedDate && (
                 <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
-                  <Calendar size={13} strokeWidth={2} />
+                  <Calendar size={12} strokeWidth={2} />
                   {formattedDate}
                 </span>
               )}
-            </motion.div>
-
-            {/* Title */}
-            <motion.h3
-              className="font-display text-xl lg:text-2xl xl:text-3xl font-bold text-foreground mb-3 lg:mb-4 group-hover:text-primary transition-colors duration-300 leading-tight"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-            >
-              {post.title}
-            </motion.h3>
-
-            {/* Excerpt */}
-            <motion.p
-              className="text-sm lg:text-base text-muted-foreground line-clamp-2 lg:line-clamp-3 mb-6 leading-relaxed"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              {post.excerpt}
-            </motion.p>
-
-            {/* Read More */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
-            >
               <Button
                 variant="link"
-                className="p-0 h-auto self-start group/btn text-sm lg:text-base font-semibold"
+                className="p-0 h-auto group/btn text-xs sm:text-sm font-semibold ml-auto"
               >
                 Read More
-                <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-2 transition-transform duration-300" />
+                <ArrowRight className="ml-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover/btn:translate-x-1.5 transition-transform duration-300" />
               </Button>
-            </motion.div>
+            </div>
           </CardContent>
         </div>
       </Card>
