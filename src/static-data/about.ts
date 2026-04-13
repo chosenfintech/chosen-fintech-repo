@@ -107,7 +107,7 @@ export const faqCategories = [
     ],
   },
   {
-    category: 'CRYPTO & BLOCKCHAIN',
+    category: 'CRYPTO AND BLOCKCHAIN',
     questions: [
       {
         q: 'What is cryptocurrency?',

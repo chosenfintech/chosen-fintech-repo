@@ -52,7 +52,6 @@ export default function FaqPageClient() {
                   className="lg:col-span-3 lg:sticky lg:top-8 lg:self-start"
                 >
                   <h2 className="font-display text-3xl md:text-4xl font-bold text-primary dark:text-foreground leading-tight">
-                    {' '}
                     {category.category.split(' ').map((word) => (
                       <span key={word}>
                         {word}
@@ -88,9 +87,9 @@ export default function FaqPageClient() {
                       >
                         <AccordionItem
                           value={`${categoryIndex}-${index}`}
-                          className="bg-card border border-border rounded-[5px] px-5 sm:px-6 lg:px-8 overflow-hidden transition-shadow duration-300 hover:shadow-lg hover:shadow-black/10"
+                          className="bg-card border border-border hover:border-border hover:border-primary rounded-[5px] px-5 sm:px-6 lg:px-8 overflow-hidden transition-shadow duration-300 hover:shadow-sm hover:shadow-black/10"
                         >
-                          <AccordionTrigger className="text-left font-medium hover:no-underline py-4 sm:py-5 text-sm sm:text-base text-foreground data-[state=open]:text-primary transition-colors duration-200">
+                          <AccordionTrigger className="text-left  cursor-pointer  font-medium hover:no-underline py-4 sm:py-5 text-sm sm:text-base text-foreground data-[state=open]:text-primary transition-colors duration-200">
                             {item.q}
                           </AccordionTrigger>
                           <AccordionContent className="text-muted-foreground leading-relaxed pb-4 sm:pb-5 text-sm sm:text-base">

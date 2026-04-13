@@ -66,7 +66,7 @@ async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },
-      cache: 'no-store',
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
@@ -143,7 +143,6 @@ export default async function BlogPageServer({
       categories={categories}
       totalPages={postsResponse.meta.totalPages ?? 1}
       currentPage={page}
-      pageSize={limit}
       totalCount={postsResponse.meta.total ?? 0}
       selectedCategory={categoryId}
       searchQuery={search}

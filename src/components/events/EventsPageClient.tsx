@@ -25,7 +25,6 @@ export interface IBlogPageClientProps {
   categories: ICategory[];
   totalPages: number;
   currentPage: number;
-  pageSize: number;
   totalCount: number;
   selectedCategory?: string;
   searchQuery?: string;
@@ -43,7 +42,7 @@ function FeaturedPostCard({ post }: { post: IPost }) {
 
   return (
     <Link href={`/posts/${post.slug}`}>
-      <Card className="group overflow-hidden p-0 border-border/50 hover:border-primary/50 hover:shadow-md transition-all duration-500">
+      <Card className="group overflow-hidden p-0 border-border/50 hover:border-primary/50 hover:shadow-sm transition-all duration-500">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
           {/* Image */}
           <div className="relative aspect-video lg:aspect-auto lg:min-h-[360px] overflow-hidden bg-muted">
@@ -53,7 +52,7 @@ function FeaturedPostCard({ post }: { post: IPost }) {
                   src={post.coverImage}
                   alt={post.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover transition-transform duration-700"
                   priority
                 />
               </>
@@ -114,7 +113,6 @@ export default function BlogPageClient({
   categories,
   totalPages,
   currentPage,
-  pageSize,
   totalCount,
   selectedCategory,
   searchQuery,
