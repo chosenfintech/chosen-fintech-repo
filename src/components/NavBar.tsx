@@ -1,4 +1,3 @@
-// src/components/NavBar.tsx
 'use client';
 
 import Link from 'next/link';
@@ -57,7 +56,6 @@ export function NavBar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (aboutRef.current && !aboutRef.current.contains(e.target as Node)) {
@@ -82,16 +80,14 @@ export function NavBar() {
     >
       <motion.div
         layout
-        animate={{ borderRadius: isAtTop ? '9999px' : '0px' }}
         transition={{
           layout: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-          borderRadius: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
         }}
         className={cn(
-          'transition-colors duration-500',
+          'transition-all duration-500',
           isAtTop
-            ? 'bg-background/95 backdrop-blur-xl border border-border/50 shadow-lg'
-            : 'bg-background/80 backdrop-blur-lg border-b border-border/50',
+            ? 'rounded-full bg-background/95 backdrop-blur-xl border border-border/50 shadow-lg'
+            : 'rounded-none bg-background/80 backdrop-blur-lg border-b border-border/50',
         )}
       >
         <div
@@ -136,25 +132,22 @@ export function NavBar() {
                 href="/"
                 className="relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300"
               >
-                <motion.span
+                <span
                   className={cn(
-                    'relative z-10',
+                    'relative z-10 transition-colors duration-200',
                     pathname === '/'
                       ? 'text-primary'
                       : 'text-muted-foreground hover:text-foreground',
                   )}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   Home
-                </motion.span>
-                {pathname === '/' && (
-                  <motion.div
-                    layoutId="navbar-indicator"
-                    className="absolute inset-0 bg-primary/10 rounded-full"
-                    transition={{ type: 'spring', stiffness: 350, damping: 35 }}
-                  />
-                )}
+                </span>
+                <span
+                  className={cn(
+                    'absolute inset-0 rounded-full bg-primary/10 transition-opacity duration-200',
+                    pathname === '/' ? 'opacity-100' : 'opacity-0',
+                  )}
+                />
               </Link>
 
               {/* About Dropdown */}
@@ -169,18 +162,16 @@ export function NavBar() {
                   onClick={() => setAboutOpen((o) => !o)}
                   aria-expanded={aboutOpen}
                 >
-                  <motion.span
+                  <span
                     className={cn(
-                      'relative z-10',
+                      'relative z-10 transition-colors duration-200',
                       isAboutActive
                         ? 'text-primary'
                         : 'text-muted-foreground hover:text-foreground',
                     )}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                   >
                     About
-                  </motion.span>
+                  </span>
                   <motion.div
                     animate={{ rotate: aboutOpen ? 180 : 0 }}
                     transition={{ duration: 0.25 }}
@@ -195,17 +186,12 @@ export function NavBar() {
                       )}
                     />
                   </motion.div>
-                  {isAboutActive && (
-                    <motion.div
-                      layoutId="navbar-indicator"
-                      className="absolute inset-0 bg-primary/10 rounded-full"
-                      transition={{
-                        type: 'spring',
-                        stiffness: 350,
-                        damping: 35,
-                      }}
-                    />
-                  )}
+                  <span
+                    className={cn(
+                      'absolute inset-0 rounded-full bg-primary/10 transition-opacity duration-200',
+                      isAboutActive ? 'opacity-100' : 'opacity-0',
+                    )}
+                  />
                 </button>
 
                 {/* Dropdown Panel */}
@@ -252,29 +238,22 @@ export function NavBar() {
                     href={link.to}
                     className="relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300"
                   >
-                    <motion.span
+                    <span
                       className={cn(
-                        'relative z-10',
+                        'relative z-10 transition-colors duration-200',
                         isActive
                           ? 'text-primary'
                           : 'text-muted-foreground hover:text-foreground',
                       )}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
                     >
                       {link.label}
-                    </motion.span>
-                    {isActive && (
-                      <motion.div
-                        layoutId="navbar-indicator"
-                        className="absolute inset-0 bg-primary/10 rounded-full"
-                        transition={{
-                          type: 'spring',
-                          stiffness: 350,
-                          damping: 35,
-                        }}
-                      />
-                    )}
+                    </span>
+                    <span
+                      className={cn(
+                        'absolute inset-0 rounded-full bg-primary/10 transition-opacity duration-200',
+                        isActive ? 'opacity-100' : 'opacity-0',
+                      )}
+                    />
                   </Link>
                 );
               })}
@@ -350,7 +329,7 @@ export function NavBar() {
                     href="/"
                     onClick={() => setMobileMenuOpen(false)}
                     className={cn(
-                      'block px-4 py-3 rounded-full text-sm font-medium',
+                      'block px-4 py-3 rounded-full text-sm font-medium transition-colors duration-200',
                       pathname === '/'
                         ? 'text-primary bg-primary/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-muted',
@@ -421,7 +400,7 @@ export function NavBar() {
                   </AnimatePresence>
                 </motion.div>
 
-                {/* Projects, Academy, Events */}
+                {/* Projects, Academy, Events, Donate */}
                 {navLinks.slice(1).map((link, index) => {
                   const isActive = pathname === link.to;
                   return (
@@ -435,7 +414,7 @@ export function NavBar() {
                         href={link.to}
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn(
-                          'block px-4 py-3 rounded-full text-sm font-medium',
+                          'block px-4 py-3 rounded-full text-sm font-medium transition-colors duration-200',
                           isActive
                             ? 'text-primary bg-primary/10'
                             : 'text-muted-foreground hover:text-foreground hover:bg-muted',
@@ -448,9 +427,9 @@ export function NavBar() {
                 })}
 
                 {/* Theme Toggle */}
-                <motion.button
+                <button
                   onClick={toggleTheme}
-                  className="flex items-center justify-between px-4 py-3 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted"
+                  className="flex items-center justify-between px-4 py-3 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200"
                 >
                   <span>Toggle Theme</span>
                   {themeReady &&
@@ -459,7 +438,7 @@ export function NavBar() {
                     ) : (
                       <Moon className="h-4 w-4" />
                     ))}
-                </motion.button>
+                </button>
 
                 <div className="pt-2 mt-2 border-t border-border">
                   <Button size="lg" className="w-full rounded-full" asChild>

@@ -1,13 +1,8 @@
-// src/components/contact/ContactPageClient.tsx
 'use client';
 
 import { PageHero } from '@/components/ui/PageHero';
 import { motion } from 'motion/react';
-import {
-  containerVariants,
-  itemVariants,
-  iconVariants,
-} from '@/static-data/motion-variants';
+import { containerVariants, itemVariants } from '@/static-data/motion-variants';
 import { contactInfo } from '@/static-data/contact';
 
 export default function ContactPageClient() {
@@ -28,51 +23,33 @@ export default function ContactPageClient() {
             {contactInfo.map((item) => (
               <motion.div
                 key={item.label}
-                className="flex flex-col items-center text-center p-6 md:p-0 rounded-2xl border border-border bg-card shadow-sm md:border-none md:bg-transparent md:shadow-none"
                 variants={itemVariants}
-                whileHover={{ y: -8 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="group flex flex-col items-center text-center p-6 md:p-0 rounded-2xl border border-border bg-card shadow-sm md:border-none md:bg-transparent md:shadow-none"
               >
-                <motion.div
-                  className="group mb-4 md:mb-6"
-                  whileHover="hover"
-                  whileTap="tap"
-                >
-                  <motion.div
-                    className="w-12 h-12 md:w-16 md:h-16 lg:w-20 cursor-pointer lg:h-20 rounded-xl bg-primary flex items-center justify-center transition-all duration-300 group-hover:bg-background group-hover:outline group-hover:outline-primary"
-                    variants={iconVariants}
-                  >
+                {/* Icon */}
+                <div className="mb-4 md:mb-6">
+                  <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 cursor-pointer rounded-xl bg-primary flex items-center justify-center transition-colors duration-300 group-hover:bg-background group-hover:outline group-hover:outline-primary group-hover:animate-shake">
                     <item.icon className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 text-primary-foreground transition-colors duration-300 group-hover:text-primary" />
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
 
-                <motion.h3
-                  className="font-display text-lg md:text-xl lg:text-2xl font-bold text-foreground mb-2 md:mb-3"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
+                {/* Label */}
+                <h3 className="font-display text-lg md:text-xl lg:text-2xl font-bold text-foreground mb-2 md:mb-3">
                   {item.label}
-                </motion.h3>
+                </h3>
 
+                {/* Value */}
                 {item.href ? (
-                  <motion.a
+                  <a
                     href={item.href}
                     className="text-muted-foreground hover:text-primary transition-colors duration-200 text-sm lg:text-base"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
                   >
                     {item.value}
-                  </motion.a>
+                  </a>
                 ) : (
-                  <motion.p
-                    className="text-muted-foreground text-sm lg:text-base"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                  >
+                  <p className="text-muted-foreground text-sm lg:text-base">
                     {item.value}
-                  </motion.p>
+                  </p>
                 )}
               </motion.div>
             ))}
