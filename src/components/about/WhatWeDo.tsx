@@ -1,4 +1,3 @@
-// src/components/about/WhatWeDo.tsx
 'use client';
 
 import React from 'react';
@@ -35,16 +34,15 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
       whileInView="visible"
       viewport={{ once: true, margin: '-80px' }}
       variants={containerVariants}
-      className="bg-foreground py-16 md:py-24"
+      className="bg-foreground dark:bg-card py-16 md:py-24"
     >
       <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          {/* Left Column - Sticky Header */}
           <motion.div
             variants={fadeUpVariants}
             className="lg:col-span-3 lg:sticky lg:top-8 lg:self-start"
           >
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-background dark:text-[oklch(0.396_0.195_264)] leading-tight">
+            <h2 className="font-display dark:text-white text-3xl md:text-4xl font-bold text-background dark:text-[oklch(0.396_0.195_264)] leading-tight">
               WHAT
               <br />
               WE
@@ -54,15 +52,14 @@ export const WhatWeDo: React.FC<WhatWeDoProps> = ({
 
             <motion.div
               variants={lineRevealVariants}
-              className="w-10 h-0.5 bg-background mt-4 origin-left"
+              className="w-10 h-0.5 bg-background dark:bg-white mt-4 origin-left "
             />
 
-            <p className="mt-4 text-gray-400 dark:text-black leading-relaxed">
+            <p className="mt-4 text-gray-400 dark:text-muted-foreground leading-relaxed">
               {description}
             </p>
           </motion.div>
 
-          {/* Right Column - Cards */}
           <motion.div
             variants={containerVariants}
             className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 gap-6"

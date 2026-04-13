@@ -172,22 +172,22 @@ export default function DonatePageClient() {
         whileInView="visible"
         viewport={{ once: true, margin: '-80px' }}
         variants={containerVariants}
-        className="bg-foreground py-16 md:py-20"
+        className="bg-foreground dark:bg-card py-16 md:py-20"
       >
         <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.h2
             variants={fadeUpVariants}
-            className="font-display text-3xl md:text-4xl font-bold text-background dark:text-[oklch(0.396_0.195_264)] mb-6"
+            className="font-display dark:text-white text-3xl md:text-4xl font-bold text-background dark:text-[oklch(0.396_0.195_264)] mb-6"
           >
-            Thank You
+            THANK YOU
           </motion.h2>
           <motion.div
             variants={lineRevealVariants}
-            className="w-10 h-0.5 bg-background mx-auto mb-8 origin-center"
+            className="w-10 h-0.5 bg-background dark:bg-white mx-auto mb-8 origin-center"
           />
           <motion.p
             variants={fadeUpVariants}
-            className="text-gray-400 dark:text-black leading-relaxed text-lg max-w-2xl mx-auto font-light"
+            className="text-gray-400 dark:text-muted-foreground leading-relaxed text-lg max-w-2xl mx-auto font-light"
           >
             We are deeply grateful for your support in helping us create and
             shape a more inclusive and empowered financial and tech future.

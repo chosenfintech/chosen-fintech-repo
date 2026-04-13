@@ -11,11 +11,12 @@ const footerLinks = {
   company: [
     { to: '/about', label: 'About Us' },
     { to: '/contact', label: 'Contact' },
+    { to: '/about/faq', label: 'FAQ' },
   ],
   resources: [
     { to: '/events', label: 'Events' },
     { to: '/academy', label: 'Academy' },
-    { to: '/about/faq', label: 'FAQ' },
+    { to: '/donate', label: 'Donate' },
   ],
   social: [
     { href: 'https://fb.com/chosenfintech', icon: Facebook, label: 'Facebook' },
