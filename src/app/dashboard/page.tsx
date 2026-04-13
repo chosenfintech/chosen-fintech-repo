@@ -1,10 +1,10 @@
+// src/app/dashboard/page.tsx
+import { DashboardStatsGrid } from '@/components/dashboard/DashboardStatsGrid';
 
-const page = () => {
+export default function DashboardPage() {
   return (
-    <div>
-      Dashboard
+    <div className="p-6">
+      <DashboardStatsGrid />
     </div>
-  )
+  );
 }
-
-export default page
