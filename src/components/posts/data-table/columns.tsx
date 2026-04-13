@@ -76,6 +76,22 @@ export const createPostColumns = (): ColumnDef<IPost>[] => [
     },
   },
   {
+    accessorKey: 'author',
+    header: 'Author',
+    cell: ({ row }) => {
+      const author = row.original.author;
+      return (
+        <div className="min-w-[120px]">
+          <div className="text-sm font-medium truncate">{author.fullname}</div>
+          <div className="text-xs text-muted-foreground truncate">
+            {author.email}
+          </div>
+        </div>
+      );
+    },
+    enableSorting: false,
+  },
+  {
     accessorKey: 'category',
     header: 'Category',
     cell: ({ row }) => {
@@ -143,9 +159,19 @@ export const createPostColumns = (): ColumnDef<IPost>[] => [
       </button>
     ),
     cell: ({ row }) => {
-      const date = new Date(row.getValue('publishDate') as string);
+      const raw = row.getValue('publishDate') as string | null;
+      if (!raw) {
+        return <span className="text-muted-foreground text-xs">—</span>;
+      }
+      const date = new Date(raw);
+      if (isNaN(date.getTime())) {
+        return <span className="text-muted-foreground text-xs">—</span>;
+      }
       return (
-        <div className="text-xs sm:text-sm">{format(date, 'MMM dd, yyyy')}</div>
+        <div className="text-xs sm:text-sm whitespace-nowrap">
+          <div>{format(date, 'MMM dd, yyyy')}</div>
+          <div className="text-muted-foreground">{format(date, 'h:mm a')}</div>
+        </div>
       );
     },
   },

@@ -14,6 +14,8 @@ import {
   Users,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 import {
   Sidebar,
   SidebarContent,
@@ -37,6 +39,7 @@ interface NavigationItem {
   name: string;
   path: string;
   icon: LucideIcon;
+  adminOnly?: boolean;
   hasSubmenu?: boolean;
   submenuItems?: SubmenuItem[];
 }
@@ -51,6 +54,7 @@ const navigationItems: NavigationItem[] = [
     name: 'Admins',
     path: '/dashboard/users',
     icon: Users,
+    adminOnly: true,
   },
   {
     name: 'Posts',
@@ -91,7 +95,14 @@ export default function DashboardSidebar() {
   const pathname = usePathname();
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isAdmin = user?.isAdmin ?? false;
+
   const isCollapsed = state === 'collapsed';
+
+  const visibleNavigationItems = navigationItems.filter(
+    (item) => !item.adminOnly || isAdmin,
+  );
 
   const toggleSubmenu = (itemName: string) => {
     setExpandedMenus((prev) =>
@@ -142,7 +153,7 @@ export default function DashboardSidebar() {
 
       <SidebarContent className="px-2">
         <SidebarMenu className="space-y-1.5">
-          {navigationItems.map((item) => {
+          {visibleNavigationItems.map((item) => {
             const hasActiveSubmenu =
               item.hasSubmenu && item.submenuItems
                 ? isSubmenuItemActive(item.submenuItems)
