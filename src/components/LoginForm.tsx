@@ -19,6 +19,7 @@ export default function LoginForm() {
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
 
   const [state, action, pending] = useActionState<SigninState, FormData>(
     signin,
@@ -84,6 +85,8 @@ export default function LoginForm() {
                   name="email"
                   placeholder="you@example.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               {state?.errors?.email && (
