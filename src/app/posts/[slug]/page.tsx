@@ -14,7 +14,7 @@ const fetchPost = cache(async function fetchPost(
   slug: string,
 ): Promise<IPost | null> {
   try {
-    const url = new URL(`/api/posts/${slug}`, baseUrl);
+    const url = new URL(`/api/posts/published/${slug}`, baseUrl);
     const postResponse = await fetch(url.toString(), {
       next: { revalidate: 60 },
     });

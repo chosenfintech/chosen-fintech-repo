@@ -1,10 +1,24 @@
+'use client';
+
 // src/app/events/[slug]/not-found.tsx
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Home } from 'lucide-react';
 import { NavBar } from '@/components/NavBar';
 
 export default function NotFound() {
+  const router = useRouter();
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      // fallback if no history exists
+      router.push('/events');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-linear-to-br from-background to-card flex flex-col">
       <NavBar />
@@ -21,14 +35,10 @@ export default function NotFound() {
           </p>
 
           <div className="space-y-4">
-            <Link href="/blog">
-              <Button className="w-full">
-                <ArrowLeft className="mr-2 w-4 h-4" />
-                Back to Posts
-              </Button>
-            </Link>
-
-            <div></div>
+            <Button onClick={handleBack} className="w-full">
+              <ArrowLeft className="mr-2 w-4 h-4" />
+              Back
+            </Button>
 
             <Link href="/">
               <Button variant="outline" className="w-full">

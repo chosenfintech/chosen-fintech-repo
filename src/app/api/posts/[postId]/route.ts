@@ -14,14 +14,15 @@ import {
   ForbiddenError,
 } from '@/middlewares/error-handler';
 import { updatePostSchema } from '@/validations/posts/post-validation';
+import { getPostById } from '@/utils/get-post-by-id';
 
 const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
 /**
  * GET /api/posts/[postId]
- * - Authenticated: returns any post (published or draft)
- * - Unauthenticated: returns published posts only
+ * - Protected Route: returns any post (published or draft)
  */
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ postId: string }> },
@@ -29,37 +30,14 @@ export async function GET(
   try {
     const { postId } = await params;
 
-    if (!postId) {
-      throw new ValidationError('Post identifier is required');
-    }
+    await verifySession();
 
-    let isAuthenticated = false;
-    try {
-      await verifySession();
-      isAuthenticated = true;
-    } catch {
-      // unauthenticated — restrict to published posts below
-    }
+    const post = await getPostById(postId, { isAuthenticated: true });
 
-    const post = await prisma.post.findFirst({
-      where: {
-        OR: [{ id: postId }, { slug: postId }],
-        ...(isAuthenticated ? {} : { isPublished: true }),
-      },
-      include: {
-        author: { select: { id: true, fullname: true, email: true } },
-        category: { select: { id: true, name: true } },
-      },
-    });
-
-    if (!post) {
-      throw new NotFoundError('Post not found');
-    }
-
-    return NextResponse.json({
-      message: 'Post retrieved successfully',
-      data: post,
-    });
+    return NextResponse.json(
+      { message: 'Post retrieved successfully', data: post },
+      { headers: { 'Cache-Control': 'no-store' } },
+    );
   } catch (err) {
     return handleApiError(err);
   }
