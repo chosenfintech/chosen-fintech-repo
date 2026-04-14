@@ -58,7 +58,7 @@ async function fetchLatestFeaturedPost(): Promise<IPost | null> {
 
 async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
   try {
-    const url = new URL(`/api/posts/categories`, baseUrl);
+    const url = new URL(`/api/posts/categories/published`, baseUrl);
     url.searchParams.set('limit', '1000');
     url.searchParams.set('sortBy', 'name');
     url.searchParams.set('sortOrder', 'asc');

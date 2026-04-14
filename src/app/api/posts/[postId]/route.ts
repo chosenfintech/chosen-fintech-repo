@@ -22,7 +22,6 @@ const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
  * GET /api/posts/[postId]
  * - Protected Route: returns any post (published or draft)
  */
-
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ postId: string }> },

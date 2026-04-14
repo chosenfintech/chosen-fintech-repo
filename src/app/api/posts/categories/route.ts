@@ -7,17 +7,16 @@ import {
   ValidationError,
   ConflictError,
 } from '@/middlewares/error-handler';
-import type { Prisma } from '@/lib/prisma';
 import type {
   ICategory,
   ICategoriesPaginatedResponse,
 } from '@/types/posts/category.types';
 import { createCategorySchema } from '@/validations/posts/category-validation';
-import { BLOG_AND_EDUCATION_CATEGORY_NAMES } from '@/utils/post-utils';
+import { getCategories } from '@/utils/get-categories';
 
 /**
  * GET /api/categories
- * Public — returns all categories with pagination, search, and sort.
+ * Protected — returns all categories with pagination, search, and sort.
  * Accepts optional postType param:
  *   - 'events'              → excludes blog and education categories
  *   - 'blog-and-education'  → returns only blog and education categories
@@ -25,11 +24,12 @@ import { BLOG_AND_EDUCATION_CATEGORY_NAMES } from '@/utils/post-utils';
  */
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
+    await verifySession();
+
     const { searchParams } = req.nextUrl;
 
     const page = parseInt(searchParams.get('page') ?? '1');
     const limit = parseInt(searchParams.get('limit') ?? '10');
-    const skip = (page - 1) * limit;
     const search = searchParams.get('search') ?? undefined;
     const sortBy = searchParams.get('sortBy') ?? 'createdAt';
     const sortOrder = (searchParams.get('sortOrder') ?? 'desc') as
@@ -37,94 +37,19 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       | 'desc';
     const postType = searchParams.get('postType') ?? undefined;
 
-    const whereClause: Prisma.CategoryWhereInput = {};
-
-    if (postType === 'events') {
-      whereClause.NOT = {
-        name: {
-          in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
-          mode: 'insensitive',
-        },
-      };
-    } else if (postType === 'blog-and-education') {
-      whereClause.name = {
-        in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
-        mode: 'insensitive',
-      };
-    }
-
-    if (search) {
-      whereClause.name = { contains: search, mode: 'insensitive' };
-    }
-
-    const orderBy: Prisma.CategoryOrderByWithRelationInput = {};
-    if (sortBy === 'postCount' || sortBy === 'publishedPostCount') {
-      orderBy.posts = { _count: sortOrder };
-    } else if (
-      sortBy === 'name' ||
-      sortBy === 'createdAt' ||
-      sortBy === 'updatedAt'
-    ) {
-      orderBy[sortBy] = sortOrder;
-    } else {
-      orderBy.createdAt = sortOrder;
-    }
-
-    const [categories, total] = await Promise.all([
-      prisma.category.findMany({
-        where: whereClause,
-        skip,
-        take: limit,
-        orderBy,
-        include: {
-          _count: {
-            select: {
-              posts: { where: { isPublished: true } },
-            },
-          },
-        },
-      }),
-      prisma.category.count({ where: whereClause }),
-    ]);
-
-    // Single groupBy instead of N+1 post.count queries
-    const unpublishedGroups = await prisma.post.groupBy({
-      by: ['categoryId'],
-      where: {
-        categoryId: { in: categories.map((c) => c.id) },
-        isPublished: false,
-      },
-      _count: { id: true },
+    const { categories, total } = await getCategories({
+      page,
+      limit,
+      search,
+      sortBy,
+      sortOrder,
+      postType,
+      isPublic: false,
     });
-
-    const unpublishedCountMap = new Map(
-      unpublishedGroups.map((g) => [g.categoryId, g._count.id]),
-    );
-
-    const response: ICategory[] = categories.map((category) => {
-      const unpublished = unpublishedCountMap.get(category.id) ?? 0;
-      return {
-        id: category.id,
-        name: category.name,
-        createdAt: category.createdAt,
-        updatedAt: category.updatedAt,
-        publishedPostsCount: category._count.posts,
-        unpublishedPostsCount: unpublished,
-        totalPostsCount: category._count.posts + unpublished,
-      };
-    });
-
-    // totalPostCount sort is done in-memory since it's a derived value
-    if (sortBy === 'totalPostCount') {
-      response.sort((a, b) => {
-        const diff = a.totalPostsCount - b.totalPostsCount;
-        return sortOrder === 'asc' ? diff : -diff;
-      });
-    }
 
     const paginatedResponse: ICategoriesPaginatedResponse = {
       message: 'Categories retrieved successfully',
-      data: response,
+      data: categories,
       meta: {
         total,
         page,
@@ -133,7 +58,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       },
     };
 
-    return NextResponse.json(paginatedResponse);
+    return NextResponse.json(paginatedResponse, {
+      headers: { 'Cache-Control': 'no-store' },
+    });
   } catch (err) {
     return handleApiError(err);
   }
