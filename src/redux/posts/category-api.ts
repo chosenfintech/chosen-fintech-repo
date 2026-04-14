@@ -6,7 +6,6 @@ import {
   ICategoryResponse,
   ICategoryCreateInput,
   ICategoryUpdateInput,
-  ICategoriesStatsResponse,
 } from '@/types/posts/category.types';
 
 export const categoryApi = apiSlice.injectEndpoints({
@@ -34,16 +33,6 @@ export const categoryApi = apiSlice.injectEndpoints({
         'Categories',
         'CategoryStats',
         'Posts',
-      ],
-    }),
-
-    getCategoryByIdOrName: builder.query<ICategoryResponse, string>({
-      query: (identifier) => ({
-        url: `/posts/categories/${identifier}`,
-        method: 'GET',
-      }),
-      providesTags: (result, error, identifier) => [
-        { type: 'Category', id: identifier },
       ],
     }),
 
@@ -90,14 +79,6 @@ export const categoryApi = apiSlice.injectEndpoints({
       ],
     }),
 
-    getCategoryStats: builder.query<ICategoriesStatsResponse, void>({
-      query: () => ({
-        url: '/posts/categories/stats',
-        method: 'GET',
-      }),
-      providesTags: ['CategoryStats'],
-    }),
-
     getCategoriesForSelect: builder.query<{ id: string; name: string }[], void>(
       {
         query: () => ({
@@ -142,16 +123,12 @@ export const categoryApi = apiSlice.injectEndpoints({
 export const {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
-  useGetCategoryByIdOrNameQuery,
   useGetAllCategoriesQuery,
   useDeleteCategoryMutation,
-  useGetCategoryStatsQuery,
   useGetCategoriesForSelectQuery,
   useGetTopCategoriesQuery,
 
   // Lazy queries
   useLazyGetAllCategoriesQuery,
-  useLazyGetCategoryByIdOrNameQuery,
-  useLazyGetCategoryStatsQuery,
   useLazyGetTopCategoriesQuery,
 } = categoryApi;

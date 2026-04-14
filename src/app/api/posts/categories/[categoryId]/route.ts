@@ -14,65 +14,6 @@ import type { ICategory } from '@/types/posts/category.types';
 import { updateCategorySchema } from '@/validations/posts/category-validation';
 
 /**
- * GET /api/categories/[categoryId]
- * Public — fetch a single category by UUID or name.
- */
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ categoryId: string }> },
-): Promise<NextResponse> {
-  try {
-    const { categoryId } = await params;
-
-    if (!categoryId) {
-      throw new ValidationError('Category identifier is required');
-    }
-
-    const category = await prisma.category.findFirst({
-      where: {
-        OR: [{ id: categoryId }, { name: categoryId }],
-      },
-      include: {
-        _count: { select: { posts: true } },
-      },
-    });
-
-    if (!category) {
-      throw new NotFoundError('Category not found');
-    }
-
-    // Both counts in one query using groupBy
-    const postCountsByStatus = await prisma.post.groupBy({
-      by: ['isPublished'],
-      where: { categoryId: category.id },
-      _count: { id: true },
-    });
-
-    const publishedPostsCount =
-      postCountsByStatus.find((g) => g.isPublished === true)?._count.id ?? 0;
-    const unpublishedPostsCount =
-      postCountsByStatus.find((g) => g.isPublished === false)?._count.id ?? 0;
-
-    const responseData: ICategory = {
-      id: category.id,
-      name: category.name,
-      createdAt: category.createdAt,
-      updatedAt: category.updatedAt,
-      publishedPostsCount,
-      unpublishedPostsCount,
-      totalPostsCount: category._count.posts,
-    };
-
-    return NextResponse.json({
-      message: 'Category retrieved successfully',
-      data: responseData,
-    });
-  } catch (err) {
-    return handleApiError(err);
-  }
-}
-
-/**
  * PUT /api/categories/[categoryId]
  * Protected — update a category.
  */

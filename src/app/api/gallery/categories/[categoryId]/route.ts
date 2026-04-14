@@ -47,37 +47,6 @@ async function buildCategoryResponse(
     totalPhotosCount: category._count.photos + unpublishedCount,
   };
 }
-
-/**
- * GET /api/gallery/categories/[categoryId]
- * Public — returns a single gallery category with photo counts.
- */
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ categoryId: string }> },
-): Promise<NextResponse> {
-  try {
-    const { categoryId } = await params;
-
-    if (!categoryId) {
-      throw new ValidationError('Category ID is required');
-    }
-
-    const category = await buildCategoryResponse(categoryId);
-
-    if (!category) {
-      throw new NotFoundError('Gallery category not found');
-    }
-
-    return NextResponse.json({
-      message: 'Gallery category retrieved successfully',
-      data: category,
-    });
-  } catch (err) {
-    return handleApiError(err);
-  }
-}
-
 /**
  * PUT /api/gallery/categories/[categoryId]
  * Protected — updates name and/or isFeatured of a gallery category.

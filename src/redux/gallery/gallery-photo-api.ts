@@ -144,48 +144,6 @@ export const galleryPhotoApi = apiSlice.injectEndpoints({
         'GalleryCategory',
       ],
     }),
-
-    getGalleryPhotosByCategory: builder.query<
-      IGalleryPhotosPaginatedResponse,
-      { categoryId: string } & Omit<IGalleryPhotosQueryParams, 'categoryId'>
-    >({
-      query: ({ categoryId, ...params }) => {
-        const searchParams = new URLSearchParams({ categoryId });
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== '') {
-            searchParams.append(key, String(value));
-          }
-        });
-
-        return {
-          url: `/gallery/photos?${searchParams.toString()}`,
-          method: 'GET',
-        };
-      },
-      providesTags: ['GalleryPhotos'],
-    }),
-
-    searchGalleryPhotos: builder.query<
-      IGalleryPhotosPaginatedResponse,
-      { search: string } & Omit<IGalleryPhotosQueryParams, 'search'>
-    >({
-      query: ({ search, ...params }) => {
-        const searchParams = new URLSearchParams({ search });
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== '') {
-            searchParams.append(key, String(value));
-          }
-        });
-
-        return {
-          url: `/gallery/photos?${searchParams.toString()}`,
-          method: 'GET',
-        };
-      },
-      providesTags: ['GalleryPhotos'],
-    }),
   }),
 });
 
@@ -197,12 +155,8 @@ export const {
   useGetPublishedGalleryPhotosQuery,
   useDeleteGalleryPhotoMutation,
   useToggleGalleryPhotoPublishMutation,
-  useGetGalleryPhotosByCategoryQuery,
-  useSearchGalleryPhotosQuery,
 
   useLazyGetAllGalleryPhotosQuery,
   useLazyGetGalleryPhotoByIdQuery,
   useLazyGetPublishedGalleryPhotosQuery,
-  useLazyGetGalleryPhotosByCategoryQuery,
-  useLazySearchGalleryPhotosQuery,
 } = galleryPhotoApi;

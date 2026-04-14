@@ -14,11 +14,11 @@ import {
   ValidationError,
   NotFoundError,
 } from '@/middlewares/error-handler';
+import { getGalleryPhotoById } from '@/utils/get-gallery-photo-by-id';
 
 /**
  * GET /api/gallery/photos/[photoId]
  * - Authenticated: returns any photo (published or unpublished)
- * - Unauthenticated: returns published photos only
  */
 export async function GET(
   _req: NextRequest,
@@ -27,34 +27,14 @@ export async function GET(
   try {
     const { photoId } = await params;
 
-    if (!photoId) {
-      throw new ValidationError('Photo ID is required');
-    }
+    await verifySession();
 
-    let isAuthenticated = false;
-    try {
-      await verifySession();
-      isAuthenticated = true;
-    } catch {
-      // unauthenticated — restrict to published photos below
-    }
+    const photo = await getGalleryPhotoById(photoId, { isAuthenticated: true });
 
-    const photo = await prisma.galleryPhoto.findUnique({
-      where: {
-        id: photoId,
-        ...(isAuthenticated ? {} : { isPublished: true }),
-      },
-      include: GALLERY_PHOTO_INCLUDE,
-    });
-
-    if (!photo) {
-      throw new NotFoundError('Gallery photo not found');
-    }
-
-    return NextResponse.json({
-      message: 'Gallery photo retrieved successfully',
-      data: mapGalleryPhotoToResponse(photo),
-    });
+    return NextResponse.json(
+      { message: 'Gallery photo retrieved successfully', data: photo },
+      { headers: { 'Cache-Control': 'no-store' } },
+    );
   } catch (err) {
     return handleApiError(err);
   }

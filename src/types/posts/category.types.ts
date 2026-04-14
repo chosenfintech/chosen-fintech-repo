@@ -39,16 +39,6 @@ export interface ICategoriesQueryParams {
   sortOrder?: 'asc' | 'desc';
 }
 
-export interface ICategoriesStatsResponse {
-  message: string;
-  data: {
-    totalCategories: number;
-    totalPosts: number;
-    avgPostsPerCategory: number;
-    categories: ICategory[];
-  };
-}
-
 export interface ICategoriesDataTableProps {
   data: ICategory[];
   loading?: boolean;

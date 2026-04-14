@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
-import { Prisma } from '@/lib/prisma';
 import {
   handleApiError,
   ValidationError,
@@ -13,19 +12,25 @@ import type {
   IGalleryCategoriesPaginatedResponse,
 } from '@/types/gallery/gallery-category.types';
 import { createGalleryCategorySchema } from '@/validations/gallery/gallery-category-validation';
+import { getGalleryCategories } from '@/utils/get-gallery-categories';
 
 /**
  * GET /api/gallery/categories
- * Public — returns all gallery categories with pagination, search, and sort.
- * Each category includes published, unpublished, and total photo counts.
+ *
+ * Protected — requires an active session. Returns all gallery categories
+ * with pagination, search, and sort, including unpublished photo counts
+ * visible only to authenticated users.
+ *
+ * @cacheControl no-store
  */
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
+    await verifySession();
+
     const { searchParams } = req.nextUrl;
 
     const page = parseInt(searchParams.get('page') ?? '1');
     const limit = parseInt(searchParams.get('limit') ?? '10');
-    const skip = (page - 1) * limit;
     const search = searchParams.get('search') ?? undefined;
     const sortBy = searchParams.get('sortBy') ?? 'createdAt';
     const sortOrder = (searchParams.get('sortOrder') ?? 'desc') as
@@ -33,84 +38,19 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       | 'desc';
     const hasPhotos = searchParams.get('hasPhotos') === 'true';
 
-    const whereClause: Prisma.GalleryCategoryWhereInput = {};
-
-    if (search) {
-      whereClause.name = { contains: search, mode: 'insensitive' };
-    }
-
-    if (hasPhotos) {
-      whereClause.photos = { some: { isPublished: true } };
-    }
-
-    const orderBy: Prisma.GalleryCategoryOrderByWithRelationInput = {};
-    if (sortBy === 'photoCount' || sortBy === 'publishedPhotoCount') {
-      orderBy.photos = { _count: sortOrder };
-    } else if (
-      sortBy === 'name' ||
-      sortBy === 'createdAt' ||
-      sortBy === 'updatedAt'
-    ) {
-      orderBy[sortBy] = sortOrder;
-    } else {
-      orderBy.createdAt = sortOrder;
-    }
-
-    const [categories, total] = await Promise.all([
-      prisma.galleryCategory.findMany({
-        where: whereClause,
-        skip,
-        take: limit,
-        orderBy,
-        include: {
-          _count: {
-            select: {
-              photos: { where: { isPublished: true } },
-            },
-          },
-        },
-      }),
-      prisma.galleryCategory.count({ where: whereClause }),
-    ]);
-
-    // Single groupBy to get unpublished counts — avoids N+1 queries
-    const unpublishedGroups = await prisma.galleryPhoto.groupBy({
-      by: ['categoryId'],
-      where: {
-        categoryId: { in: categories.map((c) => c.id) },
-        isPublished: false,
-      },
-      _count: { id: true },
+    const { categories, total } = await getGalleryCategories({
+      page,
+      limit,
+      search,
+      sortBy,
+      sortOrder,
+      hasPhotos,
+      isPublic: false,
     });
-
-    const unpublishedCountMap = new Map(
-      unpublishedGroups.map((g) => [g.categoryId, g._count.id]),
-    );
-
-    const response: IGalleryCategory[] = categories.map((category) => {
-      const unpublished = unpublishedCountMap.get(category.id) ?? 0;
-      return {
-        id: category.id,
-        name: category.name,
-        isFeatured: category.isFeatured,
-        createdAt: category.createdAt,
-        updatedAt: category.updatedAt,
-        publishedPhotosCount: category._count.photos,
-        unpublishedPhotosCount: unpublished,
-        totalPhotosCount: category._count.photos + unpublished,
-      };
-    });
-
-    if (sortBy === 'totalPhotoCount') {
-      response.sort((a, b) => {
-        const diff = a.totalPhotosCount - b.totalPhotosCount;
-        return sortOrder === 'asc' ? diff : -diff;
-      });
-    }
 
     const paginatedResponse: IGalleryCategoriesPaginatedResponse = {
       message: 'Gallery categories retrieved successfully',
-      data: response,
+      data: categories,
       meta: {
         total,
         page,
@@ -119,12 +59,15 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       },
     };
 
-    return NextResponse.json(paginatedResponse);
+    return NextResponse.json(paginatedResponse, {
+      headers: { 'Cache-Control': 'no-store' },
+    });
   } catch (err) {
     return handleApiError(err);
   }
 }
 
+// ... your POST handler remains unchanged below
 /**
  * POST /api/gallery/categories
  * Protected — creates a new gallery category.

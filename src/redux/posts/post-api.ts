@@ -123,69 +123,6 @@ export const postApi = apiSlice.injectEndpoints({
       ],
     }),
 
-    getPostsByCategory: builder.query<
-      IPostsPaginatedResponse,
-      { categoryId: string } & Omit<IPostsQueryParams, 'categoryId'>
-    >({
-      query: ({ categoryId, ...params }) => {
-        const searchParams = new URLSearchParams({ categoryId });
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== '') {
-            searchParams.append(key, String(value));
-          }
-        });
-
-        return {
-          url: `/posts?${searchParams.toString()}`,
-          method: 'GET',
-        };
-      },
-      providesTags: ['Posts'],
-    }),
-
-    getPostsByAuthor: builder.query<
-      IPostsPaginatedResponse,
-      { authorId: string } & Omit<IPostsQueryParams, 'authorId'>
-    >({
-      query: ({ authorId, ...params }) => {
-        const searchParams = new URLSearchParams({ authorId });
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== '') {
-            searchParams.append(key, String(value));
-          }
-        });
-
-        return {
-          url: `/posts?${searchParams.toString()}`,
-          method: 'GET',
-        };
-      },
-      providesTags: ['Posts'],
-    }),
-
-    getFeaturedPosts: builder.query<
-      IPostsPaginatedResponse,
-      Omit<IPostsQueryParams, 'isFeatured'>
-    >({
-      query: (params = {}) => {
-        const searchParams = new URLSearchParams({ isFeatured: 'true' });
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== '') {
-            searchParams.append(key, String(value));
-          }
-        });
-
-        return {
-          url: `/posts?${searchParams.toString()}`,
-          method: 'GET',
-        };
-      },
-      providesTags: ['Posts'],
-    }),
-
     getPublishedPosts: builder.query<
       IPostsPaginatedResponse,
       Omit<IPostsQueryParams, 'isPublished'>
@@ -238,17 +175,11 @@ export const {
   useDeletePostMutation,
   useTogglePostPublishMutation,
   useTogglePostFeaturedMutation,
-  useGetPostsByCategoryQuery,
-  useGetPostsByAuthorQuery,
-  useGetFeaturedPostsQuery,
   useGetPublishedPostsQuery,
   useSearchPostsQuery,
 
   useLazyGetAllPostsQuery,
   useLazyGetPostByIdOrSlugQuery,
-  useLazyGetPostsByCategoryQuery,
-  useLazyGetPostsByAuthorQuery,
-  useLazyGetFeaturedPostsQuery,
   useLazyGetPublishedPostsQuery,
   useLazySearchPostsQuery,
 } = postApi;

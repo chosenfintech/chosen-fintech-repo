@@ -39,16 +39,6 @@ export const galleryCategoryApi = apiSlice.injectEndpoints({
       ],
     }),
 
-    getGalleryCategoryById: builder.query<IGalleryCategoryResponse, string>({
-      query: (categoryId) => ({
-        url: `/gallery/categories/${categoryId}`,
-        method: 'GET',
-      }),
-      providesTags: (result, error, categoryId) => [
-        { type: 'GalleryCategory', id: categoryId },
-      ],
-    }),
-
     getAllGalleryCategories: builder.query<
       IGalleryCategoriesPaginatedResponse,
       IGalleryCategoriesQueryParams
@@ -130,48 +120,17 @@ export const galleryCategoryApi = apiSlice.injectEndpoints({
         })),
       providesTags: ['GalleryCategories'],
     }),
-
-    getFeaturedGalleryCategories: builder.query<
-      IGalleryCategoriesPaginatedResponse,
-      Omit<IGalleryCategoriesQueryParams, 'sortBy' | 'sortOrder'>
-    >({
-      query: (params = {}) => {
-        const searchParams = new URLSearchParams();
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== '') {
-            searchParams.append(key, String(value));
-          }
-        });
-
-        return {
-          url: `/gallery/categories${
-            searchParams.toString() ? `?${searchParams.toString()}` : ''
-          }`,
-          method: 'GET',
-        };
-      },
-      transformResponse: (response: IGalleryCategoriesPaginatedResponse) => ({
-        ...response,
-        data: response.data.filter((c) => c.isFeatured),
-      }),
-      providesTags: ['GalleryCategories'],
-    }),
   }),
 });
 
 export const {
   useCreateGalleryCategoryMutation,
   useUpdateGalleryCategoryMutation,
-  useGetGalleryCategoryByIdQuery,
   useGetAllGalleryCategoriesQuery,
   useDeleteGalleryCategoryMutation,
   useToggleGalleryCategoryFeaturedMutation,
   useGetGalleryCategoriesForSelectQuery,
-  useGetFeaturedGalleryCategoriesQuery,
 
   useLazyGetAllGalleryCategoriesQuery,
-  useLazyGetGalleryCategoryByIdQuery,
   useLazyGetGalleryCategoriesForSelectQuery,
-  useLazyGetFeaturedGalleryCategoriesQuery,
 } = galleryCategoryApi;

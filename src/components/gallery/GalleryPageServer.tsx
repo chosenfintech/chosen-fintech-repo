@@ -15,7 +15,7 @@ async function fetchGalleryCategories(page: number): Promise<{
   total: number;
 }> {
   try {
-    const url = new URL('/api/gallery/categories', baseUrl);
+    const url = new URL('/api/gallery/categories/published', baseUrl);
     url.searchParams.set('page', page.toString());
     url.searchParams.set('limit', CATEGORIES_PER_PAGE.toString());
     url.searchParams.set('sortBy', 'name');
