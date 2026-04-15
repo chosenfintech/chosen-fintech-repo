@@ -38,11 +38,7 @@ export const buildPostWhereClause = (
 
   const whereClause: Prisma.PostWhereInput = {};
 
-  // --- categoryId ---
-  // Only applied when no postType is set, because postType controls
-  // its own category filtering. Passing categoryId alongside a postType
-  // would produce conflicting conditions.
-  if (categoryId && !postType) {
+  if (categoryId) {
     whereClause.categoryId = categoryId;
   }
 

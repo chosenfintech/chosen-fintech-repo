@@ -154,7 +154,7 @@ const RecentPostsList = ({ recentPosts }: RecentPostsListProps) => (
           whileHover={{ x: 4 }}
         >
           <Link
-            href={`/blog/${post.slug}`}
+            href={`/posts/${post.slug}`}
             className="flex gap-3 group cursor-pointer"
           >
             <div className="relative w-20 h-20 shrink-0 rounded-lg overflow-hidden ring-1 ring-border/50 group-hover:ring-primary/50 transition-all duration-300 bg-muted">
