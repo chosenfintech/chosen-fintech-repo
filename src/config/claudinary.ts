@@ -12,7 +12,7 @@ import {
   ICloudinaryDeletionResponse,
 } from '../types/cloudinary.types';
 
-const MAX_UPLOAD_RETRIES = 3;
+const MAX_FAILURE_RETRIES = 3;
 const RETRY_DELAY_MS = 300;
 
 const defaultCloudinaryConfig: ICloudinaryConfig = {
@@ -144,7 +144,7 @@ const deleteFromCloudinary = async (
 
   let lastError: Error | null = null;
 
-  for (let attempt = 1; attempt <= MAX_UPLOAD_RETRIES; attempt++) {
+  for (let attempt = 1; attempt <= MAX_FAILURE_RETRIES; attempt++) {
     try {
       const result = await cloudinary.uploader.destroy(publicId, {
         resource_type: 'image',
@@ -161,13 +161,13 @@ const deleteFromCloudinary = async (
       lastError = error as Error;
       const errorMessage = lastError.message || 'Unknown error';
 
-      if (attempt === MAX_UPLOAD_RETRIES) {
+      if (attempt === MAX_FAILURE_RETRIES) {
         logger.error(
-          `Deletion failed after ${MAX_UPLOAD_RETRIES} attempts: ${errorMessage}`,
+          `Deletion failed after ${MAX_FAILURE_RETRIES} attempts: ${errorMessage}`,
         );
         throw new CustomError(
           502,
-          `Failed to delete after ${MAX_UPLOAD_RETRIES} retries`,
+          `Failed to delete after ${MAX_FAILURE_RETRIES} retries`,
         );
       }
 

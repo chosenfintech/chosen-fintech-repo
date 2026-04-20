@@ -86,7 +86,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const formData = await req.formData();
 
     const rawBody: Record<string, unknown> = {};
-
     for (const [key, value] of formData.entries()) {
       if (key === 'coverImage') continue;
       rawBody[key] = value;
