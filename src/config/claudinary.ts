@@ -1,13 +1,8 @@
 // src/config/claudinary.ts
-import {
-  v2 as cloudinary,
-  UploadApiResponse,
-  UploadApiErrorResponse,
-} from 'cloudinary';
+import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
 import logger from '../utils/logger';
 import { ENV } from './env';
 import { CustomError } from '@/middlewares/error-handler';
-import { isValidBase64Image } from '../utils/validate-base64-image';
 import {
   ICloudinaryUploadService,
   IUploadedFile,
@@ -100,116 +95,38 @@ export const extractPublicIdFromUrl = (
   }
 };
 
-const isRetryableError = (error: UploadApiErrorResponse | Error): boolean => {
-  const msg = error.message || '';
-  const httpCode =
-    'http_code' in error && typeof error.http_code === 'number'
-      ? error.http_code
-      : null;
-
-  return (
-    httpCode === 429 ||
-    (httpCode !== null && httpCode >= 500) ||
-    msg.includes('timeout') ||
-    msg.includes('ETIMEDOUT') ||
-    msg.includes('ECONNRESET')
-  );
-};
-
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const uploadToCloudinary = async (
+export const uploadToCloudinary = async (
   file: IUploadedFile | string,
   options: Partial<ICloudinaryUploadOptions> = {},
 ): Promise<ICloudinaryUploadResult> => {
-  // Validate input
-  if (typeof file === 'string') {
-    if (!isValidBase64Image(file)) {
-      throw new CustomError(400, 'Invalid Base64 image format');
-    }
-  } else if (!file?.buffer) {
-    throw new CustomError(400, 'Invalid file: missing buffer');
-  }
+  const uploadOptions = { resource_type: 'auto' as const, ...options };
 
-  const uploadOptions: ICloudinaryUploadOptions = {
-    resource_type: 'auto',
-    ...options,
+  const result: UploadApiResponse =
+    typeof file === 'string'
+      ? await cloudinary.uploader.upload(file, uploadOptions)
+      : await new Promise<UploadApiResponse>((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            uploadOptions,
+            (error, uploadResult) => {
+              if (error || !uploadResult) {
+                reject(error ?? new Error('Upload failed'));
+              } else {
+                resolve(uploadResult);
+              }
+            },
+          );
+          stream.end(file.buffer);
+        });
+
+  return {
+    public_id: result.public_id,
+    secure_url: result.secure_url,
+    asset_id: result.asset_id,
+    format: result.format,
+    resource_type: result.resource_type,
   };
-
-  let lastError: Error | UploadApiErrorResponse | null = null;
-
-  for (let attempt = 1; attempt <= MAX_UPLOAD_RETRIES; attempt++) {
-    try {
-      const result: UploadApiResponse = await new Promise((resolve, reject) => {
-        if (typeof file === 'string') {
-          // Base64 upload
-          cloudinary.uploader.upload(
-            file,
-            uploadOptions,
-            (error, uploadResult) => {
-              if (error || !uploadResult) {
-                reject(error || new Error('Upload failed'));
-              } else {
-                resolve(uploadResult);
-              }
-            },
-          );
-        } else {
-          // Buffer upload
-          const uploadStream = cloudinary.uploader.upload_stream(
-            uploadOptions,
-            (error, uploadResult) => {
-              if (error || !uploadResult) {
-                reject(error || new Error('Upload failed'));
-              } else {
-                resolve(uploadResult);
-              }
-            },
-          );
-          uploadStream.end(file.buffer);
-        }
-      });
-
-      logger.debug(`File uploaded successfully: ${result.public_id}`);
-
-      return {
-        public_id: result.public_id,
-        secure_url: result.secure_url,
-        asset_id: result.asset_id,
-        format: result.format,
-        resource_type: result.resource_type,
-      };
-    } catch (error) {
-      lastError = error as Error | UploadApiErrorResponse;
-      const errorMessage = lastError.message || 'Unknown error';
-
-      // Check if error is retryable
-      if (!isRetryableError(lastError)) {
-        logger.error(`Non-retryable upload error: ${errorMessage}`);
-        throw new CustomError(400, `Upload failed: ${errorMessage}`);
-      }
-
-      // If this was the last attempt, throw
-      if (attempt === MAX_UPLOAD_RETRIES) {
-        logger.error(
-          `Upload failed after ${MAX_UPLOAD_RETRIES} attempts: ${errorMessage}`,
-        );
-        throw new CustomError(
-          502,
-          `Failed to upload after ${MAX_UPLOAD_RETRIES} retries`,
-        );
-      }
-
-      // Retry with delay
-      logger.warn(
-        `Upload attempt ${attempt} failed: ${errorMessage}. Retrying in ${RETRY_DELAY_MS}ms...`,
-      );
-      await delay(RETRY_DELAY_MS);
-    }
-  }
-
-  // This should never be reached due to the throw in the loop, but TypeScript needs it
-  throw new CustomError(500, 'Unexpected error during upload');
 };
 
 const deleteFromCloudinary = async (
