@@ -15,6 +15,11 @@ import {
 } from '@/middlewares/error-handler';
 import { updatePostSchema } from '@/validations/posts/post-validation';
 import { getPostById } from '@/utils/get-post-by-id';
+import {
+  uploadBase64ContentImages,
+  deleteOrphanedContentImages,
+  deleteUploadedContentImages,
+} from '@/utils/content-images';
 
 const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
@@ -51,6 +56,7 @@ export async function PUT(
   { params }: { params: Promise<{ postId: string }> },
 ): Promise<NextResponse> {
   let uploadedImageUrl: string | undefined;
+  let uploadedContentPublicIds: string[] = [];
 
   try {
     await verifySession();
@@ -114,7 +120,19 @@ export async function PUT(
       }
     }
 
+    // Upload any inline base64 images in the new content to Cloudinary and
+    // swap them for hosted URLs before persisting.
+    let processedContent: string | undefined;
+    if (postDetails.content !== undefined) {
+      const contentResult = await uploadBase64ContentImages(
+        postDetails.content,
+      );
+      processedContent = contentResult.html;
+      uploadedContentPublicIds = contentResult.uploadedPublicIds;
+    }
+
     let oldCoverImage: string | null = null;
+    let oldContent: string | null = null;
     let shouldDeleteOldImage = false;
 
     const result = await prisma.$transaction(async (tx) => {
@@ -123,6 +141,7 @@ export async function PUT(
         select: {
           authorId: true,
           coverImage: true,
+          content: true,
           isPublished: true,
           publishDate: true,
         },
@@ -133,6 +152,7 @@ export async function PUT(
       }
 
       oldCoverImage = existingPost.coverImage;
+      oldContent = existingPost.content; // captured for orphan cleanup after commit
 
       if (
         postDetails.categoryId !== undefined &&
@@ -157,8 +177,8 @@ export async function PUT(
       if (postDetails.excerpt !== undefined)
         updateData.excerpt = postDetails.excerpt;
       if (postDetails.content !== undefined) {
-        updateData.content = postDetails.content;
-        updateData.readTime = calculateReadTime(postDetails.content);
+        updateData.content = processedContent;
+        updateData.readTime = calculateReadTime(processedContent!);
       }
 
       if (postDetails.categoryId !== undefined) {
@@ -212,11 +232,22 @@ export async function PUT(
       });
     });
 
-    if (shouldDeleteOldImage && oldCoverImage) {
-      await cloudinaryService
-        .deleteImage(oldCoverImage)
-        .catch((e) => console.warn('Failed to clean up old cover image:', e));
-    }
+    // Transaction committed — now run Cloudinary side-effects.
+    await Promise.all([
+      // Delete old cover image if it was replaced or cleared
+      shouldDeleteOldImage && oldCoverImage
+        ? cloudinaryService
+            .deleteImage(oldCoverImage)
+            .catch((e) =>
+              console.warn('Failed to clean up old cover image:', e),
+            )
+        : Promise.resolve(),
+
+      // Delete content images that were in the old content but not in the new
+      oldContent && processedContent !== undefined
+        ? deleteOrphanedContentImages(oldContent, processedContent)
+        : Promise.resolve(),
+    ]);
 
     return NextResponse.json({
       message: 'Post updated successfully',
@@ -238,11 +269,15 @@ export async function PUT(
       },
     });
   } catch (err) {
-    if (uploadedImageUrl) {
-      await cloudinaryService
-        .deleteImage(uploadedImageUrl)
-        .catch((e) => console.error('Cloudinary cleanup failed:', e));
-    }
+    // Roll back both the new cover image and any newly uploaded content images
+    await Promise.all([
+      uploadedImageUrl
+        ? cloudinaryService
+            .deleteImage(uploadedImageUrl)
+            .catch((e) => console.error('Cloudinary cleanup failed:', e))
+        : Promise.resolve(),
+      deleteUploadedContentImages(uploadedContentPublicIds),
+    ]);
     return handleApiError(err);
   }
 }

@@ -21,6 +21,10 @@ import {
   NotFoundError,
 } from '@/middlewares/error-handler';
 import { parseBoolean } from '@/utils/parse-booleans';
+import {
+  uploadBase64ContentImages,
+  deleteUploadedContentImages,
+} from '@/utils/content-images';
 
 const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
@@ -78,6 +82,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
  */
 export async function POST(req: NextRequest): Promise<NextResponse> {
   let uploadedImageUrl: string | undefined;
+  let uploadedContentPublicIds: string[] = [];
 
   try {
     const session = await verifySession();
@@ -119,7 +124,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       uploadedImageUrl = result.secure_url;
     }
 
-    const calculatedReadTime = calculateReadTime(postDetails.content);
+    // Upload any inline base64 images in the content to Cloudinary and swap
+    // them for hosted URLs before persisting — keeps base64 blobs out of the DB.
+    const contentResult = await uploadBase64ContentImages(postDetails.content);
+    const processedContent = contentResult.html;
+    uploadedContentPublicIds = contentResult.uploadedPublicIds;
+
+    const calculatedReadTime = calculateReadTime(processedContent);
 
     const result = await prisma.$transaction(async (tx) => {
       if (postDetails.categoryId) {
@@ -146,7 +157,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           title: postDetails.title,
           slug: generateSlug(postDetails.title),
           excerpt: postDetails.excerpt,
-          content: postDetails.content,
+          content: processedContent,
           readTime: calculatedReadTime,
           coverImage: uploadedImageUrl ?? null,
           isPublished,
@@ -191,11 +202,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { status: 201 },
     );
   } catch (err) {
-    if (uploadedImageUrl) {
-      await cloudinaryService
-        .deleteImage(uploadedImageUrl)
-        .catch((e) => console.error('Cloudinary cleanup failed:', e));
-    }
+    await Promise.all([
+      uploadedImageUrl
+        ? cloudinaryService
+            .deleteImage(uploadedImageUrl)
+            .catch((e) => console.error('Cloudinary cleanup failed:', e))
+        : Promise.resolve(),
+      deleteUploadedContentImages(uploadedContentPublicIds),
+    ]);
     return handleApiError(err);
   }
 }
