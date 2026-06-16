@@ -11,7 +11,8 @@
 
 export const UserSecurityTokenType = {
   TWO_FACTOR_LOGIN: 'TWO_FACTOR_LOGIN',
-  TWO_FACTOR_SETUP: 'TWO_FACTOR_SETUP'
+  TWO_FACTOR_SETUP: 'TWO_FACTOR_SETUP',
+  PASSWORD_RESET: 'PASSWORD_RESET'
 } as const
 
 export type UserSecurityTokenType = (typeof UserSecurityTokenType)[keyof typeof UserSecurityTokenType]

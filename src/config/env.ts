@@ -27,6 +27,10 @@ export const ENV = {
 
   SESSION_SECRET: required('SESSION_SECRET'),
 
+  // Public site origin — used to build absolute links in emails (e.g. the
+  // password-reset link). Falls back to localhost for local development.
+  BASE_URL: optional('NEXT_PUBLIC_BASE_URL') ?? 'http://localhost:3000',
+
   CLOUDINARY_CLOUD_NAME: required('CLOUDINARY_CLOUD_NAME'),
   CLOUDINARY_API_KEY: required('CLOUDINARY_API_KEY'),
   CLOUDINARY_API_SECRET: required('CLOUDINARY_API_SECRET'),

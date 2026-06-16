@@ -11,6 +11,7 @@ import { signin, type SigninState } from '../lib/auth';
 import type { IUser } from '@/types/user.types';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
+import Link from 'next/link';
 import TwoFactorLoginStep from './TwoFactorLoginStep';
 
 export default function LoginForm() {
@@ -156,12 +157,12 @@ export default function LoginForm() {
 
             {/* Forgot password */}
             <div className="flex justify-end">
-              <a
-                href="#"
+              <Link
+                href="/forgot-password"
                 className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
               >
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <input type="hidden" name="redirectTo" value={callbackUrl} />

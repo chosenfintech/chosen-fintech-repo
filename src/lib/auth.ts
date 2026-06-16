@@ -11,13 +11,27 @@ import {
 } from './two-factor-session';
 import {
   generateOtpCode,
+  generateResetToken,
   issueUserSecurityToken,
   verifyUserOtp,
   otpFailureMessage,
+  consumePasswordResetToken,
+  revokeAllUserSecurityTokens,
   TWO_FACTOR_CODE_TTL_MINUTES,
+  PASSWORD_RESET_TTL_MINUTES,
 } from '@/utils/user-security-tokens';
-import { sendTwoFactorCodeEmail } from '@/lib/mail/auth-emails';
+import {
+  sendTwoFactorCodeEmail,
+  sendPasswordResetEmail,
+  sendPasswordChangedEmail,
+} from '@/lib/mail/auth-emails';
+import { ENV } from '@/config/env';
+import { BCRYPT_SALT_ROUNDS } from '@/config/constants';
 import { SigninSchema } from '@/validations/signin-validation';
+import {
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from '@/validations/password-reset-validation';
 import { IUser } from '@/types/user.types';
 import { ratelimit } from '@/lib/rate-limit';
 
@@ -44,6 +58,19 @@ export type TwoFactorState = {
   user?: IUser;
   error?: string;
   resent?: boolean;
+};
+
+export type ForgotPasswordState = {
+  success: boolean;
+  message?: string;
+  error?: string;
+};
+
+export type ResetPasswordState = {
+  success: boolean;
+  redirectTo?: string;
+  message?: string;
+  errors?: { token?: string[]; password?: string[]; _form?: string[] };
 };
 
 /** Shared IP-based throttle used by the login and 2FA challenge actions. */
@@ -277,6 +304,107 @@ export async function resendTwoFactorCode(): Promise<TwoFactorState> {
   await sendTwoFactorCodeEmail(user, code, 'login');
 
   return { success: false, resent: true };
+}
+
+/**
+ * Starts a password reset. Always answers with the same generic message so the
+ * action cannot be used to probe which emails have accounts.
+ */
+export async function forgotPassword(
+  _state: ForgotPasswordState,
+  formData: FormData,
+): Promise<ForgotPasswordState> {
+  const { allowed, retrySecs } = await checkRateLimit();
+  if (!allowed) {
+    return {
+      success: false,
+      error: `Too many requests. Please try again in ${retrySecs} seconds.`,
+    };
+  }
+
+  const parsed = forgotPasswordSchema.safeParse({
+    email: formData.get('email'),
+  });
+  if (!parsed.success) {
+    return { success: false, error: 'Enter a valid email address.' };
+  }
+
+  const genericMessage =
+    'If an account exists for that email, a reset link has been sent.';
+
+  const user = await prisma.user.findUnique({
+    where: { email: parsed.data.email },
+    select: { id: true, fullname: true, email: true },
+  });
+
+  if (user) {
+    const token = generateResetToken();
+    await issueUserSecurityToken(
+      user.id,
+      UserSecurityTokenType.PASSWORD_RESET,
+      token,
+      PASSWORD_RESET_TTL_MINUTES,
+    );
+    const resetUrl = `${ENV.BASE_URL}/reset-password?token=${token}`;
+    await sendPasswordResetEmail(user, resetUrl);
+  }
+
+  return { success: true, message: genericMessage };
+}
+
+/** Completes a reset: consumes the emailed token and sets the new password. */
+export async function resetPassword(
+  _state: ResetPasswordState,
+  formData: FormData,
+): Promise<ResetPasswordState> {
+  const { allowed, retrySecs } = await checkRateLimit();
+  if (!allowed) {
+    return {
+      success: false,
+      errors: {
+        _form: [`Too many attempts. Please try again in ${retrySecs} seconds.`],
+      },
+    };
+  }
+
+  const parsed = resetPasswordSchema.safeParse({
+    token: formData.get('token'),
+    password: formData.get('password'),
+  });
+  if (!parsed.success) {
+    return { success: false, errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const { token, password } = parsed.data;
+
+  const userId = await consumePasswordResetToken(token);
+  if (!userId) {
+    return {
+      success: false,
+      errors: {
+        _form: [
+          'This reset link is invalid or has expired. Please request a new one.',
+        ],
+      },
+    };
+  }
+
+  const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: { password: hashedPassword },
+    select: { id: true, fullname: true, email: true },
+  });
+
+  // Any other outstanding codes/links predate the new password — drop them.
+  await revokeAllUserSecurityTokens(userId);
+  await sendPasswordChangedEmail(user);
+
+  return {
+    success: true,
+    redirectTo: '/login',
+    message: 'Your password has been reset. You can now sign in.',
+  };
 }
 
 export async function logout(): Promise<void> {

@@ -4,10 +4,15 @@ import crypto from 'crypto';
 import prisma, { UserSecurityTokenType } from '@/lib/prisma';
 
 export const TWO_FACTOR_CODE_TTL_MINUTES = 10;
+export const PASSWORD_RESET_TTL_MINUTES = 30;
 
 /** 6-digit one-time code for email OTP challenges. */
 export const generateOtpCode = (): string =>
   crypto.randomInt(100000, 999999).toString();
+
+/** Long opaque token for password-reset links. */
+export const generateResetToken = (): string =>
+  crypto.randomBytes(32).toString('hex');
 
 export const hashSecurityToken = (token: string): string =>
   crypto.createHash('sha256').update(token).digest('hex');
@@ -93,6 +98,45 @@ export const verifyUserOtp = async (
   if (consumed.count === 0) return { ok: false, reason: 'not_found' };
 
   return { ok: true };
+};
+
+/**
+ * Consumes a password-reset token (looked up by its hash — the token itself
+ * identifies the user). Returns the owning userId, or null when the token is
+ * unknown, expired, of the wrong type, or already used.
+ */
+export const consumePasswordResetToken = async (
+  plainToken: string,
+): Promise<string | null> => {
+  const record = await prisma.userSecurityToken.findUnique({
+    where: { tokenHash: hashSecurityToken(plainToken) },
+  });
+
+  if (
+    !record ||
+    record.type !== UserSecurityTokenType.PASSWORD_RESET ||
+    record.consumedAt !== null ||
+    record.expiresAt.getTime() < Date.now()
+  ) {
+    return null;
+  }
+
+  const consumed = await prisma.userSecurityToken.updateMany({
+    where: { id: record.id, consumedAt: null },
+    data: { consumedAt: new Date() },
+  });
+  if (consumed.count === 0) return null;
+
+  return record.userId;
+};
+
+/** Removes every outstanding token for a user (e.g. after a password reset). */
+export const revokeAllUserSecurityTokens = async (
+  userId: string,
+): Promise<void> => {
+  await prisma.userSecurityToken.deleteMany({
+    where: { userId, consumedAt: null },
+  });
 };
 
 /** Removes every 2FA token (login + setup) for a user, e.g. when disabling 2FA. */

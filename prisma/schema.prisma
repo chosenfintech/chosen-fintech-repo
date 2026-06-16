@@ -102,6 +102,7 @@ model GalleryPhoto {
 enum UserSecurityTokenType {
   TWO_FACTOR_LOGIN // 6-digit email OTP challenged at login
   TWO_FACTOR_SETUP // 6-digit email OTP confirming 2FA enablement
+  PASSWORD_RESET // long random token embedded in the email reset link
 }
 
 model UserSecurityToken {
