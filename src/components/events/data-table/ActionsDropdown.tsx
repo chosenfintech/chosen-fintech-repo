@@ -1,5 +1,6 @@
 // src/components/events/data-table/ActionsDropdown.tsx
 'use client';
+import { useIsAdmin } from '@/hooks/use-is-admin';
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -36,6 +37,7 @@ interface EventActionsDropdownProps {
 
 export function EventActionsDropdown({ event }: EventActionsDropdownProps) {
   const router = useRouter();
+  const isAdmin = useIsAdmin();
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   const [togglePublish] = useToggleEventPublishMutation();
@@ -159,15 +161,18 @@ export function EventActionsDropdown({ event }: EventActionsDropdownProps) {
             )}
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            className="text-red-600 hover:cursor-pointer"
-            onClick={() => setDeleteDialogOpen(true)}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete Event
-          </DropdownMenuItem>
+          {isAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-red-600 hover:cursor-pointer"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Event
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

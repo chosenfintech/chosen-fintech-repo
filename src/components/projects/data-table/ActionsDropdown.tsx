@@ -1,5 +1,6 @@
 // src/components/projects/data-table/ActionsDropdown.tsx
 'use client';
+import { useIsAdmin } from '@/hooks/use-is-admin';
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -36,6 +37,7 @@ interface ProjectActionsDropdownProps {
 
 export function ProjectActionsDropdown({ project }: ProjectActionsDropdownProps) {
   const router = useRouter();
+  const isAdmin = useIsAdmin();
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   const [togglePublish] = useToggleProjectPublishMutation();
@@ -159,15 +161,18 @@ export function ProjectActionsDropdown({ project }: ProjectActionsDropdownProps)
             )}
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            className="text-red-600 hover:cursor-pointer"
-            onClick={() => setDeleteDialogOpen(true)}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete Project
-          </DropdownMenuItem>
+          {isAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-red-600 hover:cursor-pointer"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Project
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

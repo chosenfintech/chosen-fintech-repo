@@ -1,5 +1,6 @@
 // src/components/posts/data-table/ActionsDropdown.tsx
 'use client';
+import { useIsAdmin } from '@/hooks/use-is-admin';
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -36,6 +37,7 @@ interface PostActionsDropdownProps {
 
 export function PostActionsDropdown({ post }: PostActionsDropdownProps) {
   const router = useRouter();
+  const isAdmin = useIsAdmin();
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   const [togglePublish] = useTogglePostPublishMutation();
@@ -159,15 +161,18 @@ export function PostActionsDropdown({ post }: PostActionsDropdownProps) {
             )}
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            className="text-red-600 hover:cursor-pointer"
-            onClick={() => setDeleteDialogOpen(true)}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete Post
-          </DropdownMenuItem>
+          {isAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-red-600 hover:cursor-pointer"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Post
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

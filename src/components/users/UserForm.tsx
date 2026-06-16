@@ -12,6 +12,13 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { ICreateUserSchema } from '@/validations/user-validation';
 
@@ -114,6 +121,37 @@ export default function UserForm({
                         value={field.value ?? ''}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Role */}
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Role</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value ?? 'EDITOR'}
+                      disabled={isLoading}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-11 w-full">
+                          <SelectValue placeholder="Select a role" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="EDITOR">
+                          Editor — create &amp; edit content
+                        </SelectItem>
+                        <SelectItem value="ADMIN">
+                          Admin — full access, incl. delete &amp; users
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

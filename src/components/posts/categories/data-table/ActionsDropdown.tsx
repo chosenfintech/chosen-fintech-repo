@@ -1,5 +1,6 @@
 // src/components/posts/categories/data-table/ActionsDropDown.tsx
 'use client';
+import { useIsAdmin } from '@/hooks/use-is-admin';
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { MoreHorizontal, Trash2, Eye, Pencil } from 'lucide-react';
@@ -39,6 +40,7 @@ export function CategoryActionsDropdown({
 }: CategoryActionsDropdownProps) {
   const router = useRouter();
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const isAdmin = useIsAdmin();
   const [editDialogOpen, setEditDialogOpen] = React.useState(false);
 
   const [name, setName] = React.useState(category.name);
@@ -119,15 +121,18 @@ export function CategoryActionsDropdown({
             Edit Details
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            className="text-red-600 hover:cursor-pointer"
-            onClick={() => setDeleteDialogOpen(true)}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete Category
-          </DropdownMenuItem>
+          {isAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-red-600 hover:cursor-pointer"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Category
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

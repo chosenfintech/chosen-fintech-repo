@@ -1,5 +1,6 @@
 // src/components/gallery/categories/data-table/ActionsDropdown.tsx
 'use client';
+import { useIsAdmin } from '@/hooks/use-is-admin';
 import * as React from 'react';
 import { MoreHorizontal, Trash2, Pencil, Star, StarOff } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -39,6 +40,7 @@ export function GalleryCategoryActionsDropdown({
   category,
 }: GalleryCategoryActionsDropdownProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const isAdmin = useIsAdmin();
   const [editDialogOpen, setEditDialogOpen] = React.useState(false);
 
   const [name, setName] = React.useState(category.name);
@@ -147,15 +149,18 @@ export function GalleryCategoryActionsDropdown({
             )}
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            className="text-red-600 hover:cursor-pointer"
-            onClick={() => setDeleteDialogOpen(true)}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete Category
-          </DropdownMenuItem>
+          {isAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-red-600 hover:cursor-pointer"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Category
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

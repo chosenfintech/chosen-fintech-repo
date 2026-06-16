@@ -23,6 +23,7 @@ const CreateUserPage = () => {
       email: '',
       phone: '',
       password: '',
+      role: 'EDITOR',
     },
   });
 
@@ -35,6 +36,7 @@ const CreateUserPage = () => {
         email: values.email,
         password: values.password,
         phone: values.phone ?? undefined,
+        role: values.role,
       }).unwrap();
 
       toast.dismiss(toastId);
