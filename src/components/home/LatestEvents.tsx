@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Calendar } from 'lucide-react';
+import { ArrowRight, Calendar, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import {
@@ -15,15 +15,15 @@ import {
   lineRevealVariants,
   textVariants,
 } from '@/static-data/motion-variants';
-import { IPost } from '@/types/posts/post.types';
+import { IEvent } from '@/types/events/event.types';
 import { EmptyState } from '@/components/ui/EmptyState';
 
 interface LatestEventsProps {
-  posts: IPost[];
+  posts: IEvent[];
 }
 
-function formatDate(post: IPost): string {
-  const date = post.publishDate ?? post.createdAt;
+function formatDate(event: IEvent): string {
+  const date = event.eventDate ?? event.publishDate ?? event.createdAt;
   return new Date(date).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -154,13 +154,21 @@ export function LatestEvents({ posts }: LatestEventsProps) {
                           {post.excerpt}
                         </p>
 
-                        {/* Footer: Date + Read More */}
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <Calendar className="w-3.5 h-3.5" />
-                            {formatDate(post)}
-                          </span>
-                          <div className="flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all duration-300">
+                        {/* Footer: Date / Location + Read More */}
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex flex-col gap-1 min-w-0">
+                            <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                              <Calendar className="w-3.5 h-3.5 shrink-0" />
+                              {formatDate(post)}
+                            </span>
+                            {post.location && (
+                              <span className="flex items-center gap-1.5 text-xs text-muted-foreground truncate">
+                                <MapPin className="w-3.5 h-3.5 shrink-0" />
+                                <span className="truncate">{post.location}</span>
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all duration-300 shrink-0">
                             Read More
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                           </div>

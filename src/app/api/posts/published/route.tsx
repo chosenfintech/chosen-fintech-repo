@@ -10,6 +10,7 @@ import type {
   IPostsQueryParams,
 } from '@/types/posts/post.types';
 import { handleApiError } from '@/middlewares/error-handler';
+import { withPublicAuthor } from '@/utils/public-author';
 import { parseBoolean } from '@/utils/parse-booleans';
 import type { GetPostsOptions } from '@/utils/post-utils';
 
@@ -31,9 +32,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const rawPostType = searchParams.get('postType') ?? undefined;
     const postType =
-      rawPostType === 'events' || rawPostType === 'blog-and-education'
-        ? rawPostType
-        : undefined;
+      rawPostType === 'blog-and-education' ? rawPostType : undefined;
 
     const queryParams: IPostsQueryParams = {
       categoryId: searchParams.get('categoryId') ?? undefined,
@@ -58,7 +57,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const paginatedResponse: IPostsPaginatedResponse = {
       message: 'Posts retrieved successfully',
-      data: mapPostsToResponse(posts),
+      data: mapPostsToResponse(posts).map(withPublicAuthor),
       meta: {
         total,
         page,

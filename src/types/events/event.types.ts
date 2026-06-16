@@ -39,7 +39,7 @@ export interface IEvent {
   author: {
     id: string;
     fullname: string;
-    email: string;
+    email?: string;
   };
   category: {
     id: string;

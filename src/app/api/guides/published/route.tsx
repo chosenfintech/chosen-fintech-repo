@@ -11,6 +11,7 @@ import type {
   GuideLevel,
 } from '@/types/guides/guide.types';
 import { handleApiError } from '@/middlewares/error-handler';
+import { withPublicAuthor } from '@/utils/public-author';
 import { parseBoolean } from '@/utils/parse-booleans';
 
 /**
@@ -44,7 +45,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const paginatedResponse: IGuidesPaginatedResponse = {
       message: 'Guides retrieved successfully',
-      data: mapGuidesToResponse(guides),
+      data: mapGuidesToResponse(guides).map(withPublicAuthor),
       meta: {
         total,
         page,

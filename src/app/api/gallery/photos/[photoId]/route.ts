@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma, { Prisma } from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import { cloudinaryService } from '@/config/claudinary';
 import { parseBoolean } from '@/utils/parse-booleans';
 import {
@@ -102,6 +103,8 @@ export async function PUT(
       include: GALLERY_PHOTO_INCLUDE,
     });
 
+    revalidatePublishedGallery();
+
     return NextResponse.json({
       message: 'Gallery photo updated successfully',
       data: mapGalleryPhotoToResponse(updatedPhoto),
@@ -142,6 +145,8 @@ export async function DELETE(
     await cloudinaryService
       .deleteImage(existingPhoto.url)
       .catch((e) => console.warn('Failed to clean up gallery image:', e));
+
+    revalidatePublishedGallery();
 
     return NextResponse.json({
       message: 'Gallery photo deleted successfully',

@@ -3,6 +3,7 @@ import type {
   IGalleryCategory,
   IGalleryCategoriesPaginatedResponse,
 } from '@/types/gallery/gallery-category.types';
+import { GALLERY_CACHE_TAG, POSTS_REVALIDATE_SECONDS } from '@/config/cache';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -23,7 +24,7 @@ async function fetchGalleryCategories(page: number): Promise<{
     url.searchParams.set('hasPhotos', 'true');
 
     const response = await fetch(url.toString(), {
-      cache: 'no-store',
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [GALLERY_CACHE_TAG] },
     });
 
     if (!response.ok) {

@@ -30,7 +30,7 @@ export interface IProject {
   author: {
     id: string;
     fullname: string;
-    email: string;
+    email?: string;
   };
 }
 

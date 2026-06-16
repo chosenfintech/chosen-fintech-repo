@@ -6,7 +6,7 @@ export const BLOG_AND_EDUCATION_CATEGORY_NAMES = ['blog', 'education'];
 
 export interface GetPostsOptions {
   forcePublished?: boolean;
-  postType?: 'events' | 'blog-and-education';
+  postType?: 'blog-and-education';
 }
 
 const POST_INCLUDE = {
@@ -70,25 +70,13 @@ export const buildPostWhereClause = (
 
   // --- postType / category scope ---
   // blog-and-education: only return posts whose category name is
-  // 'blog' OR 'education' (case-insensitive).
-  //
-  // events: only return posts whose category is NOT 'blog' or 'education'.
-  // Posts with NO category (null) also pass this filter naturally,
-  // because a null relation never matches the NOT condition.
+  // 'blog' OR 'education' (case-insensitive). Used by the academy blog list.
+  // (Events are now their own model, so there is no 'events' scope here.)
   if (postType === 'blog-and-education') {
     whereClause.category = {
       name: {
         in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
         mode: 'insensitive',
-      },
-    };
-  } else if (postType === 'events') {
-    whereClause.NOT = {
-      category: {
-        name: {
-          in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
-          mode: 'insensitive',
-        },
       },
     };
   }

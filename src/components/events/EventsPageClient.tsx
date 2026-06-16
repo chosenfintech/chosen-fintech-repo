@@ -15,7 +15,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IEvent } from '@/types/events/event.types';
 import { IEventCategory } from '@/types/events/category.types';
-import { Calendar, ArrowRight, ImageIcon } from 'lucide-react';
+import { Calendar, Clock, MapPin, ArrowRight, ImageIcon } from 'lucide-react';
 import { cardVariants } from '@/static-data/motion-variants';
 
 export interface IBlogPageClientProps {
@@ -32,8 +32,9 @@ export interface IBlogPageClientProps {
 
 // Featured event card (horizontal hero-style)
 function FeaturedEventCard({ event }: { event: IEvent }) {
-  const formattedDate = event.publishDate
-    ? new Date(event.publishDate).toLocaleDateString('en-US', {
+  const dateToShow = event.eventDate ?? event.publishDate;
+  const formattedDate = dateToShow
+    ? new Date(dateToShow).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric',
@@ -84,16 +85,31 @@ function FeaturedEventCard({ event }: { event: IEvent }) {
             <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-3 text-sm lg:text-base">
               {event.excerpt}
             </p>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
               {formattedDate && (
                 <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <Calendar size={13} />
                   {formattedDate}
                 </span>
               )}
+              {(event.startTime || event.endTime) && (
+                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Clock size={13} />
+                  {event.startTime}
+                  {event.endTime ? ` – ${event.endTime}` : ''}
+                </span>
+              )}
+              {event.location && (
+                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <MapPin size={13} />
+                  {event.location}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center justify-end">
               <Button
                 variant="link"
-                className="p-0 h-auto group/btn text-sm font-semibold ml-auto"
+                className="p-0 h-auto group/btn text-sm font-semibold"
               >
                 Read More
                 <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-2 transition-transform duration-300" />

@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { requireAdmin } from '@/utils/require-admin';
 import { cloudinaryService } from '@/config/claudinary';
 import { generateSlug } from '@/utils/generate-slug';
 import { calculateReadTime } from '@/utils/read-time-calculator';
@@ -60,7 +61,8 @@ export async function PUT(
   let uploadedContentPublicIds: string[] = [];
 
   try {
-    await verifySession();
+    const session = await verifySession();
+    requireAdmin(session);
     const { eventId } = await params;
 
     if (!eventId) {
@@ -332,7 +334,7 @@ export async function DELETE(
       throw new NotFoundError('Event not found');
     }
 
-    if (existingEvent.authorId !== session.userId) {
+    if (!session.isAdmin && existingEvent.authorId !== session.userId) {
       throw new ForbiddenError('You can only delete your own events');
     }
 

@@ -40,7 +40,7 @@ export interface IGuide {
   author: {
     id: string;
     fullname: string;
-    email: string;
+    email?: string;
   };
 }
 

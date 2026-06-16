@@ -12,8 +12,15 @@ export async function GET(
 
     const project = await getProjectById(projectId, { isAuthenticated: false });
 
+    // Public endpoint: expose only id + fullname for the author (no email).
+    const { author, ...rest } = project;
+    const publicProject = {
+      ...rest,
+      author: { id: author.id, fullname: author.fullname },
+    };
+
     return NextResponse.json(
-      { message: 'Project retrieved successfully', data: project },
+      { message: 'Project retrieved successfully', data: publicProject },
       {
         headers: {
           'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=300',

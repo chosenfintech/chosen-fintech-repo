@@ -12,8 +12,15 @@ export async function GET(
 
     const post = await getPostById(postId, { isAuthenticated: false });
 
+    // Public endpoint: expose only id + fullname for the author (no email).
+    const { author, ...rest } = post;
+    const publicPost = {
+      ...rest,
+      author: { id: author.id, fullname: author.fullname },
+    };
+
     return NextResponse.json(
-      { message: 'Post retrieved successfully', data: post },
+      { message: 'Post retrieved successfully', data: publicPost },
       {
         headers: {
           'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=300',

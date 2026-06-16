@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import { cloudinaryService } from '@/config/claudinary';
 import { parseBoolean } from '@/utils/parse-booleans';
 import {
@@ -138,6 +139,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
       include: GALLERY_PHOTO_INCLUDE,
     });
+
+    revalidatePublishedGallery();
 
     return NextResponse.json(
       {

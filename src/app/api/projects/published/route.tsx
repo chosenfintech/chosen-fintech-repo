@@ -10,6 +10,7 @@ import type {
   IProjectsQueryParams,
 } from '@/types/projects/project.types';
 import { handleApiError } from '@/middlewares/error-handler';
+import { withPublicAuthor } from '@/utils/public-author';
 import { parseBoolean } from '@/utils/parse-booleans';
 
 /**
@@ -42,7 +43,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const paginatedResponse: IProjectsPaginatedResponse = {
       message: 'Projects retrieved successfully',
-      data: mapProjectsToResponse(projects),
+      data: mapProjectsToResponse(projects).map(withPublicAuthor),
       meta: {
         total,
         page,

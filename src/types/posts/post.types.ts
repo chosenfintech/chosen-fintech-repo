@@ -31,7 +31,7 @@ export interface IPost {
   author: {
     id: string;
     fullname: string;
-    email: string;
+    email?: string;
   };
   category: {
     id: string;

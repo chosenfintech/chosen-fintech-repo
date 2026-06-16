@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import { cloudinaryService } from '@/config/claudinary';
 import {
   handleApiError,
@@ -119,6 +120,8 @@ export async function PUT(
 
     const updatedCategory = await buildCategoryResponse(categoryId);
 
+    revalidatePublishedGallery();
+
     return NextResponse.json({
       message: 'Gallery category updated successfully',
       data: updatedCategory,
@@ -179,6 +182,8 @@ export async function DELETE(
         });
       });
     }
+
+    revalidatePublishedGallery();
 
     return NextResponse.json({
       message: `Gallery category "${existingCategory.name}" and its ${existingCategory.photos.length} photo(s) deleted successfully`,

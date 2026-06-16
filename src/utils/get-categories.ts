@@ -31,11 +31,7 @@ export async function getCategories({
 
   const whereClause: Prisma.CategoryWhereInput = {};
 
-  if (postType === 'events') {
-    whereClause.NOT = {
-      name: { in: BLOG_AND_EDUCATION_CATEGORY_NAMES, mode: 'insensitive' },
-    };
-  } else if (postType === 'blog-and-education') {
+  if (postType === 'blog-and-education') {
     whereClause.name = {
       in: BLOG_AND_EDUCATION_CATEGORY_NAMES,
       mode: 'insensitive',

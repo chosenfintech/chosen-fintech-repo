@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import {
   handleApiError,
   ValidationError,
@@ -117,6 +118,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       updatedAt: category.updatedAt,
       totalPhotosCount: category._count.photos,
     };
+
+    revalidatePublishedGallery();
 
     return NextResponse.json(
       { message: 'Gallery category created successfully', data: responseData },

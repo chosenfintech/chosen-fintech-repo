@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import {
   handleApiError,
   ValidationError,
@@ -41,6 +42,8 @@ export async function PATCH(
         select: { id: true, isPublished: true, url: true },
       });
     });
+
+    revalidatePublishedGallery();
 
     return NextResponse.json({
       message: `Gallery photo ${result.isPublished ? 'published' : 'unpublished'} successfully`,

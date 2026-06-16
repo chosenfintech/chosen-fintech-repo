@@ -24,5 +24,8 @@ export const GUIDES_CACHE_TAG = 'published-guides';
 /** Tags every public fetch of published projects. */
 export const PROJECTS_CACHE_TAG = 'published-projects';
 
+/** Tags every public fetch of published gallery photos & categories. */
+export const GALLERY_CACHE_TAG = 'published-gallery';
+
 /** Default ISR window for public content — 1 hour. */
 export const POSTS_REVALIDATE_SECONDS = 3600;

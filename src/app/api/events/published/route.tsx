@@ -10,6 +10,7 @@ import type {
   IEventsQueryParams,
 } from '@/types/events/event.types';
 import { handleApiError } from '@/middlewares/error-handler';
+import { withPublicAuthor } from '@/utils/public-author';
 import { parseBoolean } from '@/utils/parse-booleans';
 
 /**
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const paginatedResponse: IEventsPaginatedResponse = {
       message: 'Events retrieved successfully',
-      data: mapEventsToResponse(events),
+      data: mapEventsToResponse(events).map(withPublicAuthor),
       meta: {
         total,
         page,
