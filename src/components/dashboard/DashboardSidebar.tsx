@@ -125,7 +125,7 @@ export default function DashboardSidebar() {
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
   const user = useSelector((state: RootState) => state.auth.user);
-  const isAdmin = user?.isAdmin ?? false;
+  const isAdmin = user?.role === 'ADMIN';
 
   const isCollapsed = state === 'collapsed';
 

@@ -187,7 +187,7 @@ export function DashboardStatsGrid() {
                 variant="success"
               />
               <DashboardStatsCard
-                label="Regular Users"
+                label="Editors"
                 value={stats.users.regular}
                 icon={UserRound}
                 variant="muted"

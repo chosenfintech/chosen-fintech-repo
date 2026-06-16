@@ -1,10 +1,12 @@
 // src/types/user.types.ts
+export type UserRole = 'ADMIN' | 'EDITOR';
+
 export interface IUser {
   id: string;
   email: string;
   fullname: string;
   phone?: string | null;
-  isAdmin?: boolean;
+  role: UserRole;
   twoFactorEnabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -15,13 +17,14 @@ export interface ICreateUserInput {
   email: string;
   password: string;
   phone?: string;
+  role?: UserRole;
 }
 
 export interface IUpdateUserInput {
   fullname?: string;
   email?: string;
   phone?: string;
-  isAdmin?: boolean;
+  role?: UserRole;
 }
 
 export interface IUserResponse {

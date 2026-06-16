@@ -73,13 +73,19 @@ export const createUserColumns = (): ColumnDef<IUser>[] => [
     },
   },
   {
-    accessorKey: 'isAdmin',
+    accessorKey: 'role',
     header: 'Role',
     cell: ({ row }) => {
-      const isAdmin = row.getValue('isAdmin') as boolean | undefined;
+      const role = row.getValue('role') as string | undefined;
       return (
-        <span className="text-xs sm:text-sm">
-          {isAdmin ? 'Super Admin' : 'Admin'}
+        <span
+          className={`inline-block text-xs sm:text-sm font-medium px-2 py-0.5 rounded-full ${
+            role === 'ADMIN'
+              ? 'bg-primary/10 text-primary'
+              : 'bg-muted text-muted-foreground'
+          }`}
+        >
+          {role === 'ADMIN' ? 'Admin' : 'Editor'}
         </span>
       );
     },

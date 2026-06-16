@@ -34,13 +34,14 @@ export const createUserSchema = z.object({
   email,
   password,
   phone,
+  role: z.enum(['ADMIN', 'EDITOR']).optional(),
 });
 
 export const updateUserSchema = z.object({
   fullname: fullname.optional(),
   email: email.optional(),
   phone,
-  isAdmin: z.boolean().optional(),
+  role: z.enum(['ADMIN', 'EDITOR']).optional(),
 });
 
 export const changePasswordSchema = z.object({

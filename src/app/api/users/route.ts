@@ -55,7 +55,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           fullname: true,
           email: true,
           phone: true,
-          isAdmin: true,
+          role: true,
           createdAt: true,
           updatedAt: true,
         },
@@ -105,11 +105,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       });
     }
 
-    const { fullname, email, password, phone } = validation.data;
+    const { fullname, email, password, phone, role } = validation.data;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      throw new ConflictError(`An admin with email "${email}" already exists`);
+      throw new ConflictError(`A user with email "${email}" already exists`);
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
@@ -120,13 +120,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         email,
         password: hashedPassword,
         phone: phone ?? null,
+        role: role ?? 'EDITOR',
       },
       select: {
         id: true,
         fullname: true,
         email: true,
         phone: true,
-        isAdmin: true,
+        role: true,
         createdAt: true,
         updatedAt: true,
       },

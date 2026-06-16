@@ -30,7 +30,7 @@ export type UserMinAggregateOutputType = {
   fullname: string | null
   phone: string | null
   password: string | null
-  isAdmin: boolean | null
+  role: $Enums.UserRole | null
   twoFactorEnabled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -42,7 +42,7 @@ export type UserMaxAggregateOutputType = {
   fullname: string | null
   phone: string | null
   password: string | null
-  isAdmin: boolean | null
+  role: $Enums.UserRole | null
   twoFactorEnabled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -54,7 +54,7 @@ export type UserCountAggregateOutputType = {
   fullname: number
   phone: number
   password: number
-  isAdmin: number
+  role: number
   twoFactorEnabled: number
   createdAt: number
   updatedAt: number
@@ -68,7 +68,7 @@ export type UserMinAggregateInputType = {
   fullname?: true
   phone?: true
   password?: true
-  isAdmin?: true
+  role?: true
   twoFactorEnabled?: true
   createdAt?: true
   updatedAt?: true
@@ -80,7 +80,7 @@ export type UserMaxAggregateInputType = {
   fullname?: true
   phone?: true
   password?: true
-  isAdmin?: true
+  role?: true
   twoFactorEnabled?: true
   createdAt?: true
   updatedAt?: true
@@ -92,7 +92,7 @@ export type UserCountAggregateInputType = {
   fullname?: true
   phone?: true
   password?: true
-  isAdmin?: true
+  role?: true
   twoFactorEnabled?: true
   createdAt?: true
   updatedAt?: true
@@ -177,7 +177,7 @@ export type UserGroupByOutputType = {
   fullname: string
   phone: string | null
   password: string
-  isAdmin: boolean
+  role: $Enums.UserRole
   twoFactorEnabled: boolean
   createdAt: Date
   updatedAt: Date
@@ -210,7 +210,7 @@ export type UserWhereInput = {
   fullname?: Prisma.StringFilter<"User"> | string
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringFilter<"User"> | string
-  isAdmin?: Prisma.BoolFilter<"User"> | boolean
+  role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -227,7 +227,7 @@ export type UserOrderByWithRelationInput = {
   fullname?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -247,7 +247,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   fullname?: Prisma.StringFilter<"User"> | string
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringFilter<"User"> | string
-  isAdmin?: Prisma.BoolFilter<"User"> | boolean
+  role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -264,7 +264,7 @@ export type UserOrderByWithAggregationInput = {
   fullname?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -282,7 +282,7 @@ export type UserScalarWhereWithAggregatesInput = {
   fullname?: Prisma.StringWithAggregatesFilter<"User"> | string
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
-  isAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -294,7 +294,7 @@ export type UserCreateInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -311,7 +311,7 @@ export type UserUncheckedCreateInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -328,7 +328,7 @@ export type UserUpdateInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -345,7 +345,7 @@ export type UserUncheckedUpdateInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -362,7 +362,7 @@ export type UserCreateManyInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -374,7 +374,7 @@ export type UserUpdateManyMutationInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -386,7 +386,7 @@ export type UserUncheckedUpdateManyInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -398,7 +398,7 @@ export type UserCountOrderByAggregateInput = {
   fullname?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -410,7 +410,7 @@ export type UserMaxOrderByAggregateInput = {
   fullname?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -422,7 +422,7 @@ export type UserMinOrderByAggregateInput = {
   fullname?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -439,6 +439,10 @@ export type StringFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type EnumUserRoleFieldUpdateOperationsInput = {
+  set?: $Enums.UserRole
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -525,7 +529,7 @@ export type UserCreateWithoutPostsInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -541,7 +545,7 @@ export type UserUncheckedCreateWithoutPostsInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -573,7 +577,7 @@ export type UserUpdateWithoutPostsInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -589,7 +593,7 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -605,7 +609,7 @@ export type UserCreateWithoutEventsInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -621,7 +625,7 @@ export type UserUncheckedCreateWithoutEventsInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -653,7 +657,7 @@ export type UserUpdateWithoutEventsInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -669,7 +673,7 @@ export type UserUncheckedUpdateWithoutEventsInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -685,7 +689,7 @@ export type UserCreateWithoutGuidesInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -701,7 +705,7 @@ export type UserUncheckedCreateWithoutGuidesInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -733,7 +737,7 @@ export type UserUpdateWithoutGuidesInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -749,7 +753,7 @@ export type UserUncheckedUpdateWithoutGuidesInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -765,7 +769,7 @@ export type UserCreateWithoutProjectsInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -781,7 +785,7 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -813,7 +817,7 @@ export type UserUpdateWithoutProjectsInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -829,7 +833,7 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -845,7 +849,7 @@ export type UserCreateWithoutSecurityTokensInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -861,7 +865,7 @@ export type UserUncheckedCreateWithoutSecurityTokensInput = {
   fullname: string
   phone?: string | null
   password: string
-  isAdmin?: boolean
+  role?: $Enums.UserRole
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -893,7 +897,7 @@ export type UserUpdateWithoutSecurityTokensInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -909,7 +913,7 @@ export type UserUncheckedUpdateWithoutSecurityTokensInput = {
   fullname?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -992,7 +996,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   fullname?: boolean
   phone?: boolean
   password?: boolean
-  isAdmin?: boolean
+  role?: boolean
   twoFactorEnabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1010,7 +1014,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   fullname?: boolean
   phone?: boolean
   password?: boolean
-  isAdmin?: boolean
+  role?: boolean
   twoFactorEnabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1022,7 +1026,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   fullname?: boolean
   phone?: boolean
   password?: boolean
-  isAdmin?: boolean
+  role?: boolean
   twoFactorEnabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1034,13 +1038,13 @@ export type UserSelectScalar = {
   fullname?: boolean
   phone?: boolean
   password?: boolean
-  isAdmin?: boolean
+  role?: boolean
   twoFactorEnabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullname" | "phone" | "password" | "isAdmin" | "twoFactorEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullname" | "phone" | "password" | "role" | "twoFactorEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
   events?: boolean | Prisma.User$eventsArgs<ExtArgs>
@@ -1067,7 +1071,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     fullname: string
     phone: string | null
     password: string
-    isAdmin: boolean
+    role: $Enums.UserRole
     twoFactorEnabled: boolean
     createdAt: Date
     updatedAt: Date
@@ -1504,7 +1508,7 @@ export interface UserFieldRefs {
   readonly fullname: Prisma.FieldRef<"User", 'String'>
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
-  readonly isAdmin: Prisma.FieldRef<"User", 'Boolean'>
+  readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly twoFactorEnabled: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>

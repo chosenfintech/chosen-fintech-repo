@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
-import { requireAdmin } from '@/utils/require-admin';
+import { requireStaff } from '@/utils/require-admin';
 import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import { cloudinaryService } from '@/config/claudinary';
 import { parseBoolean } from '@/utils/parse-booleans';
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   try {
     const session = await verifySession();
-    requireAdmin(session);
+    requireStaff(session);
 
     const formData = await req.formData();
 

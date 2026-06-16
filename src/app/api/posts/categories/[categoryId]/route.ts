@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
-import { requireAdmin } from '@/utils/require-admin';
+import { requireAdmin, requireStaff } from '@/utils/require-admin';
 import {
   handleApiError,
   ValidationError,
@@ -25,7 +25,7 @@ export async function PUT(
 ): Promise<NextResponse> {
   try {
     const session = await verifySession();
-    requireAdmin(session);
+    requireStaff(session);
     const { categoryId } = await params;
 
     if (!categoryId) {

@@ -32,7 +32,7 @@ const main = async (): Promise<void> => {
 
   // Guides need an author; use the seeded admin (or the first user).
   const author =
-    (await prisma.user.findFirst({ where: { isAdmin: true } })) ??
+    (await prisma.user.findFirst({ where: { role: 'ADMIN' } })) ??
     (await prisma.user.findFirst());
 
   if (!author) {

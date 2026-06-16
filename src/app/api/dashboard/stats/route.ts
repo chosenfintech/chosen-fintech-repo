@@ -99,7 +99,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       prisma.galleryCategory.count({ where }),
 
       prisma.user.count({ where }),
-      prisma.user.count({ where: { ...where, isAdmin: true } }),
+      prisma.user.count({ where: { ...where, role: 'ADMIN' } }),
     ]);
 
     const moduleStats = (

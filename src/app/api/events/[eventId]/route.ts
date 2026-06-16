@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
-import { requireAdmin } from '@/utils/require-admin';
+import { requireStaff } from '@/utils/require-admin';
 import { cloudinaryService } from '@/config/claudinary';
 import { generateSlug } from '@/utils/generate-slug';
 import { calculateReadTime } from '@/utils/read-time-calculator';
@@ -62,7 +62,7 @@ export async function PUT(
 
   try {
     const session = await verifySession();
-    requireAdmin(session);
+    requireStaff(session);
     const { eventId } = await params;
 
     if (!eventId) {
@@ -334,8 +334,8 @@ export async function DELETE(
       throw new NotFoundError('Event not found');
     }
 
-    if (!session.isAdmin && existingEvent.authorId !== session.userId) {
-      throw new ForbiddenError('You can only delete your own events');
+    if (!session.isAdmin) {
+      throw new ForbiddenError('Only admins can delete events');
     }
 
     await prisma.event.delete({ where: { id: eventId } });

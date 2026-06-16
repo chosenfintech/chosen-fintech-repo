@@ -41,7 +41,7 @@ export async function GET(
         fullname: true,
         email: true,
         phone: true,
-        isAdmin: true,
+        role: true,
         twoFactorEnabled: true,
         createdAt: true,
         updatedAt: true,
@@ -125,6 +125,9 @@ export async function PUT(
       updateData.fullname = userDetails.fullname;
     if (userDetails.email !== undefined) updateData.email = userDetails.email;
     if (userDetails.phone !== undefined) updateData.phone = userDetails.phone;
+    // Only admins may change a user's role (prevents self-escalation).
+    if (userDetails.role !== undefined && session.isAdmin)
+      updateData.role = userDetails.role;
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
@@ -134,7 +137,7 @@ export async function PUT(
         fullname: true,
         email: true,
         phone: true,
-        isAdmin: true,
+        role: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -176,14 +179,14 @@ export async function DELETE(
 
     const existingUser = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, fullname: true, email: true, isAdmin: true },
+      select: { id: true, fullname: true, email: true, role: true },
     });
 
     if (!existingUser) {
       throw new NotFoundError('User not found');
     }
 
-    if (existingUser.isAdmin) {
+    if (existingUser.role === 'ADMIN') {
       throw new ForbiddenError('Admin accounts cannot be deleted');
     }
 

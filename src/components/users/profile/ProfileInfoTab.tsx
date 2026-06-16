@@ -39,7 +39,7 @@ const ProfileInfoTab: React.FC<ProfileInfoTabProps> = ({
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const isViewingOwnProfile = currentUser?.id === user.id;
-  const isAdmin = currentUser?.isAdmin ?? false;
+  const isAdmin = currentUser?.role === 'ADMIN';
   const canEdit = isViewingOwnProfile || isAdmin;
 
   const form = useForm<IUpdateUserSchema>({
@@ -134,11 +134,9 @@ const ProfileInfoTab: React.FC<ProfileInfoTabProps> = ({
               {user.fullname}
             </p>
             <p className="text-xs text-muted-foreground">{user.email}</p>
-            {user.isAdmin && (
-              <span className="inline-block mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
-                Admin
-              </span>
-            )}
+            <span className="inline-block mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+              {user.role === 'ADMIN' ? 'Admin' : 'Editor'}
+            </span>
           </div>
         </div>
 

@@ -102,7 +102,7 @@ async function getUser(email: string) {
         email: true,
         fullname: true,
         phone: true,
-        isAdmin: true,
+        role: true,
         twoFactorEnabled: true,
         password: true,
         createdAt: true,
@@ -186,7 +186,7 @@ export async function signin(
     };
   }
 
-  await createSession(user.id, user.isAdmin);
+  await createSession(user.id, user.role);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password: _, ...safeUser } = user;
@@ -246,7 +246,7 @@ export async function verifyTwoFactorLogin(
       email: true,
       fullname: true,
       phone: true,
-      isAdmin: true,
+      role: true,
       twoFactorEnabled: true,
       createdAt: true,
       updatedAt: true,
@@ -260,7 +260,7 @@ export async function verifyTwoFactorLogin(
   }
 
   await clearTwoFactorPending();
-  await createSession(user.id, user.isAdmin);
+  await createSession(user.id, user.role);
 
   return { success: true, redirectTo: '/dashboard', user };
 }

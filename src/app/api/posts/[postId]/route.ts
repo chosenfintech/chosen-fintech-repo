@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
-import { requireAdmin } from '@/utils/require-admin';
+import { requireStaff } from '@/utils/require-admin';
 import { cloudinaryService } from '@/config/claudinary';
 import { generateSlug } from '@/utils/generate-slug';
 import { calculateReadTime } from '@/utils/read-time-calculator';
@@ -62,7 +62,7 @@ export async function PUT(
 
   try {
     const session = await verifySession();
-    requireAdmin(session);
+    requireStaff(session);
     const { postId } = await params;
 
     if (!postId) {
@@ -318,8 +318,8 @@ export async function DELETE(
       throw new NotFoundError('Post not found');
     }
 
-    if (!session.isAdmin && existingPost.authorId !== session.userId) {
-      throw new ForbiddenError('You can only delete your own posts');
+    if (!session.isAdmin) {
+      throw new ForbiddenError('Only admins can delete posts');
     }
 
     await prisma.post.delete({ where: { id: postId } });

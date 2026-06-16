@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma, { Prisma } from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
-import { requireAdmin } from '@/utils/require-admin';
+import { requireAdmin, requireStaff } from '@/utils/require-admin';
 import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import { cloudinaryService } from '@/config/claudinary';
 import { parseBoolean } from '@/utils/parse-booleans';
@@ -52,7 +52,7 @@ export async function PUT(
 ): Promise<NextResponse> {
   try {
     const session = await verifySession();
-    requireAdmin(session);
+    requireStaff(session);
 
     const { photoId } = await params;
 

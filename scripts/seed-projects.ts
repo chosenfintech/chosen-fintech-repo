@@ -25,7 +25,7 @@ const main = async (): Promise<void> => {
   );
 
   const author =
-    (await prisma.user.findFirst({ where: { isAdmin: true } })) ??
+    (await prisma.user.findFirst({ where: { role: 'ADMIN' } })) ??
     (await prisma.user.findFirst());
 
   if (!author) {

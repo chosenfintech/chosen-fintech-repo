@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
-import { requireAdmin } from '@/utils/require-admin';
+import { requireStaff } from '@/utils/require-admin';
 import { cloudinaryService } from '@/config/claudinary';
 import { generateSlug } from '@/utils/generate-slug';
 import { calculateReadTime } from '@/utils/read-time-calculator';
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   try {
     const session = await verifySession();
-    requireAdmin(session);
+    requireStaff(session);
     const authorId = session.userId;
 
     const formData = await req.formData();

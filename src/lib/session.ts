@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { ENV } from '../config/env';
 import { UnauthorizedError } from '@/middlewares/error-handler';
+import type { UserRole } from '@/lib/prisma';
 
 const secretKey = ENV.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -15,7 +16,7 @@ const SESSION_DURATION = '7d';
 
 export interface SessionPayload extends JWTPayload {
   userId: string;
-  isAdmin: boolean;
+  role: UserRole;
   expiresAt: Date;
 }
 
@@ -46,10 +47,10 @@ export async function decrypt(
 
 export async function createSession(
   userId: string,
-  isAdmin: boolean,
+  role: UserRole,
 ): Promise<void> {
   const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
-  const session = await encrypt({ userId, isAdmin, expiresAt });
+  const session = await encrypt({ userId, role, expiresAt });
   const cookieStore = await cookies();
 
   cookieStore.set('session', session, {
@@ -93,7 +94,12 @@ export const verifySession = cache(async () => {
     throw new UnauthorizedError();
   }
 
-  return { isAuth: true, userId: session.userId, isAdmin: session.isAdmin };
+  return {
+    isAuth: true,
+    userId: session.userId,
+    role: session.role,
+    isAdmin: session.role === 'ADMIN',
+  };
 });
 
 // Redirects — use in Server Components and Server Actions
@@ -105,5 +111,10 @@ export const requireSession = cache(async () => {
     redirect('/login');
   }
 
-  return { isAuth: true, userId: session.userId, isAdmin: session.isAdmin };
+  return {
+    isAuth: true,
+    userId: session.userId,
+    role: session.role,
+    isAdmin: session.role === 'ADMIN',
+  };
 });

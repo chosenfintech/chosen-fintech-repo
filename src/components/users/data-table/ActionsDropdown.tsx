@@ -29,7 +29,7 @@ export function UserActionsDropdown({ user }: UserActionsDropdownProps) {
   const [deleteUser] = useDeleteUserMutation();
 
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  const isAdmin = currentUser?.isAdmin ?? false;
+  const isAdmin = currentUser?.role === 'ADMIN';
 
   const handleDeleteUser = async () => {
     const toastId = toast.loading('Deleting user...');
