@@ -1,7 +1,7 @@
 // src/components/posts/PostForm.tsx
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
@@ -89,15 +89,16 @@ export default function PostForm({
   initialData,
   mode,
 }: IPostFormProps) {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedPreview, setSelectedPreview] = useState<string | null>(null);
+  const [imageRemoved, setImageRemoved] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { data: categories } = useGetCategoriesForSelectQuery();
 
-  useEffect(() => {
-    if (initialData?.coverImage && mode === 'update') {
-      setImagePreview(initialData.coverImage);
-    }
-  }, [initialData, mode]);
+  const imagePreview =
+    selectedPreview ??
+    (mode === 'update' && !imageRemoved
+      ? (initialData?.coverImage ?? null)
+      : null);
 
   const handleImageChange = (file: File | undefined) => {
     if (file) {
@@ -119,7 +120,8 @@ export default function PostForm({
 
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
+        setSelectedPreview(e.target?.result as string);
+        setImageRemoved(false);
       };
       reader.readAsDataURL(file);
 
@@ -129,7 +131,8 @@ export default function PostForm({
   };
 
   const removeImage = () => {
-    setImagePreview(null);
+    setSelectedPreview(null);
+    setImageRemoved(true);
     form.setValue('coverImage', undefined);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';

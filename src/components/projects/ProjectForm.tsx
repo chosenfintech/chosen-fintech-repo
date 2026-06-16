@@ -1,7 +1,7 @@
 // src/components/projects/ProjectForm.tsx
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
@@ -81,14 +81,15 @@ export default function ProjectForm({
   initialData,
   mode,
 }: IProjectFormProps) {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedPreview, setSelectedPreview] = useState<string | null>(null);
+  const [imageRemoved, setImageRemoved] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (initialData?.imageUrl && mode === 'update') {
-      setImagePreview(initialData.imageUrl);
-    }
-  }, [initialData, mode]);
+  const imagePreview =
+    selectedPreview ??
+    (mode === 'update' && !imageRemoved
+      ? (initialData?.imageUrl ?? null)
+      : null);
 
   const handleImageChange = (file: File | undefined) => {
     if (file) {
@@ -110,7 +111,8 @@ export default function ProjectForm({
 
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
+        setSelectedPreview(e.target?.result as string);
+        setImageRemoved(false);
       };
       reader.readAsDataURL(file);
 
@@ -120,7 +122,8 @@ export default function ProjectForm({
   };
 
   const removeImage = () => {
-    setImagePreview(null);
+    setSelectedPreview(null);
+    setImageRemoved(true);
     form.setValue('imageUrl', undefined);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';

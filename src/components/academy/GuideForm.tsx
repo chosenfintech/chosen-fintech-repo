@@ -1,7 +1,7 @@
 // src/components/guides/GuideForm.tsx
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
@@ -88,14 +88,15 @@ export default function GuideForm({
   initialData,
   mode,
 }: IGuideFormProps) {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedPreview, setSelectedPreview] = useState<string | null>(null);
+  const [imageRemoved, setImageRemoved] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (initialData?.image && mode === 'update') {
-      setImagePreview(initialData.image);
-    }
-  }, [initialData, mode]);
+  const imagePreview =
+    selectedPreview ??
+    (mode === 'update' && !imageRemoved
+      ? (initialData?.image ?? null)
+      : null);
 
   const handleImageChange = (file: File | undefined) => {
     if (file) {
@@ -117,7 +118,8 @@ export default function GuideForm({
 
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
+        setSelectedPreview(e.target?.result as string);
+        setImageRemoved(false);
       };
       reader.readAsDataURL(file);
 
@@ -127,7 +129,8 @@ export default function GuideForm({
   };
 
   const removeImage = () => {
-    setImagePreview(null);
+    setSelectedPreview(null);
+    setImageRemoved(true);
     form.setValue('image', undefined);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';

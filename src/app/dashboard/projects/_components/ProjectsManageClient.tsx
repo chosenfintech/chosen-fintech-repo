@@ -12,7 +12,6 @@ import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
 const ProjectsManageClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const [page, setPage] = useState<number>(() => {
     const pageParam = searchParams.get('page');
@@ -81,11 +80,8 @@ const ProjectsManageClient = () => {
     isFetching,
   } = useGetAllProjectsQuery(queryParams);
 
-  useEffect(() => {
-    if (isInitialLoad && projectsData) {
-      setIsInitialLoad(false);
-    }
-  }, [isInitialLoad, projectsData]);
+  // First render until the first response arrives (derived, no setState-in-effect)
+  const isInitialLoad = !projectsData;
 
   const projects = projectsData?.data;
 

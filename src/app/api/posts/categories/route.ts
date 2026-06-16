@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { requireAdmin } from '@/utils/require-admin';
 import {
   handleApiError,
   ValidationError,
@@ -73,7 +74,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
  */
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
-    await verifySession();
+    const session = await verifySession();
+    requireAdmin(session);
 
     const body = await req.json();
 

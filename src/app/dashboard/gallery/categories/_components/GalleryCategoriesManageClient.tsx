@@ -12,7 +12,6 @@ import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
 const GalleryCategoriesManageClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const [page, setPage] = useState<number>(() => {
     const pageParam = searchParams.get('page');
@@ -71,11 +70,8 @@ const GalleryCategoriesManageClient = () => {
     isFetching,
   } = useGetAllGalleryCategoriesQuery(queryParams);
 
-  useEffect(() => {
-    if (isInitialLoad && categoriesData) {
-      setIsInitialLoad(false);
-    }
-  }, [isInitialLoad, categoriesData]);
+  // First render until the first response arrives (derived, no setState-in-effect)
+  const isInitialLoad = !categoriesData;
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);

@@ -12,7 +12,6 @@ import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
 const EventsManageClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const [page, setPage] = useState<number>(() => {
     const pageParam = searchParams.get('page');
@@ -86,11 +85,8 @@ const EventsManageClient = () => {
     isFetching,
   } = useGetAllEventsQuery(queryParams);
 
-  useEffect(() => {
-    if (isInitialLoad && eventsData) {
-      setIsInitialLoad(false);
-    }
-  }, [isInitialLoad, eventsData]);
+  // First render until the first response arrives (derived, no setState-in-effect)
+  const isInitialLoad = !eventsData;
 
   const events = eventsData?.data;
 

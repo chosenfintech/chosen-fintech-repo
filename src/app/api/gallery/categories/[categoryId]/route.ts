@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { requireAdmin } from '@/utils/require-admin';
 import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import { cloudinaryService } from '@/config/claudinary';
 import {
@@ -57,7 +58,8 @@ export async function PUT(
   { params }: { params: Promise<{ categoryId: string }> },
 ): Promise<NextResponse> {
   try {
-    await verifySession();
+    const session = await verifySession();
+    requireAdmin(session);
 
     const { categoryId } = await params;
 
@@ -141,7 +143,8 @@ export async function DELETE(
   { params }: { params: Promise<{ categoryId: string }> },
 ): Promise<NextResponse> {
   try {
-    await verifySession();
+    const session = await verifySession();
+    requireAdmin(session);
 
     const { categoryId } = await params;
 

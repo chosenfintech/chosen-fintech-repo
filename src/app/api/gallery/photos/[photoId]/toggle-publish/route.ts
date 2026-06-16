@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifySession } from '@/lib/session';
+import { requireAdmin } from '@/utils/require-admin';
 import { revalidatePublishedGallery } from '@/utils/revalidate-gallery';
 import {
   handleApiError,
@@ -18,7 +19,8 @@ export async function PATCH(
   { params }: { params: Promise<{ photoId: string }> },
 ): Promise<NextResponse> {
   try {
-    await verifySession();
+    const session = await verifySession();
+    requireAdmin(session);
 
     const { photoId } = await params;
 

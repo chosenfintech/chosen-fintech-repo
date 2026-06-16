@@ -12,7 +12,6 @@ import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
 const GuidesManageClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const [page, setPage] = useState<number>(() => {
     const pageParam = searchParams.get('page');
@@ -86,11 +85,8 @@ const GuidesManageClient = () => {
     isFetching,
   } = useGetAllGuidesQuery(queryParams);
 
-  useEffect(() => {
-    if (isInitialLoad && guidesData) {
-      setIsInitialLoad(false);
-    }
-  }, [isInitialLoad, guidesData]);
+  // First render until the first response arrives (derived, no setState-in-effect)
+  const isInitialLoad = !guidesData;
 
   const guides = guidesData?.data;
 
