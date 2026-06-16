@@ -1,4 +1,4 @@
-// src/app/dashboard/posts/create/page.tsx
+// src/app/dashboard/gallery/photos/upload/page.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';

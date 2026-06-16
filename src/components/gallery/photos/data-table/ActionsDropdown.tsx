@@ -1,3 +1,4 @@
+// src/components/gallery/photos/data-table/ActionsDropdown.tsx
 'use client';
 import * as React from 'react';
 import {
@@ -37,6 +38,7 @@ import {
   useUpdateGalleryPhotoMutation,
 } from '@/redux/gallery/gallery-photo-api';
 import { extractApiError } from '@/utils/extract-api-error';
+import { useIsAdmin } from '@/hooks/use-is-admin';
 
 interface GalleryPhotoActionsDropdownProps {
   photo: IGalleryPhoto;
@@ -45,6 +47,7 @@ interface GalleryPhotoActionsDropdownProps {
 export function GalleryPhotoActionsDropdown({
   photo,
 }: GalleryPhotoActionsDropdownProps) {
+  const isAdmin = useIsAdmin();
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [editDialogOpen, setEditDialogOpen] = React.useState(false);
   const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
@@ -164,15 +167,19 @@ export function GalleryPhotoActionsDropdown({
             )}
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
+          {isAdmin && (
+            <>
+              <DropdownMenuSeparator />
 
-          <DropdownMenuItem
-            className="text-red-600 hover:cursor-pointer"
-            onClick={() => setDeleteDialogOpen(true)}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete Photo
-          </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-red-600 hover:cursor-pointer"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Photo
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

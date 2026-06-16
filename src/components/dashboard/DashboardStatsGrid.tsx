@@ -33,17 +33,39 @@ function getGreeting(name: string): string {
   return `Good evening, ${name} 👋`;
 }
 
+function toInputDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
 export function DashboardStatsGrid() {
   const [period, setPeriod] = React.useState<DashboardPeriod>('all_time');
+
+  // Sensible default custom window: start of the current month → today.
+  const today = React.useMemo(() => new Date(), []);
+  const [range, setRange] = React.useState<{ from: string; to: string }>(() => ({
+    from: toInputDate(new Date(today.getFullYear(), today.getMonth(), 1)),
+    to: toInputDate(today),
+  }));
 
   const user = useSelector((state: RootState) => state.auth.user);
   const firstName = user?.fullname?.split(' ')[0] ?? 'there';
 
-  const { data, isLoading, isError, refetch } = useGetDashboardStatsQuery({
-    period,
-  });
+  // Only query a custom range once both ends are set and ordered.
+  const customReady =
+    period !== 'custom' || (!!range.from && !!range.to && range.from <= range.to);
+
+  const { data, isLoading, isFetching, isError, refetch } =
+    useGetDashboardStatsQuery(
+      {
+        period,
+        from: range.from,
+        to: range.to,
+      },
+      { skip: !customReady },
+    );
 
   const stats = data?.data;
+  const prev = stats?.previousTotals ?? null;
 
   return (
     <div className="space-y-8">
@@ -57,9 +79,15 @@ export function DashboardStatsGrid() {
         </p>
       </div>
 
-      <DashboardPeriodFilter value={period} onChange={setPeriod} />
+      <DashboardPeriodFilter
+        value={period}
+        onChange={setPeriod}
+        from={range.from}
+        to={range.to}
+        onRangeChange={setRange}
+      />
 
-      {isLoading ? (
+      {isLoading || (isFetching && !stats) ? (
         <DashboardStatsSkeleton />
       ) : isError || !stats ? (
         <ErrorMessage
@@ -79,24 +107,28 @@ export function DashboardStatsGrid() {
                 value={stats.totals.content}
                 icon={LayoutDashboard}
                 variant="default"
+                previous={prev?.content}
               />
               <DashboardStatsCard
                 label="Published"
                 value={stats.totals.published}
                 icon={CheckCircle}
                 variant="success"
+                previous={prev?.published}
               />
               <DashboardStatsCard
                 label="Drafts"
                 value={stats.totals.drafts}
                 icon={EyeOff}
                 variant="warning"
+                previous={prev?.drafts}
               />
               <DashboardStatsCard
                 label="Gallery Photos"
                 value={stats.totals.media}
                 icon={Images}
                 variant="muted"
+                previous={prev?.media}
               />
             </div>
           </section>

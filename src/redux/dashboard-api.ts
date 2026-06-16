@@ -7,6 +7,8 @@ import {
 
 export interface IDashboardStatsQueryParams {
   period?: DashboardPeriod;
+  from?: string;
+  to?: string;
 }
 
 export const dashboardApi = apiSlice.injectEndpoints({
@@ -15,10 +17,14 @@ export const dashboardApi = apiSlice.injectEndpoints({
       IDashboardStatsResponse,
       IDashboardStatsQueryParams
     >({
-      query: ({ period = 'all_time' } = {}) => ({
-        url: `/dashboard/stats?period=${period}`,
-        method: 'GET',
-      }),
+      query: ({ period = 'all_time', from, to } = {}) => {
+        const params = new URLSearchParams({ period });
+        if (period === 'custom' && from && to) {
+          params.set('from', from);
+          params.set('to', to);
+        }
+        return { url: `/dashboard/stats?${params.toString()}`, method: 'GET' };
+      },
       providesTags: ['DashboardStats'],
     }),
   }),

@@ -1,3 +1,4 @@
+// src/components/gallery/GalleryPhotoForm.tsx
 'use client';
 
 import { useRef, useState } from 'react';

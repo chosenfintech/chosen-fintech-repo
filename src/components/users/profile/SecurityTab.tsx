@@ -318,38 +318,6 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ userId }) => {
 
         <TwoFactorSection userId={userId} />
       </div>
-
-      <Separator className="my-6" />
-
-      {/* Danger Zone */}
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-destructive">
-            Danger Zone
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            Irreversible and destructive actions
-          </p>
-        </div>
-
-        <div className="flex justify-between items-center p-4 border-2 border-destructive/30 rounded-lg bg-destructive/5 shadow-sm">
-          <div>
-            <p className="text-sm font-medium text-destructive">
-              Delete Account
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Permanently delete your account and all data
-            </p>
-          </div>
-          <Button
-            variant="destructive"
-            size="sm"
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-          >
-            Delete Account
-          </Button>
-        </div>
-      </div>
     </div>
   );
 };

@@ -8,10 +8,26 @@ import type {
   IRecentContentItem,
 } from '@/types/dashboard.types';
 
+type DateRange = { gte: Date; lte: Date };
+
 function getDateRange(
   period: DashboardPeriod,
-): { gte: Date; lte: Date } | undefined {
+  from?: string | null,
+  to?: string | null,
+): DateRange | undefined {
   if (period === 'all_time') return undefined;
+
+  if (period === 'custom') {
+    if (!from || !to) return undefined;
+    const gte = new Date(from);
+    const to0 = new Date(to);
+    if (Number.isNaN(gte.getTime()) || Number.isNaN(to0.getTime())) {
+      return undefined;
+    }
+    // Include the whole "to" day.
+    const lte = new Date(to0.getFullYear(), to0.getMonth(), to0.getDate(), 23, 59, 59, 999);
+    return { gte, lte };
+  }
 
   const now = new Date();
 
@@ -26,6 +42,14 @@ function getDateRange(
     gte: new Date(now.getFullYear(), now.getMonth() - 1, 1),
     lte: new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999),
   };
+}
+
+/** The equal-length window immediately before the given range. */
+function previousRange(range: DateRange): DateRange {
+  const durationMs = range.lte.getTime() - range.gte.getTime();
+  const prevLte = new Date(range.gte.getTime() - 1);
+  const prevGte = new Date(prevLte.getTime() - durationMs);
+  return { gte: prevGte, lte: prevLte };
 }
 
 /**
@@ -44,6 +68,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       'this_month',
       'last_month',
       'all_time',
+      'custom',
     ];
     const period: DashboardPeriod = validPeriods.includes(
       rawPeriod as DashboardPeriod,
@@ -51,7 +76,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       ? (rawPeriod as DashboardPeriod)
       : 'all_time';
 
-    const dateRange = getDateRange(period);
+    const dateRange = getDateRange(
+      period,
+      searchParams.get('from'),
+      searchParams.get('to'),
+    );
     const where = dateRange ? { createdAt: dateRange } : {};
 
     const [
@@ -182,6 +211,49 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const contentPublished =
       postsPublished + eventsPublished + guidesPublished + projectsPublished;
 
+    // Trend baseline: same metrics for the immediately-preceding equal window.
+    // Only meaningful for a bounded range (not "all time").
+    let previousTotals = null as {
+      content: number;
+      published: number;
+      drafts: number;
+      media: number;
+    } | null;
+
+    if (dateRange) {
+      const prev = previousRange(dateRange);
+      const prevWhere = { createdAt: prev };
+      const [
+        pPosts,
+        pEvents,
+        pGuides,
+        pProjects,
+        pPostsPub,
+        pEventsPub,
+        pGuidesPub,
+        pProjectsPub,
+        pPhotos,
+      ] = await prisma.$transaction([
+        prisma.post.count({ where: prevWhere }),
+        prisma.event.count({ where: prevWhere }),
+        prisma.guide.count({ where: prevWhere }),
+        prisma.project.count({ where: prevWhere }),
+        prisma.post.count({ where: { ...prevWhere, isPublished: true } }),
+        prisma.event.count({ where: { ...prevWhere, isPublished: true } }),
+        prisma.guide.count({ where: { ...prevWhere, isPublished: true } }),
+        prisma.project.count({ where: { ...prevWhere, isPublished: true } }),
+        prisma.galleryPhoto.count({ where: prevWhere }),
+      ]);
+      const prevContent = pPosts + pEvents + pGuides + pProjects;
+      const prevPublished = pPostsPub + pEventsPub + pGuidesPub + pProjectsPub;
+      previousTotals = {
+        content: prevContent,
+        published: prevPublished,
+        drafts: prevContent - prevPublished,
+        media: pPhotos,
+      };
+    }
+
     return NextResponse.json({
       message: 'Dashboard stats fetched successfully',
       data: {
@@ -192,6 +264,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           drafts: contentTotal - contentPublished,
           media: photosTotal,
         },
+        previousTotals,
         posts: moduleStats(postsTotal, postsPublished, postsFeatured),
         events: moduleStats(eventsTotal, eventsPublished, eventsFeatured),
         guides: moduleStats(guidesTotal, guidesPublished, guidesFeatured),

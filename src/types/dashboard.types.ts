@@ -1,5 +1,9 @@
 // src/types/dashboard.types.ts
-export type DashboardPeriod = 'this_month' | 'last_month' | 'all_time';
+export type DashboardPeriod =
+  | 'this_month'
+  | 'last_month'
+  | 'all_time'
+  | 'custom';
 
 export interface IContentModuleStats {
   total: number;
@@ -32,6 +36,16 @@ export interface IDashboardStats {
     drafts: number;
     media: number; // gallery photos
   };
+  /**
+   * Same metrics for the immediately-preceding equal-length window, used to
+   * render trend deltas. Null for "all time" (no comparable previous period).
+   */
+  previousTotals: {
+    content: number;
+    published: number;
+    drafts: number;
+    media: number;
+  } | null;
   posts: IContentModuleStats;
   events: IContentModuleStats;
   guides: IContentModuleStats;

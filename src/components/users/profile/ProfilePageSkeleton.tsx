@@ -89,23 +89,6 @@ export const ProfileSkeleton = () => {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Danger Zone */}
-            <Card className="border-destructive/20">
-              <CardHeader>
-                <Skeleton className="h-6 w-32" />
-                <Skeleton className="h-4 w-64 mt-1" />
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center p-4 border-2 border-destructive/20 rounded-lg bg-destructive/5">
-                  <div className="space-y-1">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-3 w-48" />
-                  </div>
-                  <Skeleton className="h-9 w-28 rounded-md" />
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </TabsContent>
       </Tabs>
