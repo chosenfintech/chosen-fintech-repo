@@ -215,6 +215,9 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   posts?: Prisma.PostListRelationFilter
+  events?: Prisma.EventListRelationFilter
+  guides?: Prisma.GuideListRelationFilter
+  projects?: Prisma.ProjectListRelationFilter
   securityTokens?: Prisma.UserSecurityTokenListRelationFilter
 }
 
@@ -229,6 +232,9 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   posts?: Prisma.PostOrderByRelationAggregateInput
+  events?: Prisma.EventOrderByRelationAggregateInput
+  guides?: Prisma.GuideOrderByRelationAggregateInput
+  projects?: Prisma.ProjectOrderByRelationAggregateInput
   securityTokens?: Prisma.UserSecurityTokenOrderByRelationAggregateInput
 }
 
@@ -246,6 +252,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   posts?: Prisma.PostListRelationFilter
+  events?: Prisma.EventListRelationFilter
+  guides?: Prisma.GuideListRelationFilter
+  projects?: Prisma.ProjectListRelationFilter
   securityTokens?: Prisma.UserSecurityTokenListRelationFilter
 }, "id" | "email">
 
@@ -290,6 +299,9 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  events?: Prisma.EventCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutAuthorInput
   securityTokens?: Prisma.UserSecurityTokenCreateNestedManyWithoutUserInput
 }
 
@@ -304,6 +316,9 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  events?: Prisma.EventUncheckedCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideUncheckedCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutAuthorInput
   securityTokens?: Prisma.UserSecurityTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -318,6 +333,9 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  events?: Prisma.EventUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutAuthorNestedInput
   securityTokens?: Prisma.UserSecurityTokenUpdateManyWithoutUserNestedInput
 }
 
@@ -332,6 +350,9 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  events?: Prisma.EventUncheckedUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUncheckedUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutAuthorNestedInput
   securityTokens?: Prisma.UserSecurityTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -442,6 +463,48 @@ export type UserUpdateOneRequiredWithoutPostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostsInput, Prisma.UserUpdateWithoutPostsInput>, Prisma.UserUncheckedUpdateWithoutPostsInput>
 }
 
+export type UserCreateNestedOneWithoutEventsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEventsInput, Prisma.UserUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEventsInput, Prisma.UserUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEventsInput
+  upsert?: Prisma.UserUpsertWithoutEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEventsInput, Prisma.UserUpdateWithoutEventsInput>, Prisma.UserUncheckedUpdateWithoutEventsInput>
+}
+
+export type UserCreateNestedOneWithoutGuidesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGuidesInput, Prisma.UserUncheckedCreateWithoutGuidesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGuidesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutGuidesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGuidesInput, Prisma.UserUncheckedCreateWithoutGuidesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGuidesInput
+  upsert?: Prisma.UserUpsertWithoutGuidesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGuidesInput, Prisma.UserUpdateWithoutGuidesInput>, Prisma.UserUncheckedUpdateWithoutGuidesInput>
+}
+
+export type UserCreateNestedOneWithoutProjectsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProjectsInput, Prisma.UserUncheckedCreateWithoutProjectsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProjectsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutProjectsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProjectsInput, Prisma.UserUncheckedCreateWithoutProjectsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProjectsInput
+  upsert?: Prisma.UserUpsertWithoutProjectsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProjectsInput, Prisma.UserUpdateWithoutProjectsInput>, Prisma.UserUncheckedUpdateWithoutProjectsInput>
+}
+
 export type UserCreateNestedOneWithoutSecurityTokensInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSecurityTokensInput, Prisma.UserUncheckedCreateWithoutSecurityTokensInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSecurityTokensInput
@@ -466,6 +529,9 @@ export type UserCreateWithoutPostsInput = {
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  events?: Prisma.EventCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutAuthorInput
   securityTokens?: Prisma.UserSecurityTokenCreateNestedManyWithoutUserInput
 }
 
@@ -479,6 +545,9 @@ export type UserUncheckedCreateWithoutPostsInput = {
   twoFactorEnabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  events?: Prisma.EventUncheckedCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideUncheckedCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutAuthorInput
   securityTokens?: Prisma.UserSecurityTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -508,6 +577,9 @@ export type UserUpdateWithoutPostsInput = {
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.EventUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutAuthorNestedInput
   securityTokens?: Prisma.UserSecurityTokenUpdateManyWithoutUserNestedInput
 }
 
@@ -521,6 +593,249 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.EventUncheckedUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUncheckedUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutAuthorNestedInput
+  securityTokens?: Prisma.UserSecurityTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutEventsInput = {
+  id?: string
+  email: string
+  fullname: string
+  phone?: string | null
+  password: string
+  isAdmin?: boolean
+  twoFactorEnabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutAuthorInput
+  securityTokens?: Prisma.UserSecurityTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutEventsInput = {
+  id?: string
+  email: string
+  fullname: string
+  phone?: string | null
+  password: string
+  isAdmin?: boolean
+  twoFactorEnabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideUncheckedCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutAuthorInput
+  securityTokens?: Prisma.UserSecurityTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutEventsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEventsInput, Prisma.UserUncheckedCreateWithoutEventsInput>
+}
+
+export type UserUpsertWithoutEventsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEventsInput, Prisma.UserUncheckedUpdateWithoutEventsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEventsInput, Prisma.UserUncheckedCreateWithoutEventsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEventsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEventsInput, Prisma.UserUncheckedUpdateWithoutEventsInput>
+}
+
+export type UserUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullname?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutAuthorNestedInput
+  securityTokens?: Prisma.UserSecurityTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullname?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUncheckedUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutAuthorNestedInput
+  securityTokens?: Prisma.UserSecurityTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutGuidesInput = {
+  id?: string
+  email: string
+  fullname: string
+  phone?: string | null
+  password: string
+  isAdmin?: boolean
+  twoFactorEnabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  events?: Prisma.EventCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutAuthorInput
+  securityTokens?: Prisma.UserSecurityTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutGuidesInput = {
+  id?: string
+  email: string
+  fullname: string
+  phone?: string | null
+  password: string
+  isAdmin?: boolean
+  twoFactorEnabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  events?: Prisma.EventUncheckedCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutAuthorInput
+  securityTokens?: Prisma.UserSecurityTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutGuidesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGuidesInput, Prisma.UserUncheckedCreateWithoutGuidesInput>
+}
+
+export type UserUpsertWithoutGuidesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGuidesInput, Prisma.UserUncheckedUpdateWithoutGuidesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGuidesInput, Prisma.UserUncheckedCreateWithoutGuidesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGuidesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGuidesInput, Prisma.UserUncheckedUpdateWithoutGuidesInput>
+}
+
+export type UserUpdateWithoutGuidesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullname?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  events?: Prisma.EventUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutAuthorNestedInput
+  securityTokens?: Prisma.UserSecurityTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGuidesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullname?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  events?: Prisma.EventUncheckedUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutAuthorNestedInput
+  securityTokens?: Prisma.UserSecurityTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutProjectsInput = {
+  id?: string
+  email: string
+  fullname: string
+  phone?: string | null
+  password: string
+  isAdmin?: boolean
+  twoFactorEnabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  events?: Prisma.EventCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideCreateNestedManyWithoutAuthorInput
+  securityTokens?: Prisma.UserSecurityTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutProjectsInput = {
+  id?: string
+  email: string
+  fullname: string
+  phone?: string | null
+  password: string
+  isAdmin?: boolean
+  twoFactorEnabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  events?: Prisma.EventUncheckedCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideUncheckedCreateNestedManyWithoutAuthorInput
+  securityTokens?: Prisma.UserSecurityTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutProjectsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProjectsInput, Prisma.UserUncheckedCreateWithoutProjectsInput>
+}
+
+export type UserUpsertWithoutProjectsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProjectsInput, Prisma.UserUncheckedUpdateWithoutProjectsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProjectsInput, Prisma.UserUncheckedCreateWithoutProjectsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProjectsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProjectsInput, Prisma.UserUncheckedUpdateWithoutProjectsInput>
+}
+
+export type UserUpdateWithoutProjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullname?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  events?: Prisma.EventUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUpdateManyWithoutAuthorNestedInput
+  securityTokens?: Prisma.UserSecurityTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullname?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  events?: Prisma.EventUncheckedUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUncheckedUpdateManyWithoutAuthorNestedInput
   securityTokens?: Prisma.UserSecurityTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -535,6 +850,9 @@ export type UserCreateWithoutSecurityTokensInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  events?: Prisma.EventCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutSecurityTokensInput = {
@@ -548,6 +866,9 @@ export type UserUncheckedCreateWithoutSecurityTokensInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  events?: Prisma.EventUncheckedCreateNestedManyWithoutAuthorInput
+  guides?: Prisma.GuideUncheckedCreateNestedManyWithoutAuthorInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutSecurityTokensInput = {
@@ -577,6 +898,9 @@ export type UserUpdateWithoutSecurityTokensInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  events?: Prisma.EventUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSecurityTokensInput = {
@@ -590,6 +914,9 @@ export type UserUncheckedUpdateWithoutSecurityTokensInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  events?: Prisma.EventUncheckedUpdateManyWithoutAuthorNestedInput
+  guides?: Prisma.GuideUncheckedUpdateManyWithoutAuthorNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 
@@ -599,11 +926,17 @@ export type UserUncheckedUpdateWithoutSecurityTokensInput = {
 
 export type UserCountOutputType = {
   posts: number
+  events: number
+  guides: number
+  projects: number
   securityTokens: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | UserCountOutputTypeCountPostsArgs
+  events?: boolean | UserCountOutputTypeCountEventsArgs
+  guides?: boolean | UserCountOutputTypeCountGuidesArgs
+  projects?: boolean | UserCountOutputTypeCountProjectsArgs
   securityTokens?: boolean | UserCountOutputTypeCountSecurityTokensArgs
 }
 
@@ -627,6 +960,27 @@ export type UserCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Exte
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EventWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGuidesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GuideWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProjectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProjectWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountSecurityTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.UserSecurityTokenWhereInput
 }
@@ -643,6 +997,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  events?: boolean | Prisma.User$eventsArgs<ExtArgs>
+  guides?: boolean | Prisma.User$guidesArgs<ExtArgs>
+  projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   securityTokens?: boolean | Prisma.User$securityTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -686,6 +1043,9 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullname" | "phone" | "password" | "isAdmin" | "twoFactorEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  events?: boolean | Prisma.User$eventsArgs<ExtArgs>
+  guides?: boolean | Prisma.User$guidesArgs<ExtArgs>
+  projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   securityTokens?: boolean | Prisma.User$securityTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -696,6 +1056,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     posts: Prisma.$PostPayload<ExtArgs>[]
+    events: Prisma.$EventPayload<ExtArgs>[]
+    guides: Prisma.$GuidePayload<ExtArgs>[]
+    projects: Prisma.$ProjectPayload<ExtArgs>[]
     securityTokens: Prisma.$UserSecurityTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1103,6 +1466,9 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   posts<T extends Prisma.User$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  events<T extends Prisma.User$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  guides<T extends Prisma.User$guidesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$guidesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GuidePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  projects<T extends Prisma.User$projectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   securityTokens<T extends Prisma.User$securityTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$securityTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSecurityTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1551,6 +1917,78 @@ export type User$postsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+}
+
+/**
+ * User.events
+ */
+export type User$eventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Event
+   */
+  select?: Prisma.EventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Event
+   */
+  omit?: Prisma.EventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventInclude<ExtArgs> | null
+  where?: Prisma.EventWhereInput
+  orderBy?: Prisma.EventOrderByWithRelationInput | Prisma.EventOrderByWithRelationInput[]
+  cursor?: Prisma.EventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EventScalarFieldEnum | Prisma.EventScalarFieldEnum[]
+}
+
+/**
+ * User.guides
+ */
+export type User$guidesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Guide
+   */
+  select?: Prisma.GuideSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Guide
+   */
+  omit?: Prisma.GuideOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GuideInclude<ExtArgs> | null
+  where?: Prisma.GuideWhereInput
+  orderBy?: Prisma.GuideOrderByWithRelationInput | Prisma.GuideOrderByWithRelationInput[]
+  cursor?: Prisma.GuideWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GuideScalarFieldEnum | Prisma.GuideScalarFieldEnum[]
+}
+
+/**
+ * User.projects
+ */
+export type User$projectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Project
+   */
+  select?: Prisma.ProjectSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Project
+   */
+  omit?: Prisma.ProjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProjectInclude<ExtArgs> | null
+  where?: Prisma.ProjectWhereInput
+  orderBy?: Prisma.ProjectOrderByWithRelationInput | Prisma.ProjectOrderByWithRelationInput[]
+  cursor?: Prisma.ProjectWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProjectScalarFieldEnum | Prisma.ProjectScalarFieldEnum[]
 }
 
 /**

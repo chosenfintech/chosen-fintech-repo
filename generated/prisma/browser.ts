@@ -33,6 +33,26 @@ export type Post = Prisma.PostModel
  */
 export type Category = Prisma.CategoryModel
 /**
+ * Model Event
+ * 
+ */
+export type Event = Prisma.EventModel
+/**
+ * Model EventCategory
+ * 
+ */
+export type EventCategory = Prisma.EventCategoryModel
+/**
+ * Model Guide
+ * 
+ */
+export type Guide = Prisma.GuideModel
+/**
+ * Model Project
+ * 
+ */
+export type Project = Prisma.ProjectModel
+/**
  * Model GalleryCategory
  * 
  */

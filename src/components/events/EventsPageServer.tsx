@@ -1,30 +1,34 @@
-// src/components/events/BlogPageServer.tsx
-import BlogPageClient from './EventsPageClient';
-import { IPost, IPostsPaginatedResponse } from '@/types/posts/post.types';
-import { ICategoriesPaginatedResponse } from '@/types/posts/category.types';
+// src/components/events/EventsPageServer.tsx
+import EventsPageClient from './EventsPageClient';
+import { IEvent, IEventsPaginatedResponse } from '@/types/events/event.types';
+import { ICategoriesPaginatedResponse } from '@/types/events/category.types';
+import {
+  EVENTS_CACHE_TAG,
+  EVENT_CATEGORIES_CACHE_TAG,
+  POSTS_REVALIDATE_SECONDS,
+} from '@/config/cache';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-export async function fetchEventsPosts(params: {
+async function fetchEvents(params: {
   page: number;
   limit: number;
   categoryId?: string;
   search?: string;
-}): Promise<IPostsPaginatedResponse> {
-  const url = new URL(`/api/posts/published`, baseUrl);
+}): Promise<IEventsPaginatedResponse> {
+  const url = new URL(`/api/events/published`, baseUrl);
   url.searchParams.set('page', params.page.toString());
   url.searchParams.set('limit', params.limit.toString());
-  url.searchParams.set('postType', 'events');
   if (params.categoryId) url.searchParams.set('categoryId', params.categoryId);
   if (params.search) url.searchParams.set('search', params.search);
 
   const response = await fetch(url.toString(), {
     headers: { 'Content-Type': 'application/json' },
-    cache: 'no-store',
+    next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [EVENTS_CACHE_TAG] },
   });
 
   if (!response.ok) {
-    console.error('Failed to fetch events posts');
+    console.error('Failed to fetch events');
     return {
       message: 'Error',
       data: [],
@@ -35,20 +39,19 @@ export async function fetchEventsPosts(params: {
   return response.json();
 }
 
-async function fetchLatestFeaturedPost(): Promise<IPost | null> {
-  const url = new URL(`/api/posts/published`, baseUrl);
+async function fetchLatestFeaturedEvent(): Promise<IEvent | null> {
+  const url = new URL(`/api/events/published`, baseUrl);
   url.searchParams.set('page', '1');
   url.searchParams.set('limit', '1');
   url.searchParams.set('isFeatured', 'true');
-  url.searchParams.set('postType', 'events');
 
   const response = await fetch(url.toString(), {
     headers: { 'Content-Type': 'application/json' },
-    cache: 'no-store',
+    next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [EVENTS_CACHE_TAG] },
   });
 
   if (!response.ok) {
-    console.error('Failed to fetch featured post');
+    console.error('Failed to fetch featured event');
     return null;
   }
 
@@ -58,15 +61,17 @@ async function fetchLatestFeaturedPost(): Promise<IPost | null> {
 
 async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
   try {
-    const url = new URL(`/api/posts/categories/published`, baseUrl);
+    const url = new URL(`/api/events/categories/published`, baseUrl);
     url.searchParams.set('limit', '1000');
     url.searchParams.set('sortBy', 'name');
     url.searchParams.set('sortOrder', 'asc');
-    url.searchParams.set('postType', 'events');
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },
-      next: { revalidate: 3600 },
+      next: {
+        revalidate: POSTS_REVALIDATE_SECONDS,
+        tags: [EVENT_CATEGORIES_CACHE_TAG],
+      },
     });
 
     if (!response.ok) {
@@ -86,7 +91,7 @@ async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
   }
 }
 
-interface BlogPageServerProps {
+interface EventsPageServerProps {
   searchParams: {
     page?: string;
     limit?: string;
@@ -95,56 +100,56 @@ interface BlogPageServerProps {
   };
 }
 
-export default async function BlogPageServer({
+export default async function EventsPageServer({
   searchParams,
-}: BlogPageServerProps) {
+}: EventsPageServerProps) {
   const page = parseInt(searchParams.page || '1');
   const limit = parseInt(searchParams.limit || '5');
   const categoryId = searchParams.categoryId;
   const search = searchParams.search;
 
-  let postsResponse: IPostsPaginatedResponse = {
+  let eventsResponse: IEventsPaginatedResponse = {
     message: 'Error',
     data: [],
     meta: { total: 0, page: 1, limit, totalPages: 1 },
   };
-  let featuredPost: IPost | null = null;
+  let featuredEvent: IEvent | null = null;
   let categories: ICategoriesPaginatedResponse['data'] = [];
 
   try {
-    const [posts, featured, categoriesResp] = await Promise.all([
-      fetchEventsPosts({ page, limit, categoryId, search }),
-      fetchLatestFeaturedPost(),
+    const [events, featured, categoriesResp] = await Promise.all([
+      fetchEvents({ page, limit, categoryId, search }),
+      fetchLatestFeaturedEvent(),
       fetchCategories(),
     ]);
 
-    postsResponse = posts;
-    featuredPost = featured;
-    // The events route already excludes blog and education on the backend,
-    // so all categories returned from it are safe to display as filters.
+    eventsResponse = events;
+    featuredEvent = featured;
     categories = categoriesResp.data;
   } catch (error) {
-    console.error('Error fetching blog data:', error);
+    console.error('Error fetching events data:', error);
   }
 
-  const featuredPostId = featuredPost?.id;
+  const featuredEventId = featuredEvent?.id;
 
-  const recentPosts = postsResponse.data
+  const recentEvents = eventsResponse.data
     .slice(0, 5)
-    .filter((post) => post.id !== featuredPostId);
+    .filter((event) => event.id !== featuredEventId);
 
-  const posts = postsResponse.data.filter((post) => post.id !== featuredPostId);
+  const events = eventsResponse.data.filter(
+    (event) => event.id !== featuredEventId,
+  );
 
   return (
-    <BlogPageClient
-      posts={posts}
-      featuredPost={featuredPost}
-      recentPosts={recentPosts}
+    <EventsPageClient
+      events={events}
+      featuredEvent={featuredEvent}
+      recentEvents={recentEvents}
       categories={categories}
-      totalPages={postsResponse.meta.totalPages ?? 1}
+      totalPages={eventsResponse.meta.totalPages ?? 1}
       currentPage={page}
-      totalCount={postsResponse.meta.total ?? 0}
-      selectedCategory={categoryId}
+      totalCount={eventsResponse.meta.total ?? 0}
+      selectedEventCategory={categoryId}
       searchQuery={search}
     />
   );

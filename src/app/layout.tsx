@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
@@ -47,7 +47,21 @@ export const metadata: Metadata = {
   authors: [{ name: 'Chosen Fintech Solutions' }],
   creator: 'Chosen Fintech Solutions',
   publisher: 'Chosen Fintech Solutions',
+  applicationName: 'Chosen Fintech Solutions',
   metadataBase: new URL(baseUrl),
+  formatDetection: {
+    telephone: false,
+  },
+  appleWebApp: {
+    capable: true,
+    title: 'Chosen Fintech',
+    statusBarStyle: 'default',
+  },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    },
+  }),
   openGraph: {
     title:
       'Chosen Fintech Solutions — Empowering the Future of Financial Technology',
@@ -77,6 +91,15 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -87,7 +110,7 @@ export default function RootLayout({
     '@type': 'Organization',
     name: 'Chosen Fintech Solutions',
     url: baseUrl,
-    logo: `${baseUrl}/logo.png`,
+    logo: `${baseUrl}/logo.jpg`,
     sameAs: [
       'https://fb.com/chosenfintech',
       'https://x.com/chosenfintech',

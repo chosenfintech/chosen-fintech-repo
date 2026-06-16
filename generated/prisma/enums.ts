@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const GuideLevel = {
+  BEGINNER: 'BEGINNER',
+  INTERMEDIATE: 'INTERMEDIATE',
+  ADVANCED: 'ADVANCED'
+} as const
+
+export type GuideLevel = (typeof GuideLevel)[keyof typeof GuideLevel]
+
+
 export const UserSecurityTokenType = {
   TWO_FACTOR_LOGIN: 'TWO_FACTOR_LOGIN',
   TWO_FACTOR_SETUP: 'TWO_FACTOR_SETUP',

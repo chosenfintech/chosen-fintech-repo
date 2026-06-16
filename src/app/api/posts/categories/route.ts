@@ -13,6 +13,7 @@ import type {
 } from '@/types/posts/category.types';
 import { createCategorySchema } from '@/validations/posts/category-validation';
 import { getCategories } from '@/utils/get-categories';
+import { revalidatePostCategories } from '@/utils/revalidate-posts';
 
 /**
  * GET /api/categories
@@ -111,6 +112,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       updatedAt: category.updatedAt,
       totalPostsCount: category._count.posts,
     };
+
+    revalidatePostCategories();
 
     return NextResponse.json(
       { message: 'Category created successfully', data: responseData },

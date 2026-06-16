@@ -3,19 +3,62 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import { Home, MoveRight } from 'lucide-react';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
-import { academyGuides } from '@/static-data/academy-guides';
 import { Badge } from '@/components/ui/badge';
+import {
+  IGuide,
+  IGuideResponse,
+  IGuidesPaginatedResponse,
+  GuideLevel,
+} from '@/types/guides/guide.types';
+import { GUIDES_CACHE_TAG, POSTS_REVALIDATE_SECONDS } from '@/config/cache';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
 
-const levelColors: Record<'Beginner' | 'Intermediate' | 'Advanced', string> = {
-  Beginner: 'bg-green-500/20 text-green-400 border-green-500/30',
-  Intermediate: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-  Advanced: 'bg-red-500/20 text-red-400 border-red-500/30',
+const FALLBACK_IMAGE = '/open-graph-images/og-image-academy.png';
+
+const levelColors: Record<GuideLevel, string> = {
+  BEGINNER: 'bg-green-500/20 text-green-400 border-green-500/30',
+  INTERMEDIATE: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+  ADVANCED: 'bg-red-500/20 text-red-400 border-red-500/30',
+};
+
+const formatLevel = (level: GuideLevel): string =>
+  level.charAt(0) + level.slice(1).toLowerCase();
+
+const fetchGuide = cache(async (slug: string): Promise<IGuide | null> => {
+  try {
+    const url = new URL(`/api/guides/published/${slug}`, baseUrl);
+    const res = await fetch(url.toString(), {
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [GUIDES_CACHE_TAG] },
+    });
+    if (!res.ok) return null;
+    const data: IGuideResponse = await res.json();
+    return data.data;
+  } catch (error) {
+    console.error('Error fetching guide:', error);
+    return null;
+  }
+});
+
+const fetchOtherGuides = async (excludeSlug: string): Promise<IGuide[]> => {
+  try {
+    const url = new URL('/api/guides/published', baseUrl);
+    url.searchParams.set('page', '1');
+    url.searchParams.set('limit', '20');
+    const res = await fetch(url.toString(), {
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [GUIDES_CACHE_TAG] },
+    });
+    if (!res.ok) return [];
+    const data: IGuidesPaginatedResponse = await res.json();
+    return data.data.filter((g) => g.slug !== excludeSlug);
+  } catch {
+    return [];
+  }
 };
 
 interface AcademyDetailPageProps {
@@ -26,7 +69,7 @@ export async function generateMetadata({
   params,
 }: AcademyDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const guide = academyGuides.find((g) => g.slug === slug);
+  const guide = await fetchGuide(slug);
 
   if (!guide) {
     return {
@@ -48,7 +91,7 @@ export async function generateMetadata({
       siteName: 'Chosen Fintech Solutions',
       images: [
         {
-          url: guide.image,
+          url: guide.image ?? FALLBACK_IMAGE,
           width: 1200,
           height: 630,
           alt: guide.title,
@@ -62,7 +105,7 @@ export async function generateMetadata({
       title: `${guide.title} — Chosen Fintech Solutions`,
       description: guide.description,
       site: '@chosenfintech',
-      images: [guide.image],
+      images: [guide.image ?? FALLBACK_IMAGE],
     },
   };
 }
@@ -71,11 +114,11 @@ export default async function AcademyDetailPage({
   params,
 }: AcademyDetailPageProps) {
   const { slug } = await params;
-  const guide = academyGuides.find((g) => g.slug === slug);
+  const guide = await fetchGuide(slug);
 
   if (!guide) notFound();
 
-  const otherGuides = academyGuides.filter((g) => g.slug !== slug);
+  const otherGuides = await fetchOtherGuides(slug);
 
   return (
     <div className="min-h-screen bg-background">
@@ -84,7 +127,7 @@ export default async function AcademyDetailPage({
       {/* Hero Banner */}
       <div className="relative w-full min-h-64 md:min-h-80 lg:min-h-96 overflow-hidden">
         <Image
-          src={guide.image}
+          src={guide.image ?? FALLBACK_IMAGE}
           alt={guide.title}
           fill
           className="object-cover"
@@ -124,7 +167,7 @@ export default async function AcademyDetailPage({
               <Badge
                 className={`text-xs font-medium border ${levelColors[guide.level]}`}
               >
-                {guide.level}
+                {formatLevel(guide.level)}
               </Badge>
             </div>
           </div>
@@ -205,7 +248,7 @@ export default async function AcademyDetailPage({
                         <span
                           className={`text-xs font-medium ${levelColors[g.level].split(' ')[1]}`}
                         >
-                          {g.level}
+                          {formatLevel(g.level)}
                         </span>
                       </Link>
                     </li>

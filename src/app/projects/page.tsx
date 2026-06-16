@@ -1,8 +1,9 @@
 // src/app/projects/page.tsx
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
-import ProjectsPageClient from '@/components/projects/ProjectsPageClient';
+import ProjectsPageServer from '@/components/projects/ProjectsPageServer';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -41,11 +42,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProjectsPage() {
+interface ProjectsPageProps {
+  searchParams: Promise<{ page?: string }>;
+}
+
+export default async function ProjectsPage({
+  searchParams,
+}: ProjectsPageProps) {
+  const { page } = await searchParams;
+  const currentPage = parseInt(page || '1') || 1;
+
   return (
     <>
       <NavBar />
-      <ProjectsPageClient />
+      <Suspense fallback={null}>
+        <ProjectsPageServer page={currentPage} />
+      </Suspense>
       <Footer />
     </>
   );

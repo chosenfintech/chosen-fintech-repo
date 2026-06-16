@@ -3,10 +3,12 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
-import { Project } from '@/static-data/projects';
+import { IProject } from '@/types/projects/project.types';
+
+const FALLBACK_IMAGE = '/open-graph-images/og-image-projects.png';
 
 interface ProjectCardProps {
-  project: Project;
+  project: IProject;
   priority?: boolean;
 }
 
@@ -19,7 +21,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
           <div className="w-full aspect-square max-w-50 p-6 flex justify-center items-center bg-white rounded-xl mb-6 transition-transform duration-300 group-hover:scale-105">
             <div className="relative w-full h-full">
               <Image
-                src={project.imageUrl}
+                src={project.imageUrl || FALLBACK_IMAGE}
                 alt={`${project.title} logo`}
                 fill
                 className="object-contain"

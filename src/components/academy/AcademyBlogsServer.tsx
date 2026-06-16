@@ -5,6 +5,11 @@ import {
   ICategory,
   ICategoriesPaginatedResponse,
 } from '@/types/posts/category.types';
+import {
+  POSTS_CACHE_TAG,
+  POST_CATEGORIES_CACHE_TAG,
+  POSTS_REVALIDATE_SECONDS,
+} from '@/config/cache';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
@@ -23,7 +28,7 @@ async function fetchBlogAndEducationPosts(params: {
 
   const response = await fetch(url.toString(), {
     headers: { 'Content-Type': 'application/json' },
-    cache: 'no-store',
+    next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [POSTS_CACHE_TAG] },
   });
 
   if (!response.ok) {
@@ -47,7 +52,10 @@ async function fetchCategories(): Promise<ICategoriesPaginatedResponse> {
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },
-      cache: 'no-store',
+      next: {
+        revalidate: POSTS_REVALIDATE_SECONDS,
+        tags: [POST_CATEGORIES_CACHE_TAG],
+      },
     });
 
     if (!response.ok) {

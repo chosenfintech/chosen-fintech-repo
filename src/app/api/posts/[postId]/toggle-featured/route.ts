@@ -7,6 +7,7 @@ import {
   ValidationError,
   NotFoundError,
 } from '@/middlewares/error-handler';
+import { revalidatePublishedPosts } from '@/utils/revalidate-posts';
 
 /**
  * PATCH /api/posts/[postId]/toggle-featured
@@ -46,6 +47,8 @@ export async function PATCH(
         isFeatured: true,
       },
     });
+
+    revalidatePublishedPosts();
 
     return NextResponse.json({
       message: `Post "${updatedPost.title}" ${

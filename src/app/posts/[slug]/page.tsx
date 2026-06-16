@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer';
 import { NavBar } from '@/components/NavBar';
 import { IPost, IPostResponse } from '@/types/posts/post.types';
 import { cache } from 'react';
+import { POSTS_CACHE_TAG, POSTS_REVALIDATE_SECONDS } from '@/config/cache';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -16,7 +17,7 @@ const fetchPost = cache(async function fetchPost(
   try {
     const url = new URL(`/api/posts/published/${slug}`, baseUrl);
     const postResponse = await fetch(url.toString(), {
-      next: { revalidate: 60 },
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [POSTS_CACHE_TAG] },
     });
 
     if (!postResponse.ok) {
@@ -101,6 +102,12 @@ export async function generateMetadata({
       ],
       locale: 'en_US',
       type: 'article',
+      publishedTime: new Date(
+        post.publishDate ?? post.createdAt,
+      ).toISOString(),
+      modifiedTime: new Date(post.updatedAt).toISOString(),
+      authors: [post.author.fullname],
+      ...(post.category?.name && { section: post.category.name }),
     },
     twitter: {
       card: 'summary_large_image',
@@ -124,8 +131,41 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound();
   }
 
+  const postUrl = `${baseUrl}/posts/${post.slug}`;
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.coverImage ?? `${baseUrl}/open-graph-images/og-image.png`,
+    datePublished: new Date(post.publishDate ?? post.createdAt).toISOString(),
+    dateModified: new Date(post.updatedAt).toISOString(),
+    author: {
+      '@type': 'Person',
+      name: post.author.fullname,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Chosen Fintech Solutions',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/logo.jpg`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl,
+    },
+    url: postUrl,
+    ...(post.category?.name && { articleSection: post.category.name }),
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <NavBar />
       <div className="pt-24">
         <BlogPostDetailClient post={post} />

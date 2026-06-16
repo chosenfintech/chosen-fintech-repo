@@ -12,6 +12,7 @@ import {
 import type { Prisma } from '@/lib/prisma';
 import type { ICategory } from '@/types/posts/category.types';
 import { updateCategorySchema } from '@/validations/posts/category-validation';
+import { revalidatePostCategories } from '@/utils/revalidate-posts';
 
 /**
  * PUT /api/categories/[categoryId]
@@ -90,6 +91,8 @@ export async function PUT(
       totalPostsCount: result._count.posts,
     };
 
+    revalidatePostCategories();
+
     return NextResponse.json({
       message: 'Category updated successfully',
       data: responseData,
@@ -135,6 +138,8 @@ export async function DELETE(
     }
 
     await prisma.category.delete({ where: { id: categoryId } });
+
+    revalidatePostCategories();
 
     return NextResponse.json({
       message: `Category "${existingCategory.name}" deleted successfully`,

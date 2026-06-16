@@ -1,4 +1,4 @@
-// src/components/posts/PostsSkeleton.tsx
+// src/components/events/EventsSkeleton.tsx
 import { NavBar } from '../NavBar';
 import { Footer } from '../Footer';
 import { PageHero } from '../ui/PageHero';
@@ -9,7 +9,7 @@ function SkeletonBlock({ className }: { className?: string }) {
   );
 }
 
-function PostCardSkeleton() {
+function EventCardSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-0 rounded-lg overflow-hidden border border-border/50">
       <div className="md:col-span-2 animate-pulse bg-muted min-h-[140px]" />
@@ -41,7 +41,7 @@ function SidebarSkeleton() {
         <SkeletonBlock className="h-10 w-3/4" />
       </div>
 
-      {/* Recent posts card */}
+      {/* Recent events card */}
       <div className="rounded-lg border border-border/50 p-5 space-y-4">
         <SkeletonBlock className="h-4 w-28" />
         {[...Array(3)].map((_, i) => (
@@ -64,7 +64,7 @@ export default function EventsPageSkeleton() {
       <NavBar />
       <PageHero title="Events" />
 
-      {/* Featured post skeleton */}
+      {/* Featured event skeleton */}
       <section className="py-8 lg:py-12 bg-muted/20 border-b border-border/50">
         <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 rounded-lg overflow-hidden border border-border/50">
@@ -80,15 +80,15 @@ export default function EventsPageSkeleton() {
         </div>
       </section>
 
-      {/* Posts + sidebar */}
+      {/* Events + sidebar */}
       <section className="py-12 lg:py-16 xl:py-20 bg-muted/30">
         <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             <div className="lg:col-span-8 space-y-6 lg:space-y-8">
               <SkeletonBlock className="h-4 w-36" />
-              <PostCardSkeleton />
-              <PostCardSkeleton />
-              <PostCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
             </div>
             <div className="hidden lg:block lg:col-span-4">
               <div className="lg:sticky lg:top-24">

@@ -13,10 +13,10 @@ import {
   lineRevealVariants,
   textVariants,
 } from '@/static-data/motion-variants';
-import { projects } from '@/static-data/projects';
+import { IProject } from '@/types/projects/project.types';
 import { ProjectCard } from '../projects/ProjectCard';
 
-export function LatestProjects() {
+export function LatestProjects({ projects }: { projects: IProject[] }) {
   return (
     <section
       className="relative py-16 md:py-20 lg:py-24 overflow-hidden"

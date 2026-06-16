@@ -3,13 +3,52 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import { Home, MoveRight } from 'lucide-react';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
-import { projects } from '@/static-data/projects';
+import {
+  IProject,
+  IProjectResponse,
+  IProjectsPaginatedResponse,
+} from '@/types/projects/project.types';
+import { PROJECTS_CACHE_TAG, POSTS_REVALIDATE_SECONDS } from '@/config/cache';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
+
+const FALLBACK_IMAGE = '/open-graph-images/og-image-projects.png';
+
+const fetchProject = cache(async (slug: string): Promise<IProject | null> => {
+  try {
+    const url = new URL(`/api/projects/published/${slug}`, baseUrl);
+    const res = await fetch(url.toString(), {
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [PROJECTS_CACHE_TAG] },
+    });
+    if (!res.ok) return null;
+    const data: IProjectResponse = await res.json();
+    return data.data;
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    return null;
+  }
+});
+
+const fetchOtherProjects = async (excludeSlug: string): Promise<IProject[]> => {
+  try {
+    const url = new URL('/api/projects/published', baseUrl);
+    url.searchParams.set('page', '1');
+    url.searchParams.set('limit', '20');
+    const res = await fetch(url.toString(), {
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [PROJECTS_CACHE_TAG] },
+    });
+    if (!res.ok) return [];
+    const data: IProjectsPaginatedResponse = await res.json();
+    return data.data.filter((p) => p.slug !== excludeSlug);
+  } catch {
+    return [];
+  }
+};
 
 interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -19,7 +58,7 @@ export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
+  const project = await fetchProject(slug);
 
   if (!project) {
     return {
@@ -64,11 +103,11 @@ export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
+  const project = await fetchProject(slug);
 
   if (!project) notFound();
 
-  const otherProjects = projects.filter((p) => p.slug !== slug);
+  const otherProjects = await fetchOtherProjects(slug);
 
   return (
     <div className="min-h-screen bg-background">
@@ -128,7 +167,7 @@ export default async function ProjectDetailPage({
             <div className="w-32 h-32 bg-white rounded-xl flex items-center justify-center p-4 mb-8 shadow-sm">
               <div className="relative w-full h-full">
                 <Image
-                  src={project.imageUrl}
+                  src={project.imageUrl || FALLBACK_IMAGE}
                   alt={`${project.title} logo`}
                   fill
                   className="object-contain"
@@ -202,7 +241,7 @@ export default async function ProjectDetailPage({
                         <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1 shrink-0">
                           <div className="relative w-full h-full">
                             <Image
-                              src={p.imageUrl}
+                              src={p.imageUrl || FALLBACK_IMAGE}
                               alt={`${p.title} logo`}
                               fill
                               className="object-contain"

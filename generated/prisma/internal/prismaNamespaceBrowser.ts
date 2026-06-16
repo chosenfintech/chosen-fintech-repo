@@ -54,6 +54,10 @@ export const ModelName = {
   User: 'User',
   Post: 'Post',
   Category: 'Category',
+  Event: 'Event',
+  EventCategory: 'EventCategory',
+  Guide: 'Guide',
+  Project: 'Project',
   GalleryCategory: 'GalleryCategory',
   GalleryPhoto: 'GalleryPhoto',
   UserSecurityToken: 'UserSecurityToken'
@@ -118,6 +122,79 @@ export const CategoryScalarFieldEnum = {
 } as const
 
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const EventScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  excerpt: 'excerpt',
+  content: 'content',
+  publishDate: 'publishDate',
+  readTime: 'readTime',
+  coverImage: 'coverImage',
+  isPublished: 'isPublished',
+  isFeatured: 'isFeatured',
+  eventDate: 'eventDate',
+  location: 'location',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  authorId: 'authorId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+export const EventCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventCategoryScalarFieldEnum = (typeof EventCategoryScalarFieldEnum)[keyof typeof EventCategoryScalarFieldEnum]
+
+
+export const GuideScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  description: 'description',
+  content: 'content',
+  image: 'image',
+  level: 'level',
+  readTime: 'readTime',
+  isPublished: 'isPublished',
+  isFeatured: 'isFeatured',
+  publishDate: 'publishDate',
+  authorId: 'authorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GuideScalarFieldEnum = (typeof GuideScalarFieldEnum)[keyof typeof GuideScalarFieldEnum]
+
+
+export const ProjectScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  description: 'description',
+  content: 'content',
+  imageUrl: 'imageUrl',
+  readTime: 'readTime',
+  isPublished: 'isPublished',
+  isFeatured: 'isFeatured',
+  publishDate: 'publishDate',
+  authorId: 'authorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
 
 
 export const GalleryCategoryScalarFieldEnum = {

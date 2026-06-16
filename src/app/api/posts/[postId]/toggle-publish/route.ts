@@ -8,6 +8,7 @@ import {
   ValidationError,
   NotFoundError,
 } from '@/middlewares/error-handler';
+import { revalidatePublishedPosts } from '@/utils/revalidate-posts';
 
 /**
  * PATCH /api/posts/[postId]/toggle-publish
@@ -56,6 +57,8 @@ export async function PATCH(
         },
       });
     });
+
+    revalidatePublishedPosts({ categories: true });
 
     return NextResponse.json({
       message: `Post "${result.title}" ${

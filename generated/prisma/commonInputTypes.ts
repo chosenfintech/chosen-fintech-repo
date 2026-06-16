@@ -161,6 +161,23 @@ export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
+export type EnumGuideLevelFilter<$PrismaModel = never> = {
+  equals?: $Enums.GuideLevel | Prisma.EnumGuideLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.GuideLevel[] | Prisma.ListEnumGuideLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GuideLevel[] | Prisma.ListEnumGuideLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGuideLevelFilter<$PrismaModel> | $Enums.GuideLevel
+}
+
+export type EnumGuideLevelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GuideLevel | Prisma.EnumGuideLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.GuideLevel[] | Prisma.ListEnumGuideLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GuideLevel[] | Prisma.ListEnumGuideLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGuideLevelWithAggregatesFilter<$PrismaModel> | $Enums.GuideLevel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGuideLevelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGuideLevelFilter<$PrismaModel>
+}
+
 export type EnumUserSecurityTokenTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
   in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
@@ -363,6 +380,23 @@ export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumGuideLevelFilter<$PrismaModel = never> = {
+  equals?: $Enums.GuideLevel | Prisma.EnumGuideLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.GuideLevel[] | Prisma.ListEnumGuideLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GuideLevel[] | Prisma.ListEnumGuideLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGuideLevelFilter<$PrismaModel> | $Enums.GuideLevel
+}
+
+export type NestedEnumGuideLevelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GuideLevel | Prisma.EnumGuideLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.GuideLevel[] | Prisma.ListEnumGuideLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GuideLevel[] | Prisma.ListEnumGuideLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGuideLevelWithAggregatesFilter<$PrismaModel> | $Enums.GuideLevel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGuideLevelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGuideLevelFilter<$PrismaModel>
 }
 
 export type NestedEnumUserSecurityTokenTypeFilter<$PrismaModel = never> = {

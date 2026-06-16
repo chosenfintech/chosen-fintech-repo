@@ -25,6 +25,7 @@ import {
   uploadBase64ContentImages,
   deleteUploadedContentImages,
 } from '@/utils/content-images';
+import { revalidatePublishedPosts } from '@/utils/revalidate-posts';
 
 const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
@@ -178,6 +179,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         },
       });
     });
+
+    revalidatePublishedPosts({ categories: true });
 
     return NextResponse.json(
       {

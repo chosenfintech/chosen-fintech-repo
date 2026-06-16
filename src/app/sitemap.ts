@@ -1,33 +1,43 @@
 // src/app/sitemap.ts
 import type { MetadataRoute } from 'next';
-import { projects } from '@/static-data/projects';
-import { academyGuides } from '@/static-data/academy-guides';
+import type { IGuide, IGuidesPaginatedResponse } from '@/types/guides/guide.types';
+import type {
+  IProject,
+  IProjectsPaginatedResponse,
+} from '@/types/projects/project.types';
 import { IPost, IPostsPaginatedResponse } from '@/types/posts/post.types';
+import { IEvent, IEventsPaginatedResponse } from '@/types/events/event.types';
+import {
+  POSTS_CACHE_TAG,
+  EVENTS_CACHE_TAG,
+  GUIDES_CACHE_TAG,
+  PROJECTS_CACHE_TAG,
+  POSTS_REVALIDATE_SECONDS,
+} from '@/config/cache';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
 
-async function fetchAllEventPosts(): Promise<IPost[]> {
+async function fetchAllEvents(): Promise<IEvent[]> {
   try {
-    const url = new URL(`/api/posts/published`, baseUrl);
+    const url = new URL(`/api/events/published`, baseUrl);
     url.searchParams.set('page', '1');
     url.searchParams.set('limit', '1000');
-    url.searchParams.set('postType', 'events');
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },
-      next: { revalidate: 3600 },
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [EVENTS_CACHE_TAG] },
     });
 
     if (!response.ok) {
-      console.error('Failed to fetch event posts for sitemap');
+      console.error('Failed to fetch events for sitemap');
       return [];
     }
 
-    const result: IPostsPaginatedResponse = await response.json();
+    const result: IEventsPaginatedResponse = await response.json();
     return result.data ?? [];
   } catch (error) {
-    console.error('Error fetching event posts for sitemap:', error);
+    console.error('Error fetching events for sitemap:', error);
     return [];
   }
 }
@@ -41,7 +51,7 @@ async function fetchAllAcademyPosts(): Promise<IPost[]> {
 
     const response = await fetch(url.toString(), {
       headers: { 'Content-Type': 'application/json' },
-      next: { revalidate: 3600 },
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [POSTS_CACHE_TAG] },
     });
 
     if (!response.ok) {
@@ -57,10 +67,60 @@ async function fetchAllAcademyPosts(): Promise<IPost[]> {
   }
 }
 
+async function fetchAllProjects(): Promise<IProject[]> {
+  try {
+    const url = new URL(`/api/projects/published`, baseUrl);
+    url.searchParams.set('page', '1');
+    url.searchParams.set('limit', '1000');
+
+    const response = await fetch(url.toString(), {
+      headers: { 'Content-Type': 'application/json' },
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [PROJECTS_CACHE_TAG] },
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch projects for sitemap');
+      return [];
+    }
+
+    const result: IProjectsPaginatedResponse = await response.json();
+    return result.data ?? [];
+  } catch (error) {
+    console.error('Error fetching projects for sitemap:', error);
+    return [];
+  }
+}
+
+async function fetchAllGuides(): Promise<IGuide[]> {
+  try {
+    const url = new URL(`/api/guides/published`, baseUrl);
+    url.searchParams.set('page', '1');
+    url.searchParams.set('limit', '1000');
+
+    const response = await fetch(url.toString(), {
+      headers: { 'Content-Type': 'application/json' },
+      next: { revalidate: POSTS_REVALIDATE_SECONDS, tags: [GUIDES_CACHE_TAG] },
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch guides for sitemap');
+      return [];
+    }
+
+    const result: IGuidesPaginatedResponse = await response.json();
+    return result.data ?? [];
+  } catch (error) {
+    console.error('Error fetching guides for sitemap:', error);
+    return [];
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [eventPosts, academyPosts] = await Promise.all([
-    fetchAllEventPosts(),
+  const [events, academyPosts, guides, projects] = await Promise.all([
+    fetchAllEvents(),
     fetchAllAcademyPosts(),
+    fetchAllGuides(),
+    fetchAllProjects(),
   ]);
 
   // ── Static pages ─────────────────────────────────────────────────────────────
@@ -102,25 +162,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/faq`,
+      url: `${baseUrl}/donate`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/gallery`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
   ];
 
-  // ── Dynamic event post pages ──────────────────────────────────────────────────
-  const eventPages: MetadataRoute.Sitemap = eventPosts.map((post) => ({
-    url: `${baseUrl}/posts/${post.slug}`,
-    lastModified: post.updatedAt
-      ? new Date(post.updatedAt)
-      : new Date(post.createdAt || Date.now()),
+  // ── Dynamic event pages ───────────────────────────────────────────────────────
+  const eventPages: MetadataRoute.Sitemap = events.map((event) => ({
+    url: `${baseUrl}/events/${event.slug}`,
+    lastModified: event.updatedAt
+      ? new Date(event.updatedAt)
+      : new Date(event.createdAt || Date.now()),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));
@@ -138,20 +192,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ── Dynamic project pages ─────────────────────────────────────────────────────
   const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
     url: `${baseUrl}/projects/${project.slug}`,
-    lastModified: new Date(),
+    lastModified: project.updatedAt
+      ? new Date(project.updatedAt)
+      : new Date(project.createdAt || Date.now()),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
-  // ── Dynamic academy guide pages (static data) ─────────────────────────────────
-  const academyGuidePages: MetadataRoute.Sitemap = academyGuides.map(
-    (guide) => ({
-      url: `${baseUrl}/academy/${guide.slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    }),
-  );
+  // ── Dynamic academy guide pages ───────────────────────────────────────────────
+  const academyGuidePages: MetadataRoute.Sitemap = guides.map((guide) => ({
+    url: `${baseUrl}/academy/${guide.slug}`,
+    lastModified: guide.updatedAt
+      ? new Date(guide.updatedAt)
+      : new Date(guide.createdAt || Date.now()),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
 
   return [
     ...staticPages,

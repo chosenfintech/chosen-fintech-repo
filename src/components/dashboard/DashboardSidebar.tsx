@@ -8,6 +8,9 @@ import {
   LayoutDashboard,
   FileText,
   Images,
+  CalendarDays,
+  GraduationCap,
+  FolderKanban,
   ChevronDown,
   ChevronRight,
   LucideIcon,
@@ -71,6 +74,32 @@ const navigationItems: NavigationItem[] = [
         path: '/dashboard/posts/categories',
       },
     ],
+  },
+  {
+    name: 'Events',
+    path: '/dashboard/events',
+    icon: CalendarDays,
+    hasSubmenu: true,
+    submenuItems: [
+      {
+        name: 'All Events',
+        path: '/dashboard/events',
+      },
+      {
+        name: 'Categories',
+        path: '/dashboard/events/categories',
+      },
+    ],
+  },
+  {
+    name: 'Academy',
+    path: '/dashboard/academy',
+    icon: GraduationCap,
+  },
+  {
+    name: 'Projects',
+    path: '/dashboard/projects',
+    icon: FolderKanban,
   },
   {
     name: 'Gallery',

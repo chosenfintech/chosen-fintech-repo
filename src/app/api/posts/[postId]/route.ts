@@ -20,6 +20,7 @@ import {
   deleteOrphanedContentImages,
   deleteUploadedContentImages,
 } from '@/utils/content-images';
+import { revalidatePublishedPosts } from '@/utils/revalidate-posts';
 
 const POSTS_UPLOAD_FOLDER = 'chosen-fintech/posts-images';
 
@@ -249,6 +250,8 @@ export async function PUT(
         : Promise.resolve(),
     ]);
 
+    revalidatePublishedPosts({ categories: true });
+
     return NextResponse.json({
       message: 'Post updated successfully',
       data: {
@@ -324,6 +327,8 @@ export async function DELETE(
         .deleteImage(existingPost.coverImage)
         .catch((e) => console.warn('Failed to clean up cover image:', e));
     }
+
+    revalidatePublishedPosts({ categories: true });
 
     return NextResponse.json({
       message: `Post "${existingPost.title}" by ${existingPost.author.fullname} deleted successfully`,

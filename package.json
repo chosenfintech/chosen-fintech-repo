@@ -9,7 +9,11 @@
     "lint": "eslint",
     "migrate": "npx prisma migrate dev --name init",
     "migrate:deploy": "prisma migrate deploy",
-    "seed": "npx prisma db seed"
+    "seed": "npx prisma db seed",
+    "seed:events": "tsx --env-file=.env scripts/seed-events-from-posts.ts",
+    "seed:guides": "tsx --env-file=.env scripts/seed-guides.ts",
+    "seed:projects": "tsx --env-file=.env scripts/seed-projects.ts",
+    "migrate:content-images": "tsx --env-file=.env scripts/migrate-content-images.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

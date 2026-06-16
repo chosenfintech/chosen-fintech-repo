@@ -112,7 +112,7 @@ export function LatestEvents({ posts }: LatestEventsProps) {
               {posts.map((post, index) => (
                 <motion.div key={post.id} variants={cardVariants}>
                   <Link
-                    href={`/posts/${post.slug}`}
+                    href={`/events/${post.slug}`}
                     className="group block h-full"
                   >
                     <Card className="overflow-hidden border-border hover:shadow-sm hover:border-primary/50 transition-all duration-300 h-full flex flex-col p-0">

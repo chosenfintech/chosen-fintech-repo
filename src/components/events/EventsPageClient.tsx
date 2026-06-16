@@ -3,8 +3,8 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
-import { BlogPostCard } from '../posts/PostCard';
-import { BlogSidebar } from '../posts/PostsSidebar';
+import { BlogEventCard } from '../events/EventCard';
+import { BlogSidebar } from '../events/EventsSidebar';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import { PageHero } from '@/components/ui/PageHero';
@@ -13,27 +13,27 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IPost } from '@/types/posts/post.types';
-import { ICategory } from '@/types/posts/category.types';
+import { IEvent } from '@/types/events/event.types';
+import { IEventCategory } from '@/types/events/category.types';
 import { Calendar, ArrowRight, ImageIcon } from 'lucide-react';
 import { cardVariants } from '@/static-data/motion-variants';
 
 export interface IBlogPageClientProps {
-  posts: IPost[];
-  featuredPost: IPost | null;
-  recentPosts: IPost[];
-  categories: ICategory[];
+  events: IEvent[];
+  featuredEvent: IEvent | null;
+  recentEvents: IEvent[];
+  categories: IEventCategory[];
   totalPages: number;
   currentPage: number;
   totalCount: number;
-  selectedCategory?: string;
+  selectedEventCategory?: string;
   searchQuery?: string;
 }
 
-// Featured post card (horizontal hero-style)
-function FeaturedPostCard({ post }: { post: IPost }) {
-  const formattedDate = post.publishDate
-    ? new Date(post.publishDate).toLocaleDateString('en-US', {
+// Featured event card (horizontal hero-style)
+function FeaturedEventCard({ event }: { event: IEvent }) {
+  const formattedDate = event.publishDate
+    ? new Date(event.publishDate).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric',
@@ -41,16 +41,16 @@ function FeaturedPostCard({ post }: { post: IPost }) {
     : null;
 
   return (
-    <Link href={`/posts/${post.slug}`}>
+    <Link href={`/events/${event.slug}`}>
       <Card className="group overflow-hidden p-0 border-border/50 hover:border-primary/50 hover:shadow-sm transition-all duration-500">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
           {/* Image */}
           <div className="relative aspect-video lg:aspect-auto lg:min-h-[360px] overflow-hidden bg-muted">
-            {post.coverImage ? (
+            {event.coverImage ? (
               <>
                 <Image
-                  src={post.coverImage}
-                  alt={post.title}
+                  src={event.coverImage}
+                  alt={event.title}
                   fill
                   className="object-cover transition-transform duration-700"
                   priority
@@ -71,18 +71,18 @@ function FeaturedPostCard({ post }: { post: IPost }) {
 
           {/* Content */}
           <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
-            {post.category?.name && (
+            {event.category?.name && (
               <span className="inline-flex mb-5 items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary">
                 <span className="w-4 h-px bg-primary" />
-                {post.category.name}
+                {event.category.name}
               </span>
             )}
 
             <h2 className="font-display text-2xl lg:text-3xl xl:text-4xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300 leading-tight">
-              {post.title}
+              {event.title}
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-3 text-sm lg:text-base">
-              {post.excerpt}
+              {event.excerpt}
             </p>
             <div className="flex items-center justify-between">
               {formattedDate && (
@@ -107,22 +107,22 @@ function FeaturedPostCard({ post }: { post: IPost }) {
 }
 
 export default function BlogPageClient({
-  posts,
-  featuredPost,
-  recentPosts,
+  events,
+  featuredEvent,
+  recentEvents,
   categories,
   totalPages,
   currentPage,
   totalCount,
-  selectedCategory,
+  selectedEventCategory,
   searchQuery,
 }: IBlogPageClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const hasActiveFilters = !!(selectedCategory || searchQuery);
+  const hasActiveFilters = !!(selectedEventCategory || searchQuery);
   const noDataAtAll = totalCount === 0 && !hasActiveFilters;
-  const noResultsFromFilters = hasActiveFilters && posts.length === 0;
+  const noResultsFromFilters = hasActiveFilters && events.length === 0;
 
   const updateParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams);
@@ -141,7 +141,7 @@ export default function BlogPageClient({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleCategoryFilter = (categoryId: string | null) => {
+  const handleEventCategoryFilter = (categoryId: string | null) => {
     updateParams({ page: '1', categoryId: categoryId ?? null });
   };
 
@@ -161,8 +161,8 @@ export default function BlogPageClient({
       <NavBar />
       <PageHero title="Events" />
 
-      {/* Featured Post */}
-      {featuredPost && !hasActiveFilters && (
+      {/* Featured Event */}
+      {featuredEvent && !hasActiveFilters && (
         <section className="py-8 lg:py-12 bg-muted/20 border-b border-border/50">
           <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -170,7 +170,7 @@ export default function BlogPageClient({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <FeaturedPostCard post={featuredPost} />
+              <FeaturedEventCard event={featuredEvent} />
             </motion.div>
           </div>
         </section>
@@ -188,7 +188,7 @@ export default function BlogPageClient({
                 <CardContent className="text-center py-16 lg:py-20">
                   <FileText className="mx-auto h-16 w-16 text-muted-foreground/30 mb-4" />
                   <p className="text-muted-foreground text-base lg:text-lg mb-2">
-                    No blog posts yet
+                    No blog events yet
                   </p>
                   <p className="text-muted-foreground/70 text-sm">
                     Check back soon for new content.
@@ -209,19 +209,19 @@ export default function BlogPageClient({
                 <div className="lg:hidden">
                   <BlogSidebar
                     categories={categories}
-                    recentPosts={recentPosts}
-                    selectedCategory={selectedCategory}
+                    recentEvents={recentEvents}
+                    selectedEventCategory={selectedEventCategory}
                     searchQuery={searchQuery}
-                    onCategoryFilter={handleCategoryFilter}
+                    onEventCategoryFilter={handleEventCategoryFilter}
                     onSearch={handleSearch}
                     onClearFilters={clearFilters}
                   />
                 </div>
 
-                {/* Posts count */}
+                {/* Events count */}
                 {!noDataAtAll && (
                   <p className="text-sm text-muted-foreground mb-6">
-                    Showing {posts.length} of {totalCount} posts
+                    Showing {events.length} of {totalCount} events
                   </p>
                 )}
 
@@ -236,7 +236,7 @@ export default function BlogPageClient({
                       <CardContent className="text-center py-16 lg:py-20">
                         <div className="max-w-md mx-auto">
                           <p className="text-muted-foreground text-base lg:text-lg mb-2">
-                            No posts found
+                            No events found
                           </p>
                           <p className="text-muted-foreground/70 text-sm">
                             Try adjusting your search or filter criteria
@@ -256,15 +256,15 @@ export default function BlogPageClient({
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
                       >
-                        {posts.map((post, index) => (
+                        {events.map((event, index) => (
                           <motion.div
-                            key={post.id}
+                            key={event.id}
                             custom={index}
                             variants={cardVariants}
                             initial="hidden"
                             animate="visible"
                           >
-                            <BlogPostCard post={post} />
+                            <BlogEventCard event={event} />
                           </motion.div>
                         ))}
                       </motion.div>
@@ -372,10 +372,10 @@ export default function BlogPageClient({
                 <div className="lg:sticky lg:top-24 space-y-6">
                   <BlogSidebar
                     categories={categories}
-                    recentPosts={recentPosts}
-                    selectedCategory={selectedCategory}
+                    recentEvents={recentEvents}
+                    selectedEventCategory={selectedEventCategory}
                     searchQuery={searchQuery}
-                    onCategoryFilter={handleCategoryFilter}
+                    onEventCategoryFilter={handleEventCategoryFilter}
                     onSearch={handleSearch}
                     onClearFilters={clearFilters}
                   />
