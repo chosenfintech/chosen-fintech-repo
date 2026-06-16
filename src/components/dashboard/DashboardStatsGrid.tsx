@@ -3,28 +3,28 @@
 import * as React from 'react';
 import {
   FileText,
-  CheckCircle,
-  EyeOff,
-  Star,
+  CalendarDays,
+  GraduationCap,
+  FolderKanban,
   Images,
-  FolderOpen,
+  Layers,
   Users,
   ShieldCheck,
   UserRound,
-  Camera,
-  Layers,
-  Image,
+  CheckCircle,
+  EyeOff,
   LayoutDashboard,
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useGetDashboardStatsQuery } from '@/redux/dashboard-api';
 import { DashboardStatsCard } from './DashboardStatsCard';
+import { DashboardModuleCard } from './DashboardModuleCard';
+import { DashboardRecentActivity } from './DashboardRecentActivity';
 import { DashboardPeriodFilter } from './DashboardPeriodFilter';
 import { DashboardStatsSkeleton } from './DashboardStatsSkeleton';
 import { DashboardPeriod } from '@/types/dashboard.types';
 import ErrorMessage from '@/components/ui/ErrorMessage';
-import { EmptyState } from '@/components/ui/EmptyState';
 
 function getGreeting(name: string): string {
   const hour = new Date().getHours();
@@ -45,134 +45,157 @@ export function DashboardStatsGrid() {
 
   const stats = data?.data;
 
-  if (isLoading) return <DashboardStatsSkeleton />;
-
-  if (isError) {
-    return (
-      <ErrorMessage
-        error="Could not load dashboard stats. Please check your connection and try again."
-        onRetry={refetch}
-      />
-    );
-  }
-
-  if (!stats) {
-    return (
-      <EmptyState
-        icon={LayoutDashboard}
-        title="No Stats Available"
-        description="There's no data to display yet. Stats will appear here once content is added to the system."
-        showCreateButton={false}
-      />
-    );
-  }
-
-  const cards = [
-    // Posts
-    {
-      label: 'Total Posts',
-      value: stats.posts.total,
-      icon: FileText,
-      variant: 'default' as const,
-    },
-    {
-      label: 'Published Posts',
-      value: stats.posts.published,
-      icon: CheckCircle,
-      variant: 'success' as const,
-    },
-    {
-      label: 'Unpublished Posts',
-      value: stats.posts.unpublished,
-      icon: EyeOff,
-      variant: 'warning' as const,
-    },
-    {
-      label: 'Featured Posts',
-      value: stats.posts.featured,
-      icon: Star,
-      variant: 'default' as const,
-    },
-    // Gallery
-    {
-      label: 'Total Photos',
-      value: stats.gallery.total,
-      icon: Images,
-      variant: 'default' as const,
-    },
-    {
-      label: 'Published Photos',
-      value: stats.gallery.published,
-      icon: Camera,
-      variant: 'success' as const,
-    },
-    {
-      label: 'Unpublished Photos',
-      value: stats.gallery.unpublished,
-      icon: Image,
-      variant: 'warning' as const,
-    },
-    // Categories
-    {
-      label: 'Post Categories',
-      value: stats.categories.posts,
-      icon: FolderOpen,
-      variant: 'muted' as const,
-    },
-    {
-      label: 'Gallery Categories',
-      value: stats.categories.gallery,
-      icon: Layers,
-      variant: 'muted' as const,
-    },
-    // Users
-    {
-      label: 'Total Admins',
-      value: stats.users.total,
-      icon: Users,
-      variant: 'default' as const,
-    },
-    {
-      label: 'Super Admins',
-      value: stats.users.admins,
-      icon: ShieldCheck,
-      variant: 'success' as const,
-    },
-    {
-      label: 'Regular Admins',
-      value: stats.users.regular,
-      icon: UserRound,
-      variant: 'muted' as const,
-    },
-  ];
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Greeting */}
       <div>
         <h1 className="text-2xl font-bold text-foreground">
           {getGreeting(firstName)}
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Here&apos;s what&apos;s happening with your content.
+          Here&apos;s an overview of everything across your site.
         </p>
       </div>
 
-      {/* Period filter */}
       <DashboardPeriodFilter value={period} onChange={setPeriod} />
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {cards.map((card) => (
-          <DashboardStatsCard
-            key={card.label}
-            label={card.label}
-            value={card.value}
-            icon={card.icon}
-            variant={card.variant}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <DashboardStatsSkeleton />
+      ) : isError || !stats ? (
+        <ErrorMessage
+          error="Could not load dashboard stats. Please check your connection and try again."
+          onRetry={refetch}
+        />
+      ) : (
+        <>
+          {/* Overview */}
+          <section className="space-y-3">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              Overview
+            </h2>
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <DashboardStatsCard
+                label="Total Content"
+                value={stats.totals.content}
+                icon={LayoutDashboard}
+                variant="default"
+              />
+              <DashboardStatsCard
+                label="Published"
+                value={stats.totals.published}
+                icon={CheckCircle}
+                variant="success"
+              />
+              <DashboardStatsCard
+                label="Drafts"
+                value={stats.totals.drafts}
+                icon={EyeOff}
+                variant="warning"
+              />
+              <DashboardStatsCard
+                label="Gallery Photos"
+                value={stats.totals.media}
+                icon={Images}
+                variant="muted"
+              />
+            </div>
+          </section>
+
+          {/* Content by module */}
+          <section className="space-y-3">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              Content by module
+            </h2>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <DashboardModuleCard
+                label="Posts"
+                icon={FileText}
+                stats={stats.posts}
+                href="/dashboard/posts"
+              />
+              <DashboardModuleCard
+                label="Events"
+                icon={CalendarDays}
+                stats={stats.events}
+                href="/dashboard/events"
+              />
+              <DashboardModuleCard
+                label="Academy Guides"
+                icon={GraduationCap}
+                stats={stats.guides}
+                href="/dashboard/academy"
+              />
+              <DashboardModuleCard
+                label="Projects"
+                icon={FolderKanban}
+                stats={stats.projects}
+                href="/dashboard/projects"
+              />
+              {/* Gallery has no featured flag — present its publish split */}
+              <DashboardModuleCard
+                label="Gallery"
+                icon={Images}
+                stats={{ ...stats.gallery, featured: 0 }}
+                href="/dashboard/gallery/photos"
+              />
+            </div>
+          </section>
+
+          {/* Recent activity + secondary stats */}
+          <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <DashboardRecentActivity items={stats.recent} />
+            </div>
+            <div className="space-y-4">
+              <DashboardStatsCard
+                label="Post Categories"
+                value={stats.categories.posts}
+                icon={Layers}
+                variant="muted"
+              />
+              <DashboardStatsCard
+                label="Event Categories"
+                value={stats.categories.events}
+                icon={Layers}
+                variant="muted"
+              />
+              <DashboardStatsCard
+                label="Gallery Categories"
+                value={stats.categories.gallery}
+                icon={Layers}
+                variant="muted"
+              />
+            </div>
+          </section>
+
+          {/* Team */}
+          <section className="space-y-3">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              Team
+            </h2>
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+              <DashboardStatsCard
+                label="Total Users"
+                value={stats.users.total}
+                icon={Users}
+                variant="default"
+              />
+              <DashboardStatsCard
+                label="Admins"
+                value={stats.users.admins}
+                icon={ShieldCheck}
+                variant="success"
+              />
+              <DashboardStatsCard
+                label="Regular Users"
+                value={stats.users.regular}
+                icon={UserRound}
+                variant="muted"
+              />
+            </div>
+          </section>
+        </>
+      )}
     </div>
   );
 }
