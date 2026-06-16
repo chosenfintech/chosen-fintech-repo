@@ -15,12 +15,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Loader2, Eye, EyeOff, Lock, Save } from 'lucide-react';
 import { useChangePasswordMutation } from '@/redux/user-api';
 import { extractApiError } from '@/utils/extract-api-error';
 import { changePasswordSchema } from '@/validations/user-validation';
+import TwoFactorSection from './TwoFactorSection';
 
 // Extend the base schema to add confirmPassword on the client side only
 const passwordFormSchema = changePasswordSchema
@@ -316,15 +316,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ userId }) => {
           </p>
         </div>
 
-        <div className="flex justify-between items-center p-4 border-2 border-border rounded-lg bg-card shadow-sm">
-          <div>
-            <p className="text-sm font-medium text-foreground">Enable 2FA</p>
-            <p className="text-xs text-muted-foreground">
-              Secure your account with two-factor authentication
-            </p>
-          </div>
-          <Switch className="data-[state=checked]:bg-primary" />
-        </div>
+        <TwoFactorSection userId={userId} />
       </div>
 
       <Separator className="my-6" />

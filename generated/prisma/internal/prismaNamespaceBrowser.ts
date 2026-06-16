@@ -55,7 +55,8 @@ export const ModelName = {
   Post: 'Post',
   Category: 'Category',
   GalleryCategory: 'GalleryCategory',
-  GalleryPhoto: 'GalleryPhoto'
+  GalleryPhoto: 'GalleryPhoto',
+  UserSecurityToken: 'UserSecurityToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,6 +82,7 @@ export const UserScalarFieldEnum = {
   phone: 'phone',
   password: 'password',
   isAdmin: 'isAdmin',
+  twoFactorEnabled: 'twoFactorEnabled',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -141,6 +143,21 @@ export const GalleryPhotoScalarFieldEnum = {
 } as const
 
 export type GalleryPhotoScalarFieldEnum = (typeof GalleryPhotoScalarFieldEnum)[keyof typeof GalleryPhotoScalarFieldEnum]
+
+
+export const UserSecurityTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tokenHash: 'tokenHash',
+  type: 'type',
+  attempts: 'attempts',
+  maxAttempts: 'maxAttempts',
+  expiresAt: 'expiresAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserSecurityTokenScalarFieldEnum = (typeof UserSecurityTokenScalarFieldEnum)[keyof typeof UserSecurityTokenScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -11,6 +11,7 @@ import { signin, type SigninState } from '../lib/auth';
 import type { IUser } from '@/types/user.types';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
+import TwoFactorLoginStep from './TwoFactorLoginStep';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -39,6 +40,11 @@ export default function LoginForm() {
       if (firstError) toast.error(firstError);
     }
   }, [state, router, dispatch]);
+
+  // Password verified, 2FA enabled: swap the credentials form for the code step.
+  if (state.requiresTwoFactor) {
+    return <TwoFactorLoginStep maskedEmail={state.maskedEmail} />;
+  }
 
   return (
     <div className="w-full max-w-md mx-auto px-4">

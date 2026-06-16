@@ -9,7 +9,9 @@
 * 🟢 You can import this file directly.
 */
 
+export const UserSecurityTokenType = {
+  TWO_FACTOR_LOGIN: 'TWO_FACTOR_LOGIN',
+  TWO_FACTOR_SETUP: 'TWO_FACTOR_SETUP'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type UserSecurityTokenType = (typeof UserSecurityTokenType)[keyof typeof UserSecurityTokenType]

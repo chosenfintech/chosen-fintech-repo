@@ -88,6 +88,42 @@ export const userApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+
+    // --- Two-factor authentication (settings) ---
+    requestTwoFactorSetup: builder.mutation<{ message: string }, string>({
+      query: (userId) => ({
+        url: `/users/${userId}/2fa/setup`,
+        method: 'POST',
+      }),
+    }),
+
+    confirmTwoFactorSetup: builder.mutation<
+      { message: string },
+      { userId: string; code: string }
+    >({
+      query: ({ userId, code }) => ({
+        url: `/users/${userId}/2fa/enable`,
+        method: 'POST',
+        body: { code },
+      }),
+      invalidatesTags: (result, error, { userId }) => [
+        { type: 'User', id: userId },
+      ],
+    }),
+
+    disableTwoFactor: builder.mutation<
+      { message: string },
+      { userId: string; password: string }
+    >({
+      query: ({ userId, password }) => ({
+        url: `/users/${userId}/2fa/disable`,
+        method: 'POST',
+        body: { password },
+      }),
+      invalidatesTags: (result, error, { userId }) => [
+        { type: 'User', id: userId },
+      ],
+    }),
   }),
 });
 
@@ -98,6 +134,9 @@ export const {
   useGetAllUsersQuery,
   useDeleteUserMutation,
   useChangePasswordMutation,
+  useRequestTwoFactorSetupMutation,
+  useConfirmTwoFactorSetupMutation,
+  useDisableTwoFactorMutation,
 
   // Lazy queries
   useLazyGetAllUsersQuery,

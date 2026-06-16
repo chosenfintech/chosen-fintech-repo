@@ -388,7 +388,8 @@ export const ModelName = {
   Post: 'Post',
   Category: 'Category',
   GalleryCategory: 'GalleryCategory',
-  GalleryPhoto: 'GalleryPhoto'
+  GalleryPhoto: 'GalleryPhoto',
+  UserSecurityToken: 'UserSecurityToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "post" | "category" | "galleryCategory" | "galleryPhoto"
+    modelProps: "user" | "post" | "category" | "galleryCategory" | "galleryPhoto" | "userSecurityToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +779,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    UserSecurityToken: {
+      payload: Prisma.$UserSecurityTokenPayload<ExtArgs>
+      fields: Prisma.UserSecurityTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserSecurityTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserSecurityTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.UserSecurityTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserSecurityTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>
+        }
+        findMany: {
+          args: Prisma.UserSecurityTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>[]
+        }
+        create: {
+          args: Prisma.UserSecurityTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>
+        }
+        createMany: {
+          args: Prisma.UserSecurityTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserSecurityTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.UserSecurityTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>
+        }
+        update: {
+          args: Prisma.UserSecurityTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserSecurityTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserSecurityTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserSecurityTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserSecurityTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSecurityTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.UserSecurityTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserSecurityToken>
+        }
+        groupBy: {
+          args: Prisma.UserSecurityTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserSecurityTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserSecurityTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserSecurityTokenCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -824,6 +899,7 @@ export const UserScalarFieldEnum = {
   phone: 'phone',
   password: 'password',
   isAdmin: 'isAdmin',
+  twoFactorEnabled: 'twoFactorEnabled',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -884,6 +960,21 @@ export const GalleryPhotoScalarFieldEnum = {
 } as const
 
 export type GalleryPhotoScalarFieldEnum = (typeof GalleryPhotoScalarFieldEnum)[keyof typeof GalleryPhotoScalarFieldEnum]
+
+
+export const UserSecurityTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tokenHash: 'tokenHash',
+  type: 'type',
+  attempts: 'attempts',
+  maxAttempts: 'maxAttempts',
+  expiresAt: 'expiresAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserSecurityTokenScalarFieldEnum = (typeof UserSecurityTokenScalarFieldEnum)[keyof typeof UserSecurityTokenScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -952,6 +1043,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'UserSecurityTokenType'
+ */
+export type EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserSecurityTokenType'>
+    
+
+
+/**
+ * Reference to a field of type 'UserSecurityTokenType[]'
+ */
+export type ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserSecurityTokenType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -962,6 +1067,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1064,6 +1183,7 @@ export type GlobalOmitConfig = {
   category?: Prisma.CategoryOmit
   galleryCategory?: Prisma.GalleryCategoryOmit
   galleryPhoto?: Prisma.GalleryPhotoOmit
+  userSecurityToken?: Prisma.UserSecurityTokenOmit
 }
 
 /* Types for Logging */

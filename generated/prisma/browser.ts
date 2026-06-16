@@ -42,3 +42,8 @@ export type GalleryCategory = Prisma.GalleryCategoryModel
  * 
  */
 export type GalleryPhoto = Prisma.GalleryPhotoModel
+/**
+ * Model UserSecurityToken
+ * 
+ */
+export type UserSecurityToken = Prisma.UserSecurityTokenModel

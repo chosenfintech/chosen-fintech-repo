@@ -5,6 +5,7 @@ export interface IUser {
   fullname: string;
   phone?: string | null;
   isAdmin?: boolean;
+  twoFactorEnabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

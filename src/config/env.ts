@@ -32,4 +32,11 @@ export const ENV = {
   CLOUDINARY_API_SECRET: required('CLOUDINARY_API_SECRET'),
   UPSTASH_REDIS_REST_URL: required('UPSTASH_REDIS_REST_URL'),
   UPSTASH_REDIS_REST_TOKEN: required('UPSTASH_REDIS_REST_TOKEN'),
+
+  // Gmail SMTP — used to email two-factor authentication codes. Optional so
+  // the app still boots without them; the mail layer fails loudly at send time
+  // if a 2FA flow runs while they're unset.
+  GMAIL_USER: optional('GMAIL_USER'),
+  GMAIL_PASSWORD: optional('GMAIL_PASSWORD'),
+  EMAIL_FROM_NAME: optional('EMAIL_FROM_NAME') ?? 'Chosen Fintech Solutions',
 } as const;

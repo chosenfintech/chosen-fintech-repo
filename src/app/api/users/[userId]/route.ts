@@ -42,6 +42,7 @@ export async function GET(
         email: true,
         phone: true,
         isAdmin: true,
+        twoFactorEnabled: true,
         createdAt: true,
         updatedAt: true,
       },
