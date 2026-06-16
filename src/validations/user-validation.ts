@@ -44,6 +44,12 @@ export const updateUserSchema = z.object({
   role: z.enum(['ADMIN', 'EDITOR']).optional(),
 });
 
+export const changeUserRoleSchema = z.object({
+  role: z.enum(['ADMIN', 'EDITOR'], {
+    message: 'Role must be either ADMIN or EDITOR',
+  }),
+});
+
 export const changePasswordSchema = z.object({
   currentPassword: z
     .string()
@@ -61,4 +67,5 @@ export const changePasswordSchema = z.object({
 
 export type ICreateUserSchema = z.input<typeof createUserSchema>;
 export type IUpdateUserSchema = z.input<typeof updateUserSchema>;
+export type IChangeUserRoleSchema = z.input<typeof changeUserRoleSchema>;
 export type IChangePasswordSchema = z.input<typeof changePasswordSchema>;

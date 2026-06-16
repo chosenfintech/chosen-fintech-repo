@@ -6,6 +6,7 @@ import {
   IUsersQueryParams,
   ICreateUserInput,
   IUpdateUserInput,
+  IUpdateUserRoleInput,
 } from '@/types/user.types';
 
 export const userApi = apiSlice.injectEndpoints({
@@ -64,6 +65,19 @@ export const userApi = apiSlice.injectEndpoints({
               { type: 'Users' as const, id: 'LIST' },
             ]
           : [{ type: 'Users' as const, id: 'LIST' }],
+    }),
+
+    updateUserRole: builder.mutation<IUserResponse, IUpdateUserRoleInput>({
+      query: ({ userId, role }) => ({
+        url: `/users/${userId}/role`,
+        method: 'PATCH',
+        body: { role },
+      }),
+      invalidatesTags: (result, error, { userId }) => [
+        { type: 'User', id: userId },
+        { type: 'Users', id: 'LIST' },
+        'DashboardStats',
+      ],
     }),
 
     deleteUser: builder.mutation<{ message: string }, string>({
@@ -132,6 +146,7 @@ export const {
   useUpdateUserMutation,
   useGetUserQuery,
   useGetAllUsersQuery,
+  useUpdateUserRoleMutation,
   useDeleteUserMutation,
   useChangePasswordMutation,
   useRequestTwoFactorSetupMutation,

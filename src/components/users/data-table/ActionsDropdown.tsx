@@ -2,7 +2,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { MoreHorizontal, Trash2, User } from 'lucide-react';
+import { MoreHorizontal, Trash2, User, Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button';
@@ -13,9 +13,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu';
-import { IUser } from '@/types/user.types';
-import { useDeleteUserMutation } from '@/redux/user-api';
+import { IUser, UserRole } from '@/types/user.types';
+import { useDeleteUserMutation, useUpdateUserRoleMutation } from '@/redux/user-api';
 import { extractApiError } from '@/utils/extract-api-error';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import { RootState } from '@/redux/store';
@@ -24,12 +27,35 @@ interface UserActionsDropdownProps {
   user: IUser;
 }
 
+const roleOptions: { value: UserRole; label: string }[] = [
+  { value: 'ADMIN', label: 'Admin' },
+  { value: 'EDITOR', label: 'Editor' },
+];
+
 export function UserActionsDropdown({ user }: UserActionsDropdownProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteUser] = useDeleteUserMutation();
+  const [updateUserRole] = useUpdateUserRoleMutation();
 
   const currentUser = useSelector((state: RootState) => state.auth.user);
   const isAdmin = currentUser?.role === 'ADMIN';
+  // Admins cannot change their own role (matches the backend guard).
+  const isSelf = currentUser?.id === user.id;
+
+  const handleChangeRole = async (newRole: UserRole) => {
+    const roleLabel = newRole === 'ADMIN' ? 'Admin' : 'Editor';
+    const toastId = toast.loading(`Changing role to ${roleLabel}...`);
+
+    try {
+      await updateUserRole({ userId: user.id, role: newRole }).unwrap();
+      toast.dismiss(toastId);
+      toast.success(`User role changed to ${roleLabel} successfully`);
+    } catch (error) {
+      const { message } = extractApiError(error);
+      toast.dismiss(toastId);
+      toast.error(message);
+    }
+  };
 
   const handleDeleteUser = async () => {
     const toastId = toast.loading('Deleting user...');
@@ -70,8 +96,36 @@ export function UserActionsDropdown({ user }: UserActionsDropdownProps) {
             </Link>
           </DropdownMenuItem>
 
-          {isAdmin && (
+          {isAdmin && !isSelf && (
             <>
+              <DropdownMenuSeparator />
+
+              {/* Update Role Submenu */}
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="hover:cursor-pointer">
+                  <Shield className="mr-2 h-4 w-4" />
+                  Update Role
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className="max-[350px]:translate-x-10 max-[350px]:translate-y-8">
+                  {roleOptions.map((role) => (
+                    <DropdownMenuItem
+                      key={role.value}
+                      className="hover:cursor-pointer"
+                      onClick={() => handleChangeRole(role.value)}
+                      disabled={user.role === role.value}
+                    >
+                      <Shield className="mr-2 h-4 w-4" />
+                      {role.label}
+                      {user.role === role.value && (
+                        <span className="ml-auto text-xs text-muted-foreground">
+                          Current
+                        </span>
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-red-600 hover:cursor-pointer"

@@ -27,6 +27,11 @@ export interface IUpdateUserInput {
   role?: UserRole;
 }
 
+export interface IUpdateUserRoleInput {
+  userId: string;
+  role: UserRole;
+}
+
 export interface IUserResponse {
   message: string;
   data: IUser;
