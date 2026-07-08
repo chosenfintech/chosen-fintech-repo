@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { BackLink } from '@/components/BackLink';
 import {
   Select,
   SelectContent,
@@ -43,15 +44,13 @@ export default function UserForm({
 
   return (
     <div className="container max-w-2xl mx-auto py-6">
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={() => window.history.back()}
+      <BackLink
+        href="/dashboard/users"
         className="mb-4 text-muted-foreground hover:text-foreground transition-colors hover:cursor-pointer"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
-      </Button>
+      </BackLink>
 
       <div className="md:bg-white md:dark:bg-slate-800 md:rounded-xl md:border md:border-slate-200 md:dark:border-slate-700 overflow-hidden">
         <div className="p-2 md:p-6">

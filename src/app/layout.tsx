@@ -5,6 +5,7 @@ import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import { StoreProvider } from './StoreProvider';
 import { ThemeProvider } from '@/components/theme-provider';
+import { NavHistoryTracker } from '@/components/BackLink';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -161,6 +162,9 @@ export default function RootLayout({
                 },
               }}
             />
+
+            {/* Counts in-app route changes so BackLink knows when history exists */}
+            <NavHistoryTracker />
 
             <main className="flex-1">{children}</main>
 

@@ -4,6 +4,7 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { BackLink } from '@/components/BackLink';
 import {
   Form,
   FormControl,
@@ -134,14 +135,10 @@ export default function ProjectForm({
 
   return (
     <div className="w-full">
-      <Button
-        variant="ghost"
-        onClick={() => window.history.back()}
-        className="mb-4"
-      >
+      <BackLink href="/dashboard/projects" className="mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
-      </Button>
+      </BackLink>
 
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 md:p-8">
         <Form {...form}>

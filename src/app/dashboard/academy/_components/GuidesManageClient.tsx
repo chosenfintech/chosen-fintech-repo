@@ -1,72 +1,58 @@
 // src/app/dashboard/academy/_components/GuidesManageClient.tsx
 'use client';
-import { useState, useCallback, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { GuidesDataTable } from '@/components/academy/data-table/DataTable';
 import { useGetAllGuidesQuery } from '@/redux/guides/guide-api';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 import { extractApiError } from '@/utils/extract-api-error';
 import { IGuidesQueryParams } from '@/types/guides/guide.types';
 import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
+import { useTableUrlState, IParamsReader } from '@/hooks/use-table-url-state';
+
+type IGuidesFilters = Omit<IGuidesQueryParams, 'page' | 'limit'>;
+
+// Module-level so the hook's URL-sync effects get stable references.
+const parseFilters = (params: IParamsReader): IGuidesFilters => {
+  const isPublishedParam = params.get('isPublished');
+  const isFeaturedParam = params.get('isFeatured');
+
+  return {
+    search: params.get('search') || undefined,
+    isPublished:
+      isPublishedParam !== null ? isPublishedParam === 'true' : undefined,
+    isFeatured:
+      isFeaturedParam !== null ? isFeaturedParam === 'true' : undefined,
+    level: (params.get('level') as IGuidesQueryParams['level']) || undefined,
+    authorId: params.get('authorId') || undefined,
+  };
+};
+
+const serializeFilters = (filters: IGuidesFilters, params: URLSearchParams) => {
+  if (filters.search) {
+    params.set('search', filters.search);
+  }
+  if (filters.isPublished !== undefined) {
+    params.set('isPublished', filters.isPublished.toString());
+  }
+  if (filters.isFeatured !== undefined) {
+    params.set('isFeatured', filters.isFeatured.toString());
+  }
+  if (filters.level) {
+    params.set('level', filters.level);
+  }
+  if (filters.authorId) {
+    params.set('authorId', filters.authorId);
+  }
+};
 
 const GuidesManageClient = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const [page, setPage] = useState<number>(() => {
-    const pageParam = searchParams.get('page');
-    return pageParam ? parseInt(pageParam, 10) : 1;
-  });
-
-  const [pageSize, setPageSize] = useState<number>(() => {
-    const limitParam = searchParams.get('limit');
-    return limitParam ? parseInt(limitParam, 10) : 10;
-  });
-
-  const [filters, setFilters] = useState<
-    Omit<IGuidesQueryParams, 'page' | 'limit'>
-  >(() => {
-    const searchParam = searchParams.get('search');
-    const isPublishedParam = searchParams.get('isPublished');
-    const isFeaturedParam = searchParams.get('isFeatured');
-    const levelParam = searchParams.get('level');
-    const authorIdParam = searchParams.get('authorId');
-
-    return {
-      search: searchParam || undefined,
-      isPublished:
-        isPublishedParam !== null ? isPublishedParam === 'true' : undefined,
-      isFeatured:
-        isFeaturedParam !== null ? isFeaturedParam === 'true' : undefined,
-      level: (levelParam as IGuidesQueryParams['level']) || undefined,
-      authorId: authorIdParam || undefined,
-    };
-  });
-
-  useEffect(() => {
-    const params = new URLSearchParams();
-
-    params.set('page', page.toString());
-    params.set('limit', pageSize.toString());
-
-    if (filters.search) {
-      params.set('search', filters.search);
-    }
-    if (filters.isPublished !== undefined) {
-      params.set('isPublished', filters.isPublished.toString());
-    }
-    if (filters.isFeatured !== undefined) {
-      params.set('isFeatured', filters.isFeatured.toString());
-    }
-    if (filters.level) {
-      params.set('level', filters.level);
-    }
-    if (filters.authorId) {
-      params.set('authorId', filters.authorId);
-    }
-
-    router.replace(`?${params.toString()}`, { scroll: false });
-  }, [page, pageSize, filters, router]);
+  const {
+    page,
+    pageSize,
+    filters,
+    handlePageChange,
+    handlePageSizeChange,
+    handleFiltersChange,
+  } = useTableUrlState({ parseFilters, serializeFilters });
 
   const queryParams: IGuidesQueryParams = {
     page,
@@ -89,27 +75,6 @@ const GuidesManageClient = () => {
   const isInitialLoad = !guidesData;
 
   const guides = guidesData?.data;
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize);
-    setPage(1);
-  };
-
-  const handleFiltersChange = useCallback(
-    (newFilters: Partial<typeof filters>) => {
-      setFilters((prev) => ({
-        ...prev,
-        ...newFilters,
-      }));
-      setPage(1);
-    },
-    [],
-  );
 
   const handleRefresh = () => refetch();
 

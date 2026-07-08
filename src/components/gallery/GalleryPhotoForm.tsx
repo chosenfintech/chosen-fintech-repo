@@ -4,6 +4,7 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { BackLink } from '@/components/BackLink';
 import {
   Form,
   FormControl,
@@ -86,15 +87,13 @@ export default function GalleryPhotoForm({
 
   return (
     <div className="w-full">
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={() => window.history.back()}
+      <BackLink
+        href="/dashboard/gallery/photos"
         className="mb-4 text-muted-foreground hover:text-foreground transition-colors hover:cursor-pointer"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
-      </Button>
+      </BackLink>
 
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 md:p-8">
         <Form {...form}>

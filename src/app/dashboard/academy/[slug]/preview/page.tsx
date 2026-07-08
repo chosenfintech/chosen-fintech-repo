@@ -61,10 +61,6 @@ export default function GuidePreviewPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push('/dashboard/academy');
-  };
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center">
@@ -95,7 +91,6 @@ export default function GuidePreviewPage() {
         onEdit={handleEdit}
         onTogglePublish={handleTogglePublish}
         onToggleFeature={handleToggleFeature}
-        onBack={handleBack}
         isLoading={isPublishing || isFeaturing}
       />
     </div>

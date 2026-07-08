@@ -61,10 +61,6 @@ export default function PostPreviewPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push('/dashboard/posts');
-  };
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center">
@@ -95,7 +91,6 @@ export default function PostPreviewPage() {
         onEdit={handleEdit}
         onTogglePublish={handleTogglePublish}
         onToggleFeature={handleToggleFeature}
-        onBack={handleBack}
         isLoading={isPublishing || isFeaturing}
       />
     </div>

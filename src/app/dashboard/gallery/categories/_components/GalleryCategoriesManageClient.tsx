@@ -1,57 +1,46 @@
 // src/app/dashboard/gallery/categories/_components/GalleryCategoriesManageClient.tsx
 'use client';
-import { useState, useCallback, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { GalleryCategoriesDataTable } from '@/components/gallery/categories/data-table/DataTable';
 import { useGetAllGalleryCategoriesQuery } from '@/redux/gallery/gallery-category-api';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 import { extractApiError } from '@/utils/extract-api-error';
 import { IGalleryCategoriesQueryParams } from '@/types/gallery/gallery-category.types';
 import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
+import { useTableUrlState, IParamsReader } from '@/hooks/use-table-url-state';
+
+type IGalleryCategoriesFilters = Omit<
+  IGalleryCategoriesQueryParams,
+  'page' | 'limit'
+>;
+
+// Module-level so the hook's URL-sync effects get stable references.
+const parseFilters = (params: IParamsReader): IGalleryCategoriesFilters => ({
+  search: params.get('search') ?? undefined,
+  sortBy: params.get('sortBy') ?? undefined,
+  sortOrder: (params.get('sortOrder') as 'asc' | 'desc' | null) ?? undefined,
+});
+
+const serializeFilters = (
+  filters: IGalleryCategoriesFilters,
+  params: URLSearchParams,
+) => {
+  if (filters.search) params.set('search', filters.search);
+  if (filters.sortBy) params.set('sortBy', filters.sortBy);
+  if (filters.sortOrder) params.set('sortOrder', filters.sortOrder);
+};
 
 const GalleryCategoriesManageClient = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const [page, setPage] = useState<number>(() => {
-    const pageParam = searchParams.get('page');
-    return pageParam ? parseInt(pageParam, 10) : 1;
-  });
-
-  const [pageSize, setPageSize] = useState<number>(() => {
-    const limitParam = searchParams.get('limit');
-    return limitParam ? parseInt(limitParam, 10) : 10;
-  });
-
-  const [filters, setFilters] = useState<
-    Omit<IGalleryCategoriesQueryParams, 'page' | 'limit'>
-  >(() => {
-    const searchParam = searchParams.get('search');
-    const sortByParam = searchParams.get('sortBy');
-    const sortOrderParam = searchParams.get('sortOrder') as
-      | 'asc'
-      | 'desc'
-      | null;
-
-    return {
-      search: searchParam ?? undefined,
-      sortBy: sortByParam ?? undefined,
-      sortOrder: sortOrderParam ?? undefined,
-    };
-  });
-
-  useEffect(() => {
-    const params = new URLSearchParams();
-
-    params.set('page', page.toString());
-    params.set('limit', pageSize.toString());
-
-    if (filters.search) params.set('search', filters.search);
-    if (filters.sortBy) params.set('sortBy', filters.sortBy);
-    if (filters.sortOrder) params.set('sortOrder', filters.sortOrder);
-
-    router.replace(`?${params.toString()}`, { scroll: false });
-  }, [page, pageSize, filters, router]);
+  const {
+    page,
+    pageSize,
+    filters,
+    handlePageChange,
+    handlePageSizeChange,
+    handleFiltersChange,
+  } = useTableUrlState({ parseFilters, serializeFilters });
 
   const queryParams: IGalleryCategoriesQueryParams = {
     page,
@@ -72,24 +61,6 @@ const GalleryCategoriesManageClient = () => {
 
   // First render until the first response arrives (derived, no setState-in-effect)
   const isInitialLoad = !categoriesData;
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize);
-    setPage(1);
-  };
-
-  const handleFiltersChange = useCallback(
-    (newFilters: Partial<typeof filters>) => {
-      setFilters((prev) => ({ ...prev, ...newFilters }));
-      setPage(1);
-    },
-    [],
-  );
 
   const handleCreateCategory = () => {
     router.push('/dashboard/gallery/categories/create');

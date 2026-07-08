@@ -7,6 +7,7 @@ import { PageHero } from '@/components/ui/PageHero';
 import AcademyGuidesServer from '@/components/academy/AcademyGuidesServer';
 import AcademyBlogsServer from '@/components/academy/AcademyBlogsServer';
 import AcademyBlogsSkeleton from '@/components/academy/AcademyBlogsSkeleton';
+import ListQueryMemory from '@/components/ListQueryMemory';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -61,6 +62,9 @@ export default async function AcademyPage({ searchParams }: AcademyPageProps) {
 
   return (
     <main className="min-h-screen bg-background">
+      <Suspense fallback={null}>
+        <ListQueryMemory />
+      </Suspense>
       <NavBar />
       <PageHero title="Academy" />
       <Suspense fallback={null}>

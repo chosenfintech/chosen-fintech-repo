@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import BlogPageServer from '@/components/events/EventsPageServer';
 import EventsPageSkeleton from '@/components/events/EventsPageSkeleton';
+import ListQueryMemory from '@/components/ListQueryMemory';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -53,8 +54,13 @@ interface BlogPageProps {
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const resolvedSearchParams = await searchParams;
   return (
-    <Suspense fallback={<EventsPageSkeleton />}>
-      <BlogPageServer searchParams={resolvedSearchParams} />
-    </Suspense>
+    <>
+      <Suspense fallback={null}>
+        <ListQueryMemory />
+      </Suspense>
+      <Suspense fallback={<EventsPageSkeleton />}>
+        <BlogPageServer searchParams={resolvedSearchParams} />
+      </Suspense>
+    </>
   );
 }

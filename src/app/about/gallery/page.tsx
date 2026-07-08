@@ -5,6 +5,7 @@ import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import GalleryPageServer from '@/components/gallery/GalleryPageServer';
 import GalleryPageSkeleton from '@/components/gallery/GalleryPageSkeleton';
+import ListQueryMemory from '@/components/ListQueryMemory';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -52,6 +53,9 @@ export default async function GalleryPage({ searchParams }: GalleryPageProps) {
 
   return (
     <div>
+      <Suspense fallback={null}>
+        <ListQueryMemory />
+      </Suspense>
       <Suspense fallback={<GalleryPageSkeleton />}>
         <NavBar />
         <GalleryPageServer searchParams={resolvedSearchParams} />

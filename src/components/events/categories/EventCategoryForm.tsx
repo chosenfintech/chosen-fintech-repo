@@ -2,6 +2,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { BackLink } from '@/components/BackLink';
 import {
   Form,
   FormControl,
@@ -35,15 +36,13 @@ export default function EventCategoryForm({
 }: IEventCategoryFormProps) {
   return (
     <div className="w-full">
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={() => window.history.back()}
+      <BackLink
+        href="/dashboard/events/categories"
         className="mb-4 text-muted-foreground hover:text-foreground transition-colors hover:cursor-pointer"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
-      </Button>
+      </BackLink>
 
       {/* Form */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 md:p-8">

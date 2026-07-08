@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import ProjectsPageServer from '@/components/projects/ProjectsPageServer';
+import ListQueryMemory from '@/components/ListQueryMemory';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -54,6 +55,9 @@ export default async function ProjectsPage({
 
   return (
     <>
+      <Suspense fallback={null}>
+        <ListQueryMemory />
+      </Suspense>
       <NavBar />
       <Suspense fallback={null}>
         <ProjectsPageServer page={currentPage} />

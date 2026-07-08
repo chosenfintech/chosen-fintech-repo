@@ -1,49 +1,38 @@
 // src/app/dashboard/posts/categories/_components/CategoriesManageClient.tsx
 'use client';
-import { useState, useCallback, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { CategoriesDataTable } from '@/components/posts/categories/data-table/DataTable';
 import { useGetAllCategoriesQuery } from '@/redux/posts/category-api';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 import { extractApiError } from '@/utils/extract-api-error';
 import { ICategoriesQueryParams } from '@/types/posts/category.types';
 import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
+import { useTableUrlState, IParamsReader } from '@/hooks/use-table-url-state';
+
+type ICategoriesFilters = Omit<ICategoriesQueryParams, 'page' | 'limit'>;
+
+// Module-level so the hook's URL-sync effects get stable references.
+const parseFilters = (params: IParamsReader): ICategoriesFilters => ({
+  search: params.get('search') || undefined,
+});
+
+const serializeFilters = (
+  filters: ICategoriesFilters,
+  params: URLSearchParams,
+) => {
+  if (filters.search) {
+    params.set('search', filters.search);
+  }
+};
 
 const CategoriesManageClient = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const [page, setPage] = useState<number>(() => {
-    const pageParam = searchParams.get('page');
-    return pageParam ? parseInt(pageParam, 10) : 1;
-  });
-
-  const [pageSize, setPageSize] = useState<number>(() => {
-    const limitParam = searchParams.get('limit');
-    return limitParam ? parseInt(limitParam, 10) : 10;
-  });
-
-  const [filters, setFilters] = useState<
-    Omit<ICategoriesQueryParams, 'page' | 'limit'>
-  >(() => {
-    const searchParam = searchParams.get('search');
-    return {
-      search: searchParam || undefined,
-    };
-  });
-
-  useEffect(() => {
-    const params = new URLSearchParams();
-
-    params.set('page', page.toString());
-    params.set('limit', pageSize.toString());
-
-    if (filters.search) {
-      params.set('search', filters.search);
-    }
-
-    router.replace(`?${params.toString()}`, { scroll: false });
-  }, [page, pageSize, filters, router]);
+  const {
+    page,
+    pageSize,
+    filters,
+    handlePageChange,
+    handlePageSizeChange,
+    handleFiltersChange,
+  } = useTableUrlState({ parseFilters, serializeFilters });
 
   const queryParams: ICategoriesQueryParams = {
     page,
@@ -66,27 +55,6 @@ const CategoriesManageClient = () => {
   const isInitialLoad = !categoriesData;
 
   const categories = categoriesData?.data;
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize);
-    setPage(1);
-  };
-
-  const handleFiltersChange = useCallback(
-    (newFilters: Partial<typeof filters>) => {
-      setFilters((prev) => ({
-        ...prev,
-        ...newFilters,
-      }));
-      setPage(1);
-    },
-    [],
-  );
 
   const handleRefresh = () => refetch();
 

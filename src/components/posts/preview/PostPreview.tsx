@@ -1,7 +1,7 @@
 // src/components/posts/preview/AdminPostPreview.tsx
 "use client";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { BackLink } from "@/components/BackLink";
 import { IPost } from "@/types/posts/post.types";
 import PostPreviewHeader from "./Header";
 import PostContentDisplay from "./ContentDisplay";
@@ -12,7 +12,6 @@ interface IPostPreviewProps {
   onEdit?: () => void;
   onTogglePublish?: () => void;
   onToggleFeature?: () => void;
-  onBack?: () => void;
   isLoading?: boolean;
 }
 
@@ -21,20 +20,16 @@ export default function PostPreview({
   onEdit,
   onTogglePublish,
   onToggleFeature,
-  onBack,
   isLoading = false,
 }: IPostPreviewProps) {
   return (
     <div className="container min-h-screen bg-background">
       <div className="mx-auto space-y-8">
         {/* Back Button */}
-        <Button
-          variant="ghost"
-          onClick={onBack || (() => window.history.back())}
-        >
+        <BackLink href="/dashboard/posts">
           <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform duration-200" />
           Back
-        </Button>
+        </BackLink>
 
         <PostPreviewHeader
           post={post}
