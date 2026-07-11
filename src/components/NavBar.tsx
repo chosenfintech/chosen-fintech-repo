@@ -30,8 +30,6 @@ export function NavBar() {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const aboutRef = useRef<HTMLDivElement>(null);
 
   const { theme, setTheme } = useTheme();
@@ -41,20 +39,16 @@ export function NavBar() {
 
   const isAboutActive = aboutLinks.some((l) => pathname === l.to);
 
+  // The bar stays pinned at all times (no hide-on-scroll-down) — scrolling
+  // only morphs it between the floating pill and the full-width strip.
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsAtTop(currentScrollY < 20);
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      setLastScrollY(currentScrollY);
+      setIsAtTop(window.scrollY < 20);
     };
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -68,9 +62,6 @@ export function NavBar() {
 
   return (
     <motion.header
-      initial={{ y: 0 }}
-      animate={{ y: isVisible ? 0 : -100 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
         'fixed z-50',
         isAtTop
