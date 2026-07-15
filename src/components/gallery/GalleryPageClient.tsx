@@ -13,15 +13,7 @@ import {
   Images,
   Loader2,
 } from 'lucide-react';
-import Lightbox from 'yet-another-react-lightbox';
-import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
-import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import Counter from 'yet-another-react-lightbox/plugins/counter';
-import Captions from 'yet-another-react-lightbox/plugins/captions';
-import 'yet-another-react-lightbox/styles.css';
-import 'yet-another-react-lightbox/plugins/thumbnails.css';
-import 'yet-another-react-lightbox/plugins/counter.css';
-import 'yet-another-react-lightbox/plugins/captions.css';
+import { GalleryLightbox } from '@/components/gallery/GalleryLightbox';
 import type { IGalleryCategory } from '@/types/gallery/gallery-category.types';
 import type { IGalleryPhoto } from '@/types/gallery/gallery-photo.types';
 
@@ -84,11 +76,10 @@ function CategoryCard({ category, onClick, index }: CategoryCardProps) {
     <motion.button
       type="button"
       onClick={() => onClick(category)}
-      className="group relative cursor-pointer rounded-xl overflow-hidden aspect-[4/3] bg-muted w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      className="group relative cursor-pointer overflow-hidden aspect-[4/3] bg-muted w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.06 }}
-      whileHover={{ y: -4 }}
     >
       {/* Cover image */}
       {loadingCover ? (
@@ -98,7 +89,7 @@ function CategoryCard({ category, onClick, index }: CategoryCardProps) {
           src={coverUrl}
           alt={category.name}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className="object-cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       ) : (
@@ -109,6 +100,12 @@ function CategoryCard({ category, onClick, index }: CategoryCardProps) {
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+      {/* Viewfinder corners */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-10">
+        <span className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-white/90 opacity-0 -translate-x-1.5 -translate-y-1.5 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:translate-y-0" />
+        <span className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-white/90 opacity-0 translate-x-1.5 translate-y-1.5 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:translate-y-0" />
+      </div>
 
       {/* Bottom content */}
       <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -128,8 +125,8 @@ function CategoryCard({ category, onClick, index }: CategoryCardProps) {
 
       {/* Featured badge */}
       {category.isFeatured && (
-        <div className="absolute top-3 left-3">
-          <span className="px-2.5 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider shadow">
+        <div className="absolute top-3 right-3">
+          <span className="px-2.5 py-1 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider">
             Featured
           </span>
         </div>
@@ -188,13 +185,6 @@ export default function GalleryPageClient({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const slides = lightboxPhotos.map((photo) => ({
-    src: photo.url,
-    alt: photo.altText ?? activeCategory?.name ?? '',
-    title: activeCategory?.name,
-    description: photo.caption ?? undefined,
-  }));
-
   return (
     <>
       <PageHero title="Gallery" />
@@ -251,7 +241,7 @@ export default function GalleryPageClient({
                       {/* Loading overlay for this card */}
                       {loadingCategory &&
                         activeCategory?.id === category.id && (
-                          <div className="absolute inset-0 rounded-xl bg-black/40 flex items-center justify-center z-10">
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
                             <Loader2 className="w-6 h-6 text-white animate-spin" />
                           </div>
                         )}
@@ -352,30 +342,13 @@ export default function GalleryPageClient({
       </section>
 
       {/* Lightbox */}
-      <Lightbox
+      <GalleryLightbox
         open={lightboxOpen}
-        close={() => setLightboxOpen(false)}
+        photos={lightboxPhotos}
         index={lightboxIndex}
-        slides={slides}
-        plugins={[Thumbnails, Zoom, Counter, Captions]}
-        captions={{ showToggle: true, descriptionTextAlign: 'center' }}
-        counter={{ container: { style: { top: 'unset', bottom: 0 } } }}
-        thumbnails={{
-          position: 'bottom',
-          width: 80,
-          height: 60,
-          border: 2,
-          borderRadius: 6,
-          padding: 2,
-          gap: 8,
-        }}
-        zoom={{ maxZoomPixelRatio: 3, zoomInMultiplier: 1.5 }}
-        styles={{
-          container: { backgroundColor: 'rgba(0, 0, 0, 0.95)' },
-        }}
-        on={{
-          view: ({ index }) => setLightboxIndex(index),
-        }}
+        title={activeCategory?.name}
+        onClose={() => setLightboxOpen(false)}
+        onIndexChange={setLightboxIndex}
       />
     </>
   );
