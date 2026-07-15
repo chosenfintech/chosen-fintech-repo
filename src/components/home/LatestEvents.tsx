@@ -42,7 +42,7 @@ export function LatestEvents({ posts }: LatestEventsProps) {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
             variants={containerVariants}
-            className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16"
+            className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-12 md:mb-16"
           >
             <motion.div variants={fadeUpVariants} className="max-w-2xl">
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary">
@@ -72,12 +72,12 @@ export function LatestEvents({ posts }: LatestEventsProps) {
                   href="/events"
                   className="flex items-center justify-center"
                 >
-                  <span className="relative z-20 group-hover:text-primary-foreground transition-colors duration-300">
+                  <span className="relative z-20 group-hover:text-primary-foreground dark:group-hover:text-[oklch(0.396_0.195_264)] transition-colors duration-300">
                     See All Events
                     <ArrowRight className="ml-2 w-4 h-4 inline transition-transform group-hover:translate-x-1" />
                   </span>
                   <motion.span
-                    className="absolute inset-0 bg-primary rounded-full z-10"
+                    className="absolute inset-0 bg-primary dark:bg-white rounded-full z-10"
                     variants={hoverVariants}
                   />
                 </Link>

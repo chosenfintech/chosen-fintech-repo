@@ -166,7 +166,7 @@ export default function RootLayout({
             {/* Counts in-app route changes so BackLink knows when history exists */}
             <NavHistoryTracker />
 
-            <main className="flex-1">{children}</main>
+            <main className="flex flex-1 flex-col">{children}</main>
 
             {/* JSON-LD */}
             <script

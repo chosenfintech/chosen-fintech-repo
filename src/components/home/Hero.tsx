@@ -98,14 +98,13 @@ export function Hero() {
               asChild
             >
               <Link href="/events" className="flex items-center justify-center">
-                <span className="relative z-20 text-white group-hover:text-white transition-colors duration-300">
+                <span className="relative z-20 text-white group-hover:text-[oklch(0.396_0.195_264)] transition-colors duration-300">
                   <Play className="mr-2 w-4 h-4 sm:w-5 sm:h-5 2xl:w-6 2xl:h-6 inline" />
                   Explore Our Work
                 </span>
 
                 <motion.span
-                  className="absolute inset-0 rounded-full z-10"
-                  style={{ backgroundColor: 'oklch(0.396 0.195 264)' }}
+                  className="absolute inset-0 rounded-full z-10 bg-white"
                   variants={hoverVariants}
                 />
               </Link>
