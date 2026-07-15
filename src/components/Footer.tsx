@@ -2,10 +2,25 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Twitter, Linkedin, Youtube, Sun, Moon } from 'lucide-react';
+import { Facebook, Linkedin, Youtube, Sun, Moon } from 'lucide-react';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { motion } from 'motion/react';
+
+function XLogo({ size = 24 }: { size?: number; strokeWidth?: number }) {
+  return (
+    <svg
+      role="img"
+      viewBox="-2.5 -2.5 29 29"
+      width={size}
+      height={size}
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+    </svg>
+  );
+}
 
 const footerLinks = {
   company: [
@@ -20,7 +35,7 @@ const footerLinks = {
   ],
   social: [
     { href: 'https://fb.com/chosenfintech', icon: Facebook, label: 'Facebook' },
-    { href: 'https://x.com/chosenfintech', icon: Twitter, label: 'Twitter' },
+    { href: 'https://x.com/chosenfintech', icon: XLogo, label: 'X' },
     {
       href: 'https://www.linkedin.com/company/chosenfintech/',
       icon: Linkedin,
@@ -143,11 +158,31 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/20">
           <div className="py-6 lg:py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <p className="text-white/60 text-xs lg:text-sm text-center sm:text-left">
+            <p className="text-white/60 text-xs lg:text-sm text-center sm:text-left">
+              <span className="block sm:inline">
                 © {new Date().getFullYear()} Chosen Fintech. All rights
                 reserved.
-              </p>
+              </span>{' '}
+              <span className="hidden sm:inline text-white/40">|</span>{' '}
+              <span className="block sm:inline mt-1 sm:mt-0">
+                <span className="text-white">Developed by</span>{' '}
+                <a
+                  href="https://manuru.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-white hover:underline transition-colors duration-200"
+                >
+                  manuru
+                </a>
+              </span>
+            </p>
+            <div className="flex items-center gap-3 text-white/60 text-xs lg:text-sm">
+              <a
+                href="mailto:info@chosenfintech.org"
+                className="hover:text-white transition-colors duration-200 hover:underline"
+              >
+                info@chosenfintech.org
+              </a>
               {/* Theme Toggle */}
               <motion.button
                 whileTap={{ scale: 0.9 }}
@@ -163,14 +198,6 @@ export function Footer() {
                     <Moon className="h-3 w-3 text-white/60" />
                   ))}
               </motion.button>
-            </div>
-            <div className="flex items-center gap-2 text-white/60 text-xs lg:text-sm">
-              <a
-                href="mailto:info@chosenfintech.org"
-                className="hover:text-white transition-colors duration-200 hover:underline"
-              >
-                info@chosenfintech.org
-              </a>
             </div>
           </div>
         </div>
