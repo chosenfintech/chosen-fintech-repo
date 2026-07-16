@@ -71,7 +71,7 @@ export function Footer() {
                 href="/"
                 className="inline-flex items-center gap-2 mb-6 group"
               >
-                <div className="w-10 h-10 flex items-center justify-center rounded-lg overflow-hidden">
+                <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
                   <Image
                     src={'/logo.jpg'}
                     width={50}
@@ -82,7 +82,7 @@ export function Footer() {
                 </div>
                 <div className="flex flex-col">
                   <span className="font-display font-bold text-xl leading-tight text-white">
-                    Chosen Fintech
+                    CHOSEN FINTECH
                   </span>
                   <span className="text-xs text-white/60 uppercase tracking-wide">
                     SOLUTIONS
@@ -160,8 +160,8 @@ export function Footer() {
           <div className="py-6 lg:py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-white/60 text-xs lg:text-sm text-center sm:text-left">
               <span className="block sm:inline">
-                © {new Date().getFullYear()} Chosen Fintech. All rights
-                reserved.
+                © {new Date().getFullYear()} CHOSEN FINTECH SOLUTIONS. All
+                rights reserved.
               </span>{' '}
               <span className="hidden sm:inline text-white/40">|</span>{' '}
               <span className="block sm:inline mt-1 sm:mt-0">

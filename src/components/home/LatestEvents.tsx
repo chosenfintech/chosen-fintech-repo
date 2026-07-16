@@ -65,7 +65,7 @@ export function LatestEvents({ posts }: LatestEventsProps) {
               <Button
                 variant="outline"
                 size="lg"
-                className="relative z-10 border-2 border-primary/30 text-foreground rounded-full backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
+                className="relative z-10 border-2 border-primary/30 dark:border-white text-foreground rounded-full backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
                 asChild
               >
                 <Link

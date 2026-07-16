@@ -29,7 +29,7 @@ export default function ContactPageClient() {
                 }`}
               >
                 {/* Icon */}
-                <div className="group/icon shrink-0 w-12 h-12 md:w-14 md:h-14 cursor-pointer rounded-xl bg-primary flex items-center justify-center transition-colors duration-300 hover:bg-background hover:outline hover:outline-primary hover:animate-shake">
+                <div className="group/icon shrink-0 w-12 h-12 md:w-14 md:h-14 cursor-pointer bg-primary flex items-center justify-center transition-colors duration-300 hover:bg-background hover:outline hover:outline-primary hover:animate-shake">
                   <item.icon className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground transition-colors duration-300 group-hover/icon:text-primary" />
                 </div>
 

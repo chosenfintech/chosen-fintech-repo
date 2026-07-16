@@ -147,9 +147,9 @@ export default function DonatePageClient() {
                   <motion.div
                     key={item.title}
                     variants={cardVariants}
-                    className="flex gap-4 p-6 rounded-xl border border-border bg-card hover:shadow-md transition-shadow duration-300"
+                    className="flex gap-4 p-6 border border-border bg-card hover:shadow-md transition-shadow duration-300"
                   >
-                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 bg-primary/10 flex items-center justify-center">
                       <Icon className="w-5 h-5 text-primary" />
                     </div>
                     <div>

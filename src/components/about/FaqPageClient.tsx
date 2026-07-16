@@ -139,19 +139,19 @@ export default function FaqPageClient() {
             <Button
               variant="outline"
               size="lg"
-              className="relative z-10 border-2 border-border text-foreground rounded-full backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
+              className="relative z-10 border-2 border-border dark:border-white text-foreground rounded-full backdrop-blur-sm h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base font-medium overflow-hidden group transition-colors duration-300"
               asChild
             >
               <Link
                 href="/contact"
                 className="flex items-center justify-center"
               >
-                <span className="relative z-20 group-hover:text-primary-foreground transition-colors duration-300">
+                <span className="relative z-20 group-hover:text-primary-foreground dark:group-hover:text-[oklch(0.396_0.195_264)] transition-colors duration-300">
                   Contact Us
                   <ArrowRight className="ml-2 w-4 h-4 inline transition-transform group-hover:translate-x-1" />
                 </span>
                 <motion.span
-                  className="absolute inset-0 bg-primary rounded-full z-10"
+                  className="absolute inset-0 bg-primary dark:bg-white rounded-full z-10"
                   variants={hoverVariants}
                 />
               </Link>

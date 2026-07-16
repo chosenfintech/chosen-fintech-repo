@@ -21,7 +21,7 @@ const navLinks = [
   { to: '/projects', label: 'Projects' },
   { to: '/academy', label: 'Academy' },
   { to: '/events', label: 'Events' },
-  { to: '/donate', label: 'Donate' },
+  { to: '/contact', label: 'Contact Us' },
 ];
 
 export function NavBar() {
@@ -103,12 +103,15 @@ export function NavBar() {
                   width={50}
                   height={50}
                   alt="chosen fintech logo"
-                  className="rounded-lg"
+                  className={cn(
+                    'border border-border transition-all duration-500',
+                    isAtTop ? 'rounded-lg' : 'rounded-none',
+                  )}
                 />
               </motion.div>
               <div className="flex flex-col">
                 <span className="font-display font-bold text-xl text-foreground group-hover:text-primary transition-colors duration-300 leading-tight">
-                  Chosen Fintech
+                  CHOSEN FINTECH
                 </span>
                 <span className="text-xs text-muted-foreground uppercase tracking-wide">
                   SOLUTIONS
@@ -270,10 +273,10 @@ export function NavBar() {
               <motion.div whileHover={{ scale: 1.05 }}>
                 <Button
                   size="lg"
-                  className="rounded-full font-medium bg-primary hover:bg-primary/90 transition-all duration-300"
+                  className="rounded-full font-medium bg-primary hover:bg-primary/90 dark:bg-white dark:text-[oklch(0.396_0.195_264)] dark:hover:bg-white/90 transition-all duration-300"
                   asChild
                 >
-                  <Link href="/contact">Contact Us</Link>
+                  <Link href="/donate">Donate</Link>
                 </Button>
               </motion.div>
             </div>
@@ -432,12 +435,16 @@ export function NavBar() {
                 </button>
 
                 <div className="pt-2 mt-2 border-t border-border">
-                  <Button size="lg" className="w-full rounded-full" asChild>
+                  <Button
+                    size="lg"
+                    className="w-full rounded-full dark:bg-white dark:text-[oklch(0.396_0.195_264)] dark:hover:bg-white/90"
+                    asChild
+                  >
                     <Link
-                      href="/contact"
+                      href="/donate"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Contact Us
+                      Donate
                     </Link>
                   </Button>
                 </div>
