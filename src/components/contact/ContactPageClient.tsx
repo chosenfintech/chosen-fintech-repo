@@ -1,61 +1,61 @@
 'use client';
 
-import { PageHero } from '@/components/ui/PageHero';
 import { motion } from 'motion/react';
-import { containerVariants, itemVariants } from '@/static-data/motion-variants';
-import { contactInfo } from '@/static-data/contact';
+import { PageHero } from '@/components/ui/PageHero';
+import { fadeUpVariants } from '@/static-data/motion-variants';
+import { ContactForm } from './ContactForm';
+import { ContactDirectory } from './ContactDirectory';
+import { LocationMap } from './LocationMap';
 
 export default function ContactPageClient() {
   return (
     <div className="flex-1">
       <PageHero title="Contact Us" />
 
-      {/* Contact Info Section */}
+      {/* One band, held to the same max width as every other page section:
+          the message on the left, the office on the right. */}
       <section className="py-16 lg:py-24">
-        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-6 lg:gap-12"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {contactInfo.map((item) => (
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 border border-border lg:grid-cols-[1.05fr_0.95fr]">
+            {/* Message. White in light mode, deep navy in dark. */}
+            <div className="bg-background px-6 py-12 sm:px-10 sm:py-14 lg:px-14 dark:bg-[oklch(0.24_0.07_264)]">
               <motion.div
-                key={item.label}
-                variants={itemVariants}
-                className={`flex items-start gap-4 md:gap-5 ${
-                  item.label === 'Address' ? 'md:col-span-2 xl:col-span-1' : ''
-                }`}
+                variants={fadeUpVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                className="mx-auto w-full max-w-xl lg:mx-0"
               >
-                {/* Icon */}
-                <div className="group/icon shrink-0 w-12 h-12 md:w-14 md:h-14 cursor-pointer bg-primary flex items-center justify-center transition-colors duration-300 hover:bg-background hover:outline hover:outline-primary hover:animate-shake">
-                  <item.icon className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground transition-colors duration-300 group-hover/icon:text-primary" />
-                </div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+                  Get in touch
+                </p>
 
-                <div className="min-w-0 pt-1">
-                  {/* Label */}
-                  <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2">
-                    {item.label}
-                  </h3>
+                <h2 className="mt-5 text-3xl font-bold uppercase leading-[1.1] text-primary sm:text-4xl dark:text-white">
+                  Let&rsquo;s talk about
+                  <br />
+                  your next step
+                </h2>
 
-                  {/* Value */}
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      className="font-display text-base lg:text-lg font-medium text-foreground hover:text-primary transition-colors duration-200 break-all"
-                    >
-                      {item.value}
-                    </a>
-                  ) : (
-                    <p className="font-display text-base lg:text-lg font-medium text-foreground break-words">
-                      {item.value}
-                    </p>
-                  )}
+                <div className="mt-6 h-0.5 w-12 bg-primary dark:bg-white/70" />
+
+                <p className="mt-6 max-w-md leading-relaxed text-muted-foreground">
+                  Whether you are learning, partnering, or need a hand with
+                  something, tell us what you need and the right person will
+                  come back to you.
+                </p>
+
+                <div className="mt-10">
+                  <ContactForm />
                 </div>
               </motion.div>
-            ))}
-          </motion.div>
+            </div>
+
+            {/* Office */}
+            <div className="flex flex-col border-t border-border bg-card lg:border-l lg:border-t-0">
+              <LocationMap className="lg:flex-1" />
+              <ContactDirectory />
+            </div>
+          </div>
         </div>
       </section>
     </div>

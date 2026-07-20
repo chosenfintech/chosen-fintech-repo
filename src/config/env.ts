@@ -43,4 +43,8 @@ export const ENV = {
   GMAIL_USER: optional('GMAIL_USER'),
   GMAIL_PASSWORD: optional('GMAIL_PASSWORD'),
   EMAIL_FROM_NAME: optional('EMAIL_FROM_NAME') ?? 'Chosen Fintech Solutions',
+
+  // Where public contact-form enquiries are delivered. Falls back to the
+  // seeded admin address so the form still works without extra configuration.
+  CONTACT_RECIPIENT_EMAIL: optional('CONTACT_RECIPIENT_EMAIL'),
 } as const;
