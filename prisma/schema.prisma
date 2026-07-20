@@ -217,6 +217,32 @@ model GalleryPhoto {
   @@index([isPublished])
 }
 
+/// A member of the team shown on the public About page. Ordered by
+/// `displayOrder` (ascending), so leadership can be pinned to the front
+/// regardless of when the record was created.
+model TeamMember {
+  id       String  @id @default(uuid())
+  name     String @db.VarChar(150)
+  role     String @db.VarChar(150)
+  imageUrl String @db.VarChar(500)
+
+  email       String? @db.VarChar(255)
+  facebookUrl String? @db.VarChar(500)
+  twitterUrl  String? @db.VarChar(500)
+  linkedinUrl String? @db.VarChar(500)
+
+  displayOrder Int     @default(0)
+  isPublished  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([id])
+  @@index([name])
+  @@index([isPublished])
+  @@index([displayOrder])
+}
+
 enum UserSecurityTokenType {
   TWO_FACTOR_LOGIN // 6-digit email OTP challenged at login
   TWO_FACTOR_SETUP // 6-digit email OTP confirming 2FA enablement

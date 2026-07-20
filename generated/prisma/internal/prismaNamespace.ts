@@ -393,6 +393,7 @@ export const ModelName = {
   Project: 'Project',
   GalleryCategory: 'GalleryCategory',
   GalleryPhoto: 'GalleryPhoto',
+  TeamMember: 'TeamMember',
   UserSecurityToken: 'UserSecurityToken'
 } as const
 
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "post" | "category" | "event" | "eventCategory" | "guide" | "project" | "galleryCategory" | "galleryPhoto" | "userSecurityToken"
+    modelProps: "user" | "post" | "category" | "event" | "eventCategory" | "guide" | "project" | "galleryCategory" | "galleryPhoto" | "teamMember" | "userSecurityToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1079,6 +1080,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TeamMember: {
+      payload: Prisma.$TeamMemberPayload<ExtArgs>
+      fields: Prisma.TeamMemberFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TeamMemberFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TeamMemberFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+        }
+        findFirst: {
+          args: Prisma.TeamMemberFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TeamMemberFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+        }
+        findMany: {
+          args: Prisma.TeamMemberFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>[]
+        }
+        create: {
+          args: Prisma.TeamMemberCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+        }
+        createMany: {
+          args: Prisma.TeamMemberCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TeamMemberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>[]
+        }
+        delete: {
+          args: Prisma.TeamMemberDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+        }
+        update: {
+          args: Prisma.TeamMemberUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+        }
+        deleteMany: {
+          args: Prisma.TeamMemberDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TeamMemberUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TeamMemberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>[]
+        }
+        upsert: {
+          args: Prisma.TeamMemberUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+        }
+        aggregate: {
+          args: Prisma.TeamMemberAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTeamMember>
+        }
+        groupBy: {
+          args: Prisma.TeamMemberGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeamMemberGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TeamMemberCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeamMemberCountAggregateOutputType> | number
+        }
+      }
+    }
     UserSecurityToken: {
       payload: Prisma.$UserSecurityTokenPayload<ExtArgs>
       fields: Prisma.UserSecurityTokenFieldRefs
@@ -1335,6 +1410,24 @@ export const GalleryPhotoScalarFieldEnum = {
 export type GalleryPhotoScalarFieldEnum = (typeof GalleryPhotoScalarFieldEnum)[keyof typeof GalleryPhotoScalarFieldEnum]
 
 
+export const TeamMemberScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  imageUrl: 'imageUrl',
+  email: 'email',
+  facebookUrl: 'facebookUrl',
+  twitterUrl: 'twitterUrl',
+  linkedinUrl: 'linkedinUrl',
+  displayOrder: 'displayOrder',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeamMemberScalarFieldEnum = (typeof TeamMemberScalarFieldEnum)[keyof typeof TeamMemberScalarFieldEnum]
+
+
 export const UserSecurityTokenScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -1444,20 +1537,6 @@ export type ListEnumGuideLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
- * Reference to a field of type 'UserSecurityTokenType'
- */
-export type EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserSecurityTokenType'>
-    
-
-
-/**
- * Reference to a field of type 'UserSecurityTokenType[]'
- */
-export type ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserSecurityTokenType[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1468,6 +1547,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'UserSecurityTokenType'
+ */
+export type EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserSecurityTokenType'>
+    
+
+
+/**
+ * Reference to a field of type 'UserSecurityTokenType[]'
+ */
+export type ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserSecurityTokenType[]'>
     
 
 
@@ -1588,6 +1681,7 @@ export type GlobalOmitConfig = {
   project?: Prisma.ProjectOmit
   galleryCategory?: Prisma.GalleryCategoryOmit
   galleryPhoto?: Prisma.GalleryPhotoOmit
+  teamMember?: Prisma.TeamMemberOmit
   userSecurityToken?: Prisma.UserSecurityTokenOmit
 }
 

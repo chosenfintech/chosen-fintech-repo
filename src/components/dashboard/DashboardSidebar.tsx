@@ -15,6 +15,7 @@ import {
   ChevronRight,
   LucideIcon,
   Users,
+  UsersRound,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -100,6 +101,11 @@ const navigationItems: NavigationItem[] = [
     name: 'Projects',
     path: '/dashboard/projects',
     icon: FolderKanban,
+  },
+  {
+    name: 'Team',
+    path: '/dashboard/team',
+    icon: UsersRound,
   },
   {
     name: 'Gallery',

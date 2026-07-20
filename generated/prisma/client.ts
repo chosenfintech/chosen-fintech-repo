@@ -85,6 +85,13 @@ export type GalleryCategory = Prisma.GalleryCategoryModel
  */
 export type GalleryPhoto = Prisma.GalleryPhotoModel
 /**
+ * Model TeamMember
+ * A member of the team shown on the public About page. Ordered by
+ * `displayOrder` (ascending), so leadership can be pinned to the front
+ * regardless of when the record was created.
+ */
+export type TeamMember = Prisma.TeamMemberModel
+/**
  * Model UserSecurityToken
  * 
  */

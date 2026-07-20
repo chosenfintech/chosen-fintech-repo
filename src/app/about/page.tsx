@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
-import AboutPageClient from '@/components/about/AboutPageClient';
+import AboutPageServer from '@/components/about/AboutPageServer';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chosenfintech.org';
@@ -41,11 +41,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
   return (
     <>
       <NavBar />
-      <AboutPageClient />
+      <AboutPageServer />
       <Footer />
     </>
   );

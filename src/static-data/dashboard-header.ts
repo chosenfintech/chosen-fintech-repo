@@ -79,6 +79,26 @@ export const pageConfigs = [
     description: 'A comprehensive list of all blog posts in a datatable format',
   },
 
+  // === TEAM MANAGEMENT ===
+  {
+    paths: ['/dashboard/team/:id/edit'],
+    dynamicPaths: [/^\/dashboard\/team\/[^/]+\/edit$/],
+    title: 'Edit Team Member',
+    description: 'Update this member of the team shown on the About page',
+  },
+  {
+    paths: ['/dashboard/team/create'],
+    dynamicPaths: [/^\/dashboard\/team\/create\/?$/],
+    title: 'Add Team Member',
+    description: 'Fill in the form below to add someone to the team',
+  },
+  {
+    paths: ['/dashboard/team'],
+    dynamicPaths: [/^\/dashboard\/team$/],
+    title: 'Team',
+    description: 'The people shown on the public About page, in display order',
+  },
+
   // === GALLERY MANAGEMENT ===
   {
     paths: ['/dashboard/gallery/photos/upload'],
@@ -91,7 +111,7 @@ export const pageConfigs = [
     dynamicPaths: [/^\/dashboard\/gallery\/photos$/],
     title: 'All Photos',
     description:
-      'A comprehensive list of all gallery photos in a datatable format',
+      'Browse, organise and manage every photo in the gallery',
   },
   {
     paths: ['/dashboard/gallery/categories/create'],

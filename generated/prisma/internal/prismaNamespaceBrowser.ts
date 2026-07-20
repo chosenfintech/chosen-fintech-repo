@@ -60,6 +60,7 @@ export const ModelName = {
   Project: 'Project',
   GalleryCategory: 'GalleryCategory',
   GalleryPhoto: 'GalleryPhoto',
+  TeamMember: 'TeamMember',
   UserSecurityToken: 'UserSecurityToken'
 } as const
 
@@ -220,6 +221,24 @@ export const GalleryPhotoScalarFieldEnum = {
 } as const
 
 export type GalleryPhotoScalarFieldEnum = (typeof GalleryPhotoScalarFieldEnum)[keyof typeof GalleryPhotoScalarFieldEnum]
+
+
+export const TeamMemberScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  imageUrl: 'imageUrl',
+  email: 'email',
+  facebookUrl: 'facebookUrl',
+  twitterUrl: 'twitterUrl',
+  linkedinUrl: 'linkedinUrl',
+  displayOrder: 'displayOrder',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeamMemberScalarFieldEnum = (typeof TeamMemberScalarFieldEnum)[keyof typeof TeamMemberScalarFieldEnum]
 
 
 export const UserSecurityTokenScalarFieldEnum = {

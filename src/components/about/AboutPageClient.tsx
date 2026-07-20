@@ -5,9 +5,16 @@ import { PageHero } from '@/components/ui/PageHero';
 import { WhoWeAre } from '@/components/about/WhoWeAre';
 import { WhatWeDo } from './WhatWeDo';
 import { OurTeam } from './OurTeam';
-import { focusAreas, teamMembers } from '@/static-data/about';
+import { focusAreas } from '@/static-data/about';
+import type { ITeamMember } from '@/types/team/team-member.types';
 
-export default function AboutPageClient() {
+interface AboutPageClientProps {
+  teamMembers: ITeamMember[];
+}
+
+export default function AboutPageClient({
+  teamMembers,
+}: AboutPageClientProps) {
   return (
     <>
       <PageHero title="About Us" />

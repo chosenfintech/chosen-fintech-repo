@@ -195,13 +195,6 @@ export type EnumGuideLevelWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumGuideLevelFilter<$PrismaModel>
 }
 
-export type EnumUserSecurityTokenTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel> | $Enums.UserSecurityTokenType
-}
-
 export type IntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -211,16 +204,6 @@ export type IntFilter<$PrismaModel = never> = {
   gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
   gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
   not?: Prisma.NestedIntFilter<$PrismaModel> | number
-}
-
-export type EnumUserSecurityTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumUserSecurityTokenTypeWithAggregatesFilter<$PrismaModel> | $Enums.UserSecurityTokenType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel>
 }
 
 export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -237,6 +220,23 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedIntFilter<$PrismaModel>
   _max?: Prisma.NestedIntFilter<$PrismaModel>
+}
+
+export type EnumUserSecurityTokenTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel> | $Enums.UserSecurityTokenType
+}
+
+export type EnumUserSecurityTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumUserSecurityTokenTypeWithAggregatesFilter<$PrismaModel> | $Enums.UserSecurityTokenType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -433,23 +433,6 @@ export type NestedEnumGuideLevelWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumGuideLevelFilter<$PrismaModel>
 }
 
-export type NestedEnumUserSecurityTokenTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel> | $Enums.UserSecurityTokenType
-}
-
-export type NestedEnumUserSecurityTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumUserSecurityTokenTypeWithAggregatesFilter<$PrismaModel> | $Enums.UserSecurityTokenType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel>
-}
-
 export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -475,6 +458,23 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type NestedEnumUserSecurityTokenTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel> | $Enums.UserSecurityTokenType
+}
+
+export type NestedEnumUserSecurityTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.UserSecurityTokenType | Prisma.EnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.UserSecurityTokenType[] | Prisma.ListEnumUserSecurityTokenTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumUserSecurityTokenTypeWithAggregatesFilter<$PrismaModel> | $Enums.UserSecurityTokenType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumUserSecurityTokenTypeFilter<$PrismaModel>
 }
 
 

@@ -11,7 +11,8 @@ It is a single **full-stack Next.js 16 (App Router) + React 19** application: th
 ## ✨ What It Does
 
 ### 🌍 Public Website
-- **Home, About** (with **FAQ** and **Gallery**), and **Contact** pages.
+- **Home, About** (with the **team**, **FAQ** and **Gallery**), and **Contact** pages.
+- **Contact form** - enquiries are emailed to the team and acknowledged to the sender, guarded by a honeypot field and a per-IP rate limit, with an embedded map of the office.
 - **Academy** — a financial-education hub of **guides** organised by level (beginner → advanced), with individual guide pages.
 - **Blog/Posts** — articles with categories and dedicated post pages.
 - **Events** — upcoming and past events with category filtering and detail pages.
@@ -23,6 +24,7 @@ It is a single **full-stack Next.js 16 (App Router) + React 19** application: th
 A back-office for staff to manage every content type without touching code:
 - **Posts**, **Academy (Guides)**, **Events** (+ categories), **Projects** — each with create/edit, rich-text authoring, **live preview**, and **publish** / **feature** toggles.
 - **Gallery** — manage categories and upload/organise photos with publish controls.
+- **Team** - add, edit, reorder, publish/hide and delete the people shown on the About page, each with a photo, bio and social links.
 - **Users** — manage accounts and roles, change passwords, and configure **two-factor authentication**.
 - **Dashboard stats** — aggregated content and activity metrics.
 
@@ -94,6 +96,8 @@ Route handlers live under `src/app/api`. Content resources follow a consistent p
 | `events`     | CRUD, categories, `published`, toggle publish/feature           |
 | `projects`   | CRUD, `published`, toggle publish/feature                       |
 | `gallery`    | categories & photos, `published`, toggle publish/feature        |
+| `team`       | CRUD, `published`, toggle publish                               |
+| `contact`    | `POST` public enquiry (emails the team, acknowledges the sender)|
 | `users`      | CRUD, role, change-password, `2fa` (setup/enable/disable)       |
 | `dashboard`  | `stats` (admin metrics)                                         |
 
@@ -164,6 +168,8 @@ UPSTASH_REDIS_REST_TOKEN=
 GMAIL_USER=
 GMAIL_PASSWORD=
 EMAIL_FROM_NAME=
+# Optional: where contact-form enquiries land (defaults to ADMIN_EMAIL)
+CONTACT_RECIPIENT_EMAIL=
 ```
 
 ---

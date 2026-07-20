@@ -20,4 +20,6 @@ export const apiSliceTags: string[] = [
   'GalleryPhoto',
   'GalleryCategories',
   'GalleryCategory',
+  'TeamMembers',
+  'TeamMember',
 ];
