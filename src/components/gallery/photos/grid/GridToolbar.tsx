@@ -1,22 +1,8 @@
-// src/components/gallery/photos/data-table/TableFilters.tsx
+// src/components/gallery/photos/grid/GridToolbar.tsx
 'use client';
 import * as React from 'react';
-import { Table } from '@tanstack/react-table';
-import {
-  ChevronDown,
-  Plus,
-  Trash2,
-  Search,
-  X,
-  SlidersHorizontal,
-} from 'lucide-react';
+import { Plus, Trash2, Search, X, SlidersHorizontal, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -26,36 +12,37 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import {
-  IGalleryPhoto,
-  IGalleryPhotosQueryParams,
-} from '@/types/gallery/gallery-photo.types';
+import { IGalleryPhotosQueryParams } from '@/types/gallery/gallery-photo.types';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useGetGalleryCategoriesForSelectQuery } from '@/redux/gallery/gallery-category-api';
 import { cn } from '@/lib/utils';
 
-interface IGalleryPhotoTableFiltersProps {
-  table: Table<IGalleryPhoto>;
-  filters: Omit<IGalleryPhotosQueryParams, 'page' | 'limit'>;
-  onFiltersChange: (
-    filters: Partial<Omit<IGalleryPhotosQueryParams, 'page' | 'limit'>>,
-  ) => void;
+type IGalleryPhotoFilters = Omit<IGalleryPhotosQueryParams, 'page' | 'limit'>;
+
+interface IGalleryPhotoGridToolbarProps {
+  filters: IGalleryPhotoFilters;
+  onFiltersChange: (filters: Partial<IGalleryPhotoFilters>) => void;
   totalCount: number;
+  selectedCount: number;
+  /** Photos on the current page, used by "select all on this page". */
+  pageCount: number;
+  onSelectPage: () => void;
+  onClearSelection: () => void;
   onUploadPhoto: () => void;
   onDeleteSelected: () => void;
 }
 
-export function GalleryPhotoTableFilters({
-  table,
+export function GalleryPhotoGridToolbar({
   filters,
   onFiltersChange,
   totalCount,
+  selectedCount,
+  pageCount,
+  onSelectPage,
+  onClearSelection,
   onUploadPhoto,
   onDeleteSelected,
-}: IGalleryPhotoTableFiltersProps) {
-  const selectedCount = table.getSelectedRowModel().rows.length;
-  const isAllSelected = selectedCount === totalCount && totalCount > 0;
-
+}: IGalleryPhotoGridToolbarProps) {
   const [searchInput, setSearchInput] = React.useState(filters.search ?? '');
   const [showFilters, setShowFilters] = React.useState(false);
 
@@ -79,12 +66,7 @@ export function GalleryPhotoTableFilters({
     let isPublished: boolean | undefined;
     if (value === 'published') isPublished = true;
     else if (value === 'hidden') isPublished = false;
-    else isPublished = undefined;
     onFiltersChange({ isPublished });
-  };
-
-  const handleCategoryFilterChange = (value: string) => {
-    onFiltersChange({ categoryId: value === 'all' ? undefined : value });
   };
 
   const hasFiltersApplied =
@@ -116,56 +98,72 @@ export function GalleryPhotoTableFilters({
 
   return (
     <div className="space-y-4">
-      {/* Top Action Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          {selectedCount > 0 ? (
-            <div className="flex items-center gap-3 bg-muted/50 px-3 py-2 rounded-lg border border-border">
-              <Badge
-                variant="secondary"
-                className="font-medium bg-secondary text-secondary-foreground"
-              >
-                {selectedCount} selected {isAllSelected && '(All)'}
-              </Badge>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={onDeleteSelected}
-                className="h-8"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                {isAllSelected ? 'Delete All' : 'Delete Selected'}
-              </Button>
-            </div>
-          ) : (
-            <div className="text-sm text-muted-foreground font-medium">
+      {/* Top bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        {selectedCount > 0 ? (
+          <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-muted/50 px-3 py-2">
+            <Badge variant="secondary" className="font-medium">
+              {selectedCount} selected
+            </Badge>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={onDeleteSelected}
+              className="h-8"
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete selected
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClearSelection}
+              className="h-8"
+            >
+              Clear
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-muted-foreground">
               {totalCount} total {totalCount === 1 ? 'photo' : 'photos'}
-            </div>
-          )}
-        </div>
+            </span>
+            {pageCount > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onSelectPage}
+                className="h-8 text-muted-foreground"
+              >
+                <CheckSquare className="mr-2 h-4 w-4" />
+                Select page
+              </Button>
+            )}
+          </div>
+        )}
 
         <Button onClick={onUploadPhoto} className="w-full sm:w-auto">
-          <Plus className="w-4 h-4 mr-2" />
+          <Plus className="mr-2 h-4 w-4" />
           Upload Photo
         </Button>
       </div>
 
-      {/* Search and Filter Toggle */}
+      {/* Search + filters */}
       <div className="flex gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search by alt text or caption..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="pl-10 pr-10 h-11 bg-card border-input focus-visible:ring-primary"
+            className="h-11 border-input bg-card pl-10 pr-10 focus-visible:ring-primary"
           />
           {searchInput && (
             <Button
               variant="ghost"
               size="sm"
               onClick={handleClearSearch}
-              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0 text-foreground hover:bg-muted"
+              className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0 text-foreground hover:bg-muted"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -176,7 +174,7 @@ export function GalleryPhotoTableFilters({
           variant={hasFiltersApplied ? 'default' : 'outline'}
           onClick={() => setShowFilters(!showFilters)}
           className={cn(
-            'h-11 gap-2 relative shrink-0',
+            'relative h-11 shrink-0 gap-2',
             hasFiltersApplied
               ? 'bg-primary text-primary-foreground hover:bg-primary/90'
               : 'border-border text-foreground hover:bg-accent hover:text-accent-foreground',
@@ -187,76 +185,37 @@ export function GalleryPhotoTableFilters({
           {filterCount > 0 && (
             <Badge
               variant="secondary"
-              className="ml-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-secondary text-secondary-foreground"
+              className="ml-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs"
             >
               {filterCount}
             </Badge>
           )}
         </Button>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="h-11 gap-2 shrink-0 border-border text-foreground hover:bg-accent hover:text-accent-foreground"
-            >
-              <ChevronDown className="w-4 h-4" />
-              <span className="hidden sm:inline">Columns</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="w-[200px] bg-popover text-popover-foreground"
-          >
-            <div className="p-2">
-              <div className="text-sm font-medium mb-2 text-foreground">
-                Toggle columns
-              </div>
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id.replace(/([A-Z])/g, ' $1').trim()}
-                  </DropdownMenuCheckboxItem>
-                ))}
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
         {hasFiltersApplied && (
           <Button
             variant="outline"
             onClick={clearFilters}
-            className="h-11 text-destructive hover:bg-destructive/10 hidden lg:flex shrink-0"
+            className="hidden h-11 shrink-0 text-destructive hover:bg-destructive/10 lg:flex"
           >
             Clear all
           </Button>
         )}
       </div>
 
-      {/* Collapsible Filters Panel */}
       {showFilters && (
-        <div className="p-4 rounded-lg border border-border bg-card shadow-sm space-y-4">
+        <div className="space-y-4 rounded-lg border border-border bg-card p-4 shadow-sm">
           {hasFiltersApplied && (
             <Button
               variant="outline"
               onClick={clearFilters}
-              className="w-full h-10 text-destructive hover:bg-destructive/10 lg:hidden"
+              className="h-10 w-full text-destructive hover:bg-destructive/10 lg:hidden"
             >
               Clear all filters
             </Button>
           )}
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {/* Status Filter */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">
                 Status
@@ -265,7 +224,7 @@ export function GalleryPhotoTableFilters({
                 value={getPublishFilterValue()}
                 onValueChange={handlePublishFilterChange}
               >
-                <SelectTrigger className="h-10 bg-input text-foreground border-border focus:ring-primary">
+                <SelectTrigger className="h-10 border-border bg-input text-foreground focus:ring-primary">
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
                 <SelectContent className="bg-popover text-popover-foreground">
@@ -276,16 +235,19 @@ export function GalleryPhotoTableFilters({
               </Select>
             </div>
 
-            {/* Category Filter */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">
                 Category
               </label>
               <Select
                 value={filters.categoryId ?? 'all'}
-                onValueChange={handleCategoryFilterChange}
+                onValueChange={(value) =>
+                  onFiltersChange({
+                    categoryId: value === 'all' ? undefined : value,
+                  })
+                }
               >
-                <SelectTrigger className="h-10 bg-input text-foreground border-border focus:ring-primary">
+                <SelectTrigger className="h-10 border-border bg-input text-foreground focus:ring-primary">
                   <SelectValue placeholder="All Categories" />
                 </SelectTrigger>
                 <SelectContent className="bg-popover text-popover-foreground">
@@ -302,27 +264,27 @@ export function GalleryPhotoTableFilters({
         </div>
       )}
 
-      {/* Active Filters Display */}
+      {/* Active filters */}
       {hasFiltersApplied && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm text-muted-foreground font-medium">
+          <span className="text-sm font-medium text-muted-foreground">
             Active Filters:
           </span>
 
           {filters.search && (
             <Badge
               variant="secondary"
-              className="gap-1 pl-3 pr-2 py-1.5 bg-primary/15 text-foreground border border-primary/30 hover:bg-primary/20 dark:bg-primary/20 dark:text-primary-foreground dark:border-primary/40"
+              className="gap-1 border border-primary/30 bg-primary/15 py-1.5 pl-3 pr-2 text-foreground"
             >
               <Search className="h-3 w-3" />
-              <span className="max-w-[150px] sm:max-w-[200px] truncate">
+              <span className="max-w-[150px] truncate sm:max-w-[200px]">
                 {filters.search}
               </span>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleClearSearch}
-                className="h-4 w-4 p-0 hover:bg-transparent ml-1 text-foreground/70 hover:text-foreground"
+                className="ml-1 h-4 w-4 p-0 text-foreground/70 hover:bg-transparent hover:text-foreground"
               >
                 <X className="h-3 w-3" />
               </Button>
@@ -332,14 +294,14 @@ export function GalleryPhotoTableFilters({
           {filters.isPublished !== undefined && (
             <Badge
               variant="secondary"
-              className="gap-1 pl-3 pr-2 py-1.5 bg-primary/15 text-foreground border border-primary/30 hover:bg-primary/20 dark:bg-primary/20 dark:text-primary-foreground dark:border-primary/40"
+              className="gap-1 border border-primary/30 bg-primary/15 py-1.5 pl-3 pr-2 text-foreground"
             >
               Status: {filters.isPublished ? 'Published' : 'Hidden'}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onFiltersChange({ isPublished: undefined })}
-                className="h-4 w-4 p-0 hover:bg-transparent ml-1 text-foreground/70 hover:text-foreground"
+                className="ml-1 h-4 w-4 p-0 text-foreground/70 hover:bg-transparent hover:text-foreground"
               >
                 <X className="h-3 w-3" />
               </Button>
@@ -349,14 +311,14 @@ export function GalleryPhotoTableFilters({
           {filters.categoryId !== undefined && (
             <Badge
               variant="secondary"
-              className="gap-1 pl-3 pr-2 py-1.5 bg-primary/15 text-foreground border border-primary/30 hover:bg-primary/20 dark:bg-primary/20 dark:text-primary-foreground dark:border-primary/40"
+              className="gap-1 border border-primary/30 bg-primary/15 py-1.5 pl-3 pr-2 text-foreground"
             >
               Category: {selectedCategoryName ?? filters.categoryId}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onFiltersChange({ categoryId: undefined })}
-                className="h-4 w-4 p-0 hover:bg-transparent ml-1 text-foreground/70 hover:text-foreground"
+                className="ml-1 h-4 w-4 p-0 text-foreground/70 hover:bg-transparent hover:text-foreground"
               >
                 <X className="h-3 w-3" />
               </Button>

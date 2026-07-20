@@ -1,12 +1,12 @@
 // src/app/dashboard/gallery/photos/_components/GalleryPhotosManageClient.tsx
 'use client';
 import { useRouter } from 'next/navigation';
-import { GalleryPhotosDataTable } from '@/components/gallery/photos/data-table/DataTable';
+import { PhotoGrid } from '@/components/gallery/photos/grid/PhotoGrid';
+import { GridSkeleton } from '@/components/gallery/photos/grid/GridSkeleton';
 import { useGetAllGalleryPhotosQuery } from '@/redux/gallery/gallery-photo-api';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 import { extractApiError } from '@/utils/extract-api-error';
 import { IGalleryPhotosQueryParams } from '@/types/gallery/gallery-photo.types';
-import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
 import { useTableUrlState, IParamsReader } from '@/hooks/use-table-url-state';
 
 type IGalleryPhotosFilters = Omit<IGalleryPhotosQueryParams, 'page' | 'limit'>;
@@ -43,7 +43,7 @@ const GalleryPhotosManageClient = () => {
     handlePageChange,
     handlePageSizeChange,
     handleFiltersChange,
-  } = useTableUrlState({ parseFilters, serializeFilters });
+  } = useTableUrlState({ parseFilters, serializeFilters, defaultPageSize: 24 });
 
   const queryParams: IGalleryPhotosQueryParams = {
     page,
@@ -69,36 +69,31 @@ const GalleryPhotosManageClient = () => {
     router.push('/dashboard/gallery/photos/upload');
   };
 
-  const errorMessage = isError
-    ? extractApiError(error).message
-    : 'An unknown error occurred.';
-
   if (isError) {
-    return <ErrorMessage error={errorMessage} onRetry={refetch} />;
+    return (
+      <div className="container mx-auto">
+        <ErrorMessage error={extractApiError(error).message} onRetry={refetch} />
+      </div>
+    );
   }
 
   if (isLoading && isInitialLoad) {
     return (
       <div className="container mx-auto">
-        <DataTableSkeleton
-          columnCount={6}
-          rowCount={pageSize}
-          showFilters={true}
-          showActions={true}
-          showPagination={true}
-        />
+        <GridSkeleton count={pageSize} />
       </div>
     );
   }
 
   return (
     <div className="container mx-auto">
-      <GalleryPhotosDataTable
+      <PhotoGrid
         data={photosData?.data ?? []}
         loading={isFetching && !isInitialLoad}
         totalCount={photosData?.meta.total ?? 0}
         page={page}
         pageSize={pageSize}
+        totalPages={photosData?.meta.totalPages ?? 1}
         filters={filters}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}

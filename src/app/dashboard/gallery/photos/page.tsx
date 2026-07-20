@@ -1,20 +1,14 @@
 // src/app/dashboard/gallery/photos/page.tsx
 import { Suspense } from 'react';
 import GalleryPhotosManageClient from './_components/GalleryPhotosManageClient';
-import { DataTableSkeleton } from '@/components/ui/DataTableSkeleton';
+import { GridSkeleton } from '@/components/gallery/photos/grid/GridSkeleton';
 
 const GalleryPhotosManagePage = () => {
   return (
     <Suspense
       fallback={
         <div className="container mx-auto">
-          <DataTableSkeleton
-            columnCount={6}
-            rowCount={10}
-            showFilters={true}
-            showActions={true}
-            showPagination={true}
-          />
+          <GridSkeleton count={24} />
         </div>
       }
     >
